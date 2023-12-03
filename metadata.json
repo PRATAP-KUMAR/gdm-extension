@@ -2,9 +2,9 @@
   "name": "GDM Extension",
   "description": "Tweak few things of GDM Login Screen",
   "uuid": "gdm-extension@pratap.fastmail.fm",
+  "url": "https://github.com/PRATAP-KUMAR/gdm-extension/",
   "shell-version": [
     "45"
   ],
-  "session-modes": ["gdm"],
-  "url": "https://github.com/PRATAP-KUMAR/gdm-extension/"
+  "session-modes": ["gdm"]
 }
