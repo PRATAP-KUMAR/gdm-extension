@@ -1,0 +1,9 @@
+{
+  "name": "GDM Extension",
+  "description": "Tweak few things of GDM Login Screen",
+  "uuid": "gdm-extension@pratap.fastmail.fm",
+  "shell-version": [
+    "45"
+  ],
+  "session-modes": ["gdm", "user"]
+}
