@@ -117,6 +117,8 @@ export default class GdmExtension extends Extension {
             this._indicator.show();
     }
 
+    // session-mode used is ['gdm'] only because this extension purpose
+    // is to tweak the settings of GDM Login screen itself
     disable() {
         this._indicator.destroy();
         this._indicator = null;
@@ -131,7 +133,6 @@ export default class GdmExtension extends Extension {
         this._gdmExtensionSettings.disconnect(visibilityChangedId);
         this._gdmExtensionSettings.disconnect(shallThemeChangedId);
 
-        this._tapToClickSetting = null;
         this._gdmExtensionSettings = null;
     }
 }
