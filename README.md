@@ -1,5 +1,4 @@
-# GDM-Extension for GNOME 45 only
-GDM Extension, Tweak few things of GDM Login Screen
+# GDM-Extension for GNOME 45 only - Tweak few things of GDM Login Screen from the login screen itself.
 
 ## Installation
 1. You have to install this extension as System Wide.
@@ -42,11 +41,11 @@ you can hide the extension by clicking the Hide button at the bottom of popup me
 2. `gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
 
 ## Known Issue
-When you choose to Disable Restart Buttons, the buttons are not shown as expected, but when you toggle the switch, the buttons
-are not shown. To sort out this, Choose any Icon theme or default Icon theme from the list. Choosing Icon themes will refresh the shell.
+When you choose to Disable Restart Buttons, the buttons are hidden as expected, but when you toggle the switch, the buttons
+are not shown. To sort out this, Choose any Icon theme from the list. Choosing Icon themes will refresh the shell.
 This way the buttons can be shown.
 
- ![GDM-Extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b3e815c8-803b-4dd7-8ade-74876e5d2669)
+![GDM-Extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b3e815c8-803b-4dd7-8ade-74876e5d2669)
 
 ![GDM-Extension-2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/877c1606-68d6-42b5-850a-257371dc9486)
 
@@ -71,12 +70,17 @@ While customizing colors, gradient, wallpaper, if you encounter problems
 
 ## Disabling the extension
 1. `sudo machinectl shell gdm@ /bin/bash`
-2. `gsettings set org.gnome.shell disabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+2. `gsettings set org.gnome.shell disabled-extensions "['gdm-extension@pratap.fastmail.fm']"` when you want to enable please
+   make sure you reset above key first and then check enabling method in this document.
 
 ## Removing the extension
 1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
 2. `sudo rm /usr/local/share/glib-2.0/schemas/org.gnome.shell.extensions.gdm-extension.gschema.xml`
 3. `sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/` # only required if you have any other schema files.
 4. Optionally reset dconf for `gdm` user as mentioned in the Troubleshoot above.
+
+<hr/>
+
+<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
 
 
