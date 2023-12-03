@@ -5,5 +5,5 @@
   "shell-version": [
     "45"
   ],
-  "session-modes": ["gdm", "user"]
+  "session-modes": ["gdm"]
 }
