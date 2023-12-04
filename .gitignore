@@ -1,1 +1,3 @@
 node_modules/
+schemas/gschemas.compiled
+*.zip
