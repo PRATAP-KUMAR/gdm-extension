@@ -126,8 +126,8 @@ const GdmExtensionSettingsButton = GObject.registerClass(
             const SCHEMA_ID = 'org.gnome.shell.extensions.gdm-extension';
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Color/Gradient Start Color', '#123456', 'background-color', 'Must be a valid color'));
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background End Color', '#456789', 'background-gradient-end-color', 'Must be a valid color or same as above color'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [horizontal, vertical]'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path'));
+            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [none, horizontal, vertical]'));
+            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path', 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Size', 'none, cover, contain', 'background-size', 'Must be one of [center, cover, contain]'));
         }
 
