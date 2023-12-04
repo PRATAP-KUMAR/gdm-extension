@@ -30,12 +30,15 @@
    disable user list, disable restart buttons, show banner message.
 9. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
 10. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
-11. Optionally you can overrride styling of any shell theme you select from dropdown with extensions css file. for example
+11. Optionally you can overrride styling with extensions css file. for example
     ```
     #panel {
       background-color: #000000;
     }
     ```
+
+    Topbar/Panel color is black now
+    ![GDM-Extension-16](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/fa87d7ef-bb1a-47f1-a903-0e3f62aa1dcf)
 
 ## Hiding the Preferences Icon from GDM Login Screen
 Once you enable the extension it is available for regular users too on the Login Screen. To prevent tweaking the Login Screen,
