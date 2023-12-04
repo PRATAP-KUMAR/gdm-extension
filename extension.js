@@ -42,8 +42,6 @@ export default class GdmExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
 
-        Main.notify(JSON.stringify(this._settings));
-
         this._indicator = new GdmExtensionSettingsButton(this._settings); // Gdm Extension button
         Main.panel.addToStatusArea(this.uuid, this._indicator, 0, 'left'); // Added to panel left
 
