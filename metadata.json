@@ -6,5 +6,6 @@
   "shell-version": [
     "45"
   ],
-  "session-modes": ["gdm"]
+  "session-modes": ["gdm", "user"],
+  "settings-schema": "org.gnome.shell.extensions.gdm-extension"
 }
