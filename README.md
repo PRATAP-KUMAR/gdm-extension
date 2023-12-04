@@ -1,17 +1,16 @@
-# GDM-Extension for GNOME 45 only - Tweak few things of GDM Login Screen from the login screen itself.
+# GDM-Extension for GNOME 45
+## Tweak few things of GDM Login Screen from the login screen itself.
 
 ## Installation
 1. You have to install this extension as System Wide.
-2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions`
-3. Schemas - you have to **MOVE** the schema file `org.gnome.shell.extensions.gdm-extension.gschema.xml` from extensions schemas direcotry to `/usr/local/share/glib-2.0/schemas/`
-4. create above direcotries as required and then
-5. from the installed extension direcotry
+2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
+3. Schemas - compile the schemas to `/usr/local/share/glib-2.0/schemas` directory.
+4. First create the directories if they dont exist.
+   `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
+5. compile the schemas. From the extensions directory
    ```
-   sudo mv schemas/org.gnome.shell.extensions.gdm-extension.gschema.xml /usr/local/share/glib-2.0/schemas/
+   sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/
    ```
-6. Compile the schemas
-   ```
-   sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/
 
 ## Enabling the Extension for `gdm` user.
 1. `sudo machinectl shell gdm@ /bin/bash`
@@ -75,8 +74,8 @@ While customizing colors, gradient, wallpaper, if you encounter problems
 
 ## Removing the extension
 1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
-2. `sudo rm /usr/local/share/glib-2.0/schemas/org.gnome.shell.extensions.gdm-extension.gschema.xml`
-3. `sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/` # only required if you have any other schema files.
+2. `sudo rm /usr/local/share/glib-2.0/schemas/gschemas.compiled` # We compiled here, so remove this file.
+3. `sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/` # Must Recompile to generate gschemas.compiled file.
 4. Optionally reset dconf for `gdm` user as mentioned in the Troubleshoot above.
 
 <hr/>
