@@ -4,11 +4,14 @@
 ## Installation
 1. You have to install this extension as System Wide.
 2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
-3. Schemas - compile the schemas to `/usr/local/share/glib-2.0/schemas` directory.
-4. First create the directories if they dont exist.
-   `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
-5. compile the schemas. From the extensions directory
-   `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
+3. Schemas - from the extension directory
+   1. compile the scheamas in the extension with the below command.
+   `sudo glib-compile-schemas schemas`
+   2. compile the schemas to `/usr/local/share/glib-2.0/schemas` directory.
+      1. First create the directories if they do not exist.
+      `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
+      2. compile the schemas.
+      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 
 ## Enabling the Extension for `gdm` user.
 1. `sudo machinectl shell gdm@ /bin/bash`
