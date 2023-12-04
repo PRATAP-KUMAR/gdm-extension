@@ -2,7 +2,12 @@
 ## Tweak few things of GDM Login Screen from the login screen itself.
 
 ## Installation
-
+```
+git clone https://github.com/PRATAP-KUMAR/gdm-extension/
+cd gdm-extension
+make install
+```
+Above make install does below
 > 1. You have to install this extension as System Wide.
 > 2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
 > 3. Schemas - from the extension directory
@@ -92,16 +97,20 @@ While customizing colors, gradient, wallpaper, if you encounter problems
    Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
 3. enable the extension `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
-## Disabling the extension
-1. `sudo machinectl shell gdm@ /bin/bash`
-2. `gsettings set org.gnome.shell disabled-extensions "['gdm-extension@pratap.fastmail.fm']"` when you want to enable please
-   make sure you reset above key first and then check enabling method in this document.
 
-## Removing the extension
-1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
-2. `sudo rm /usr/local/share/glib-2.0/schemas/gschemas.compiled` # We compiled here, so remove this file.
-3. `sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/` # Must Recompile to generate gschemas.compiled file.
-4. Optionally reset dconf for `gdm` user as mentioned in the Troubleshoot above.
+> ## Disabling the extension
+>   Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions. There is
+>   a way to disable it. but its bit different. So remove it.
+
+from the downloaded repository, run
+`make uninstall`
+which does below
+
+> ## Removing the extension
+> 1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
+> 2. `sudo rm /usr/local/share/glib-2.0/schemas/gschemas.compiled` # We compiled here, so remove this file.
+> 3. `sudo glib-compile-schemas /usr/local/share/glib-2.0/schemas/` # Must Recompile to generate gschemas.compiled file.
+> 4. Optionally reset dconf for `gdm` user as mentioned in the Troubleshoot above.
 
 <hr/>
 
