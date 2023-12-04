@@ -30,6 +30,12 @@
    disable user list, disable restart buttons, show banner message.
 9. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
 10. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
+11. Optionally you can overrride styling of any shell theme you select from dropdown with extensions css file. for example
+    ```
+    #panel {
+      background-color: #000000;
+    }
+    ```
 
 ## Hiding the Preferences Icon from GDM Login Screen
 Once you enable the extension it is available for regular users too on the Login Screen. To prevent tweaking the Login Screen,
@@ -60,12 +66,26 @@ This way the buttons can be shown.
 
 ![GDM-Extension-8](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/aaef329d-13b8-4948-a2f2-2b0e1e3e7fa1)
 
+![GDM-Extension-9](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/0160c263-08e9-4cc9-988f-5375deeb025d)
+
+![GDM-Extension-10](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/8f21a9d8-88a2-4969-9b06-146817cc6dc2)
+
+![GDM-Extension-11](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/11154dff-627f-4b38-afc3-5a4a4e17885e)
+
+![GDM-Extension-12](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/9eddae24-6bee-4586-82d4-841b16e878f2)
+
+![GDM-Extension-13](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/be5914c4-a0cc-451a-b819-c143565b070d)
+
+![GDM-Extension-14](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/47ba48e8-c19f-4d2d-b3b1-48b574551931)
+
+![GDM-Extension-15](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/c4930830-a148-45ac-b5e3-a137aebef522)
+
 ## Troubleshoot
 While customizing colors, gradient, wallpaper, if you encounter problems
 1. `sudo machinectl shell gdm@ /bin/bash`
 2. `dconf reset -f /` # This will reset all the settings for `gdm` user only, not the regular user.
-   Make sure if you configured any other settings yourself for gdm user. Make a dconf dump way for that.
-4. enable the extension `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+   Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
+3. enable the extension `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Disabling the extension
 1. `sudo machinectl shell gdm@ /bin/bash`
@@ -81,5 +101,3 @@ While customizing colors, gradient, wallpaper, if you encounter problems
 <hr/>
 
 <a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
-
-
