@@ -8,9 +8,7 @@
 4. First create the directories if they dont exist.
    `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
 5. compile the schemas. From the extensions directory
-   ```
-   sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/
-   ```
+   `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 
 ## Enabling the Extension for `gdm` user.
 1. `sudo machinectl shell gdm@ /bin/bash`
