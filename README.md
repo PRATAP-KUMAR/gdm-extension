@@ -2,20 +2,21 @@
 ## Tweak few things of GDM Login Screen from the login screen itself.
 
 ## Installation
-1. You have to install this extension as System Wide.
-2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
-3. Schemas - from the extension directory
-   1. compile the scheamas in the extension with the below command.
-   `sudo glib-compile-schemas schemas`
-   2. compile the schemas to `/usr/local/share/glib-2.0/schemas` directory.
-      1. First create the directories if they do not exist.
-      `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
-      2. compile the schemas.
-      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 
-## Enabling the Extension for `gdm` user.
-1. `sudo machinectl shell gdm@ /bin/bash`
-2. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+> 1. You have to install this extension as System Wide.
+> 2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
+> 3. Schemas - from the extension directory
+>   1. compile the scheamas in the extension with the below command.
+>   `sudo glib-compile-schemas schemas`
+>   2. compile the schemas to `/usr/local/share/glib-2.0/schemas` directory.
+>      1. First create the directories if they do not exist.
+>     `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
+>      2. compile the schemas.
+>      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
+>
+> ## Enabling the Extension for `gdm` user.
+> 1. `sudo machinectl shell gdm@ /bin/bash`
+> 2. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
