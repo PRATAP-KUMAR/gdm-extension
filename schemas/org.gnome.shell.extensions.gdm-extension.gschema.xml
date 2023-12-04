@@ -1,0 +1,48 @@
+<schemalist>
+    <schema id="org.gnome.shell.extensions.gdm-extension"
+        path="/org/gnome/shell/extensions/gdm-extension/">
+
+        <key name="background-color" type="s">
+            <default>"none"</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="background-gradient-direction" type="s">
+            <default>"none"</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="background-gradient-end-color" type="s">
+            <default>"none"</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="background-image-path" type="s">
+            <default>"none"</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="background-size" type="s">
+            <default>"center"</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="hide-gdm-settings-icon" type="b">
+            <default>false</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+        <key name="shell-theme" type="s">
+            <default>'null'</default>
+            <summary>Summary</summary>
+            <description>Description</description>
+        </key>
+
+    </schema>
+</schemalist>

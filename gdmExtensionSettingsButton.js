@@ -1,16 +1,19 @@
+import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
-import Clutter from 'gi://Clutter';
-import St from 'gi://St';
+import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
+import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as config from 'resource:///org/gnome/shell/misc/config.js';
 
 import ConfirmDialog from './confirmDialog.js';
 import GetThemes from './getThemes.js';
 import GetIcons from './getIcons.js';
+import CreateActor from './createActor.js';
 
 import {
     addTapToClick,
@@ -22,7 +25,6 @@ import {
     addDisableUserList
 } from './systemSettings.js';
 
-import CreateActor from './createActor.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -37,10 +39,16 @@ const GdmExtensionSettingsButton = GObject.registerClass(
 
             this._warningMessage = false;
 
-            this.add_child(new St.Icon({
+            this._box = new St.BoxLayout();
+            this.add_child(this._box);
+
+            this._box.add_child(new St.Icon({
                 icon_name: 'preferences-system-symbolic',
                 style_class: 'system-status-icon',
             }));
+
+            this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
+            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
