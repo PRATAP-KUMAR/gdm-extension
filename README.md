@@ -7,7 +7,7 @@ git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
 make install
 ```
-Above make install does below
+Above `make install` command does below.
 > 1. You have to install this extension as System Wide.
 > 2. Install the extension in this path. `/usr/local/share/gnome-shell/extensions/`
 > 3. Schemas - from the extension directory
@@ -103,8 +103,8 @@ While customizing colors, gradient, wallpaper, if you encounter problems
 >   a way to disable it. but its bit different. So remove it.
 
 from the downloaded repository, run
-`make uninstall`
-which does below
+`make uninstall`  
+which does below and to install again, run `make install`
 
 > ## Removing the extension
 > 1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
