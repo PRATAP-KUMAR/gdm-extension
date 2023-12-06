@@ -112,12 +112,6 @@ const GdmExtensionSettingsButton = GObject.registerClass(
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Background', true);
             this.menu.addMenuItem(subMenuItem);
             this._createBackgroundPrefs(subMenuItem);
-            subMenuItem.menu.connect('open-state-changed', () => {
-                if (this._warningMessage === false) {
-                    this._warningPopup();
-                    this._warningMessage = true;
-                }
-            });
         }
 
         _createBackgroundPrefs(item) {

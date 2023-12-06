@@ -22,9 +22,9 @@ Above `make install` command does below.
 >      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 >
 > ## Enabling the Extension for `gdm` user.
-> 1. `sudo machinectl shell gdm@ /bin/bash`
-> 2. `sudo dconf reset -f /
-> 3. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+> 1. `xhost si:localuser:gdm`
+> 2. `sudo -u gdm dbus-launch dconf reset -f /`
+> 3. `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
@@ -35,12 +35,11 @@ Above `make install` command does below.
 4. Important is that, you have to **hit Enter** when you write something in the entry box.
 5. Shell themes are collected from `["/usr/local/share/themes/", "/usr/share/themes"]` directories.
 6. Icon themes are collected from `["/usr/local/share/icons/", "/usr/share/icons"]` directories.
-7. You can click on any theme and it will be applied instantly.
-8. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
+7. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
    disable user list, disable restart buttons, show banner message.
-9. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
-10. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
-11. Optionally you can overrride styling with extensions css file. for example
+8. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
+9. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
+10. Optionally you can overrride styling with extensions css file. for example
     ```
     #panel {
       background-color: #000000;
@@ -60,8 +59,7 @@ you can hide the extension by clicking the Hide button at the bottom of popup me
 
 ## Known Issue
 When you choose to Disable Restart Buttons, the buttons are hidden as expected, but when you toggle the switch, the buttons
-are not shown. To sort out this, Choose any Icon theme from the list. Choosing Icon themes will refresh the shell.
-This way the buttons can be shown.
+are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run `sudo systemctl restart gdm.service`.
 
 ![GDM-Extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b3e815c8-803b-4dd7-8ade-74876e5d2669)
 
