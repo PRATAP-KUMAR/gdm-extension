@@ -49,8 +49,6 @@ export default class GdmExtension extends Extension {
 
         this._connectionSettings(); // trigger setting changes
 
-        this._onChangesFromGDMScreen(); // Its like extension prefs
-
         let styleSheet = null;
         let themeName = this._settings.get_string('shell-theme');
 
@@ -64,6 +62,8 @@ export default class GdmExtension extends Extension {
 
         Main.setThemeStylesheet(styleSheet);
         Main.loadTheme();
+
+        Main.layoutManager.connect('startup-prepared', () => this._onChangesFromGDMScreen());
     }
 
     _connectionSettings() {

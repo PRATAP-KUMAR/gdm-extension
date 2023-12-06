@@ -50,12 +50,12 @@ const GetIcons = GObject.registerClass(
 
             let infos;
             do {
-                infos = await fileEnum.next_files_async(100,
-                    GLib.PRIORITY_DEFAULT, null);
-                fileInfos.push(...infos);
+                infos = await fileEnum.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
+                const filterdInfos = infos.filter(info => info.get_file_type() === Gio.FileType.DIRECTORY);
+                fileInfos.push(...filterdInfos);
             } while (infos.length > 0);
 
-            return fileInfos.map(info => info.get_name());
+            return fileInfos.map(inform => inform.get_name());
         }
     }
 );

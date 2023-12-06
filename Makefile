@@ -46,6 +46,10 @@ else
 endif
 
 $(ZIP_NAME): $(ZIP_CONTENT)
+ifneq ($(shell id -u), 0)
+	@echo "You must be root to perform this action."
+else
 	@echo "Packing zip file..."
 	@rm --force $(ZIP_NAME)
 	@zip $(ZIP_NAME) -- $(ZIP_CONTENT)
+endif

@@ -2,7 +2,6 @@ import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -24,7 +23,6 @@ import {
     addDisableRestartButtons,
     addDisableUserList
 } from './systemSettings.js';
-
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -199,7 +197,7 @@ const GdmExtensionSettingsButton = GObject.registerClass(
                 });
                 button.connect('clicked', () => {
                     settings.set_string(key, button.label);
-                    Meta.restart('', global.context);
+                    // Meta.restart('', global.context);
                 });
                 item.menu.box.add_child(button);
             });
