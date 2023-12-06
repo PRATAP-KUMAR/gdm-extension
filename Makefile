@@ -19,17 +19,17 @@ ZIP_CONTENT = $(JS_FILES) \
 
 zip: $(ZIP_NAME)
 
-install: $(ZIP_NAME)
+install: uninstall $(ZIP_NAME)
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
-	@rm -rf /usr/local/share/gnome-shell/extensions/$(UUID)
 	@mkdir -p /usr/local/share/gnome-shell/extensions
 	@mkdir -p /usr/local/share/glib-2.0/schemas
 	gnome-extensions install -f "$(ZIP_NAME)"
 	@mv -f $(HOME)/.local/share/gnome-shell/extensions/$(UUID)/ /usr/local/share/gnome-shell/extensions/
 	@glib-compile-schemas /usr/local/share/gnome-shell/extensions/$(UUID)/schemas --targetdir /usr/local/share/glib-2.0/schemas
 	@xhost si:localuser:gdm
+	@sudo -u gdm dbus-launch dconf reset -f /
 	@sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['$(UUID)']"
 	@exit
 endif
