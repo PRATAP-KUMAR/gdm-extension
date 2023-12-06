@@ -98,7 +98,6 @@ While customizing colors, gradient, wallpaper, if you encounter problems
    Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
 3. enable the extension `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
-
 > ## Disabling the extension
 >   Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions. There is
 >   a way to disable it. but its bit different. So remove it.
