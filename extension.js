@@ -99,12 +99,16 @@ export default class GdmExtension extends Extension {
     }
 
     _onChangesFromGDMScreen() {
+        let imagePath = this._settings.get_string('background-image-path');
+        let file = Gio.file_new_for_path(imagePath);
+        let boolean = file.query_exists(null);
+
         Main.screenShield._lockDialogGroup.set_style(`
         background-color: ${this._settings.get_string('background-color')};
         background-gradient-direction: ${this._settings.get_string('background-gradient-direction')};
         background-gradient-start: ${this._settings.get_string('background-color')};
         background-gradient-end: ${this._settings.get_string('background-gradient-end-color')};
-        background-image: url("file://${this._settings.get_string('background-image-path')}");
+        background-image: ${boolean ? `url(file://${imagePath})` : 'none'};
         background-size: ${this._settings.get_string('background-size')};
         `);
     }
