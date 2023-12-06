@@ -1,6 +1,8 @@
 # GDM-Extension for GNOME 45
 ## Tweak few things of GDM Login Screen from the login screen itself.
 
+## Please note that this is experimental (although tested on Arch Linux and Ubuntu 23.10 for a week) and when you run the make file, It will reset all your dconf settings for gdm user, meaning that for example if you set Banner Message Text, Tap-to-Click, Disable Restart Buttons, Disable User list etc, all will be Reset. You can customize some of them from the Login Screen itself with this extension though.
+
 ## Installation
 ```
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
