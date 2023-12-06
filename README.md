@@ -23,7 +23,8 @@ Above `make install` command does below.
 >
 > ## Enabling the Extension for `gdm` user.
 > 1. `sudo machinectl shell gdm@ /bin/bash`
-> 2. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+> 2. `sudo dconf reset -f /
+> 3. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
