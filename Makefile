@@ -19,7 +19,7 @@ ZIP_CONTENT = $(JS_FILES) \
 
 zip: $(ZIP_NAME)
 
-install: uninstall $(ZIP_NAME)
+install: $(ZIP_NAME)
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
