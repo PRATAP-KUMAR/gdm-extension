@@ -30,8 +30,8 @@ const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
 let subMenuItem = null;
 
-const GdmExtensionSettingsButton = GObject.registerClass(
-    class GdmExtensionSettingsButton extends PanelMenu.Button {
+const GdmExtension = GObject.registerClass(
+    class GdmExtension extends PanelMenu.Button {
         _init(settings) {
             super._init(0.0, 'GDM Settings Icon Indicator');
             this._settings = settings;
@@ -73,17 +73,13 @@ const GdmExtensionSettingsButton = GObject.registerClass(
             this._subMenuIcons();
             this._subMenuSystemSettings();
 
-            const menuItem = new PopupMenu.PopupBaseMenuItem();
-            const button = new St.Button({
-                label: 'Hide Extension Settings Button from Topbar',
-            });
-            button.connect('clicked', () => this._openModal(this._settings));
-            menuItem.add_actor(button);
-            this.menu.addMenuItem(menuItem);
+            const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
+            hideExtensionMenuItem.connect('activate', () => this._openModal(this._settings));
+            this.menu.addMenuItem(hideExtensionMenuItem);
         }
 
         _subMenuSystemSettings() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('System Settings', true);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('System Settings', false);
 
             subMenuItem.menu.box.add_child(addTapToClick());
             subMenuItem.menu.box.add_child(addClockShowDate());
@@ -111,7 +107,7 @@ const GdmExtensionSettingsButton = GObject.registerClass(
         }
 
         _subMenuBackground() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Background', true);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Background', false);
             this.menu.addMenuItem(subMenuItem);
             this._createBackgroundPrefs(subMenuItem);
         }
@@ -122,28 +118,24 @@ const GdmExtensionSettingsButton = GObject.registerClass(
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background End Color', '#456789', 'background-gradient-end-color', 'Must be a valid color or same as above color'));
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [none, horizontal, vertical]'));
             item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path', 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Size', 'none, cover, contain', 'background-size', 'Must be one of [center, cover, contain]'));
+            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Size', 'cover', 'background-size', 'Must be one of [center, cover, contain]'));
         }
 
         _subMenuIcons() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', true);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', false);
             this.menu.addMenuItem(subMenuItem);
             this.getIcons(subMenuItem);
         }
 
         _subMenuThemes() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', true);
-            const button = new St.Button({
-                style_class: 'datemenu-today-button',
-                can_focus: true,
-                reactive: true,
-                label: 'Default',
-            });
-            subMenuItem.menu.box.add_child(button);
-            button.connect('clicked', () => {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', false);
+            const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
+            shellDefaultThemeItem.connect('activate', () => {
                 Main.setThemeStylesheet(null);
                 Main.loadTheme();
             });
+            subMenuItem.menu.addMenuItem(shellDefaultThemeItem);
+
             this.menu.addMenuItem(subMenuItem);
             this.getThemes(subMenuItem);
         }
@@ -151,16 +143,11 @@ const GdmExtensionSettingsButton = GObject.registerClass(
         async getThemes(item, array = []) {
             await new GetThemes(array)._collectThemes();
             array.forEach(directory => {
-                const button = new St.Button({
-                    style_class: 'datemenu-today-button',
-                    can_focus: true,
-                    reactive: true,
-                    label: directory,
-                });
-                button.connect('clicked', () => {
+                const directoryName = new PopupMenu.PopupMenuItem(directory);
+                directoryName.connect('activate', () => {
                     let styleSheet = null;
                     const stylesheetPaths = THEME_DIRECTORIES
-                        .map(dir => `${dir}/${button.label}/gnome-shell/gnome-shell.css`);
+                        .map(dir => `${dir}/${directoryName}/gnome-shell/gnome-shell.css`);
 
                     styleSheet = stylesheetPaths.find(path => {
                         let file = Gio.file_new_for_path(path);
@@ -168,14 +155,14 @@ const GdmExtensionSettingsButton = GObject.registerClass(
                     });
 
                     if (styleSheet)
-                        this._settings.set_string('shell-theme', button.label);
+                        this._settings.set_string('shell-theme', directoryName);
                     else
                         this._settings.set_string('shell-theme', '');
 
                     Main.setThemeStylesheet(styleSheet);
                     Main.loadTheme();
                 });
-                item.menu.box.add_child(button);
+                item.menu.addMenuItem(directoryName);
             });
         }
 
@@ -185,17 +172,12 @@ const GdmExtensionSettingsButton = GObject.registerClass(
 
             await new GetIcons(array)._collectIconThemes();
             array.forEach(d => {
-                const button = new St.Button({
-                    style_class: 'datemenu-today-button',
-                    can_focus: true,
-                    reactive: true,
-                    label: d,
-                });
-                button.connect('clicked', () => settings.set_string(key, button.label));
-                item.menu.box.add_child(button);
+                const directoryName = new PopupMenu.PopupMenuItem(d);
+                directoryName.connect('activate', () => settings.set_string(key, d));
+                item.menu.addMenuItem(directoryName);
             });
         }
     }
 );
 
-export default GdmExtensionSettingsButton;
+export default GdmExtension;

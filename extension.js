@@ -24,7 +24,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Local
-import GdmExtensionSettingsButton from './gdmExtensionSettingsButton.js';
+import GdmExtension from './gdmExtension.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
@@ -38,11 +38,11 @@ let backgroundSizeChanged = null;
 let shallThemeChangedId = null;
 let visibilityChangedId = null;
 
-export default class GdmExtension extends Extension {
+export default class GdmExtensionExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
 
-        this._indicator = new GdmExtensionSettingsButton(this._settings); // Gdm Extension button
+        this._indicator = new GdmExtension(this._settings); // Gdm Extension button
         Main.panel.addToStatusArea(this.uuid, this._indicator, 0, 'left'); // Added to panel left
 
         this._onVisibilityChange(); // show the extension settings icon on Admin decision

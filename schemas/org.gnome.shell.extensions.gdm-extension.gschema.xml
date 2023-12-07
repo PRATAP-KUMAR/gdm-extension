@@ -27,7 +27,7 @@
         </key>
 
         <key name="background-size" type="s">
-            <default>"center"</default>
+            <default>"cover"</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
@@ -39,7 +39,7 @@
         </key>
 
         <key name="shell-theme" type="s">
-            <default>'null'</default>
+            <default>''</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
