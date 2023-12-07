@@ -26,6 +26,7 @@ import {
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
 let subMenuItem = null;
 
@@ -94,6 +95,7 @@ const GdmExtensionSettingsButton = GObject.registerClass(
 
             subMenuItem.menu.box.add_child(CreateActor(LOGIN_SCREEN_SCHEMA, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
             subMenuItem.menu.box.add_child(CreateActor(LOGIN_SCREEN_SCHEMA, 'Logo', '/usr/share/pixmaps/logo.svg', 'logo'));
+            subMenuItem.menu.box.add_child(CreateActor(INTERFACE_SCHEMA, 'clock format', '12h or 24h', 'clock-format', 'must be one of [12h, 24h]'));
 
             this.menu.addMenuItem(subMenuItem);
         }
@@ -189,10 +191,7 @@ const GdmExtensionSettingsButton = GObject.registerClass(
                     reactive: true,
                     label: d,
                 });
-                button.connect('clicked', () => {
-                    settings.set_string(key, button.label);
-                    // Meta.restart('', global.context);
-                });
+                button.connect('clicked', () => settings.set_string(key, button.label));
                 item.menu.box.add_child(button);
             });
         }

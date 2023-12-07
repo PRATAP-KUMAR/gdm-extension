@@ -6,9 +6,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const CreateActor = (SCHEMA_ID, label, hintText, key, permenentHint = null) => {
     const settings = new Gio.Settings({schema_id: SCHEMA_ID});
-    const menuItem = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-    });
+    const menuItem = new PopupMenu.PopupBaseMenuItem();
 
     const inputText = new St.Entry({
         hint_text: hintText,
@@ -20,6 +18,7 @@ const CreateActor = (SCHEMA_ID, label, hintText, key, permenentHint = null) => {
     inputText.clutter_text.connect('activate', actor => {
         settings.set_string(key, actor.get_text());
     });
+    menuItem.connect('notify::active', () => inputText.grab_key_focus());
 
     menuItem.add_actor(new St.Label({text: label, y_align: Clutter.ActorAlign.CENTER}));
     menuItem.add_actor(inputText);
