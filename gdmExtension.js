@@ -142,12 +142,12 @@ const GdmExtension = GObject.registerClass(
 
         async getThemes(item, array = []) {
             await new GetThemes(array)._collectThemes();
-            array.forEach(directory => {
-                const directoryName = new PopupMenu.PopupMenuItem(directory);
-                directoryName.connect('activate', () => {
+            array.forEach(themeName => {
+                const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
+                shellThemeNameItem.connect('activate', () => {
                     let styleSheet = null;
                     const stylesheetPaths = THEME_DIRECTORIES
-                        .map(dir => `${dir}/${directoryName}/gnome-shell/gnome-shell.css`);
+                        .map(dir => `${dir}/${themeName}/gnome-shell/gnome-shell.css`);
 
                     styleSheet = stylesheetPaths.find(path => {
                         let file = Gio.file_new_for_path(path);
@@ -155,14 +155,14 @@ const GdmExtension = GObject.registerClass(
                     });
 
                     if (styleSheet)
-                        this._settings.set_string('shell-theme', directoryName);
+                        this._settings.set_string('shell-theme', themeName);
                     else
                         this._settings.set_string('shell-theme', '');
 
                     Main.setThemeStylesheet(styleSheet);
                     Main.loadTheme();
                 });
-                item.menu.addMenuItem(directoryName);
+                item.menu.addMenuItem(shellThemeNameItem);
             });
         }
 
@@ -171,10 +171,10 @@ const GdmExtension = GObject.registerClass(
             const key = 'icon-theme';
 
             await new GetIcons(array)._collectIconThemes();
-            array.forEach(d => {
-                const directoryName = new PopupMenu.PopupMenuItem(d);
-                directoryName.connect('activate', () => settings.set_string(key, d));
-                item.menu.addMenuItem(directoryName);
+            array.forEach(themeName => {
+                const iconThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
+                iconThemeNameItem.connect('activate', () => settings.set_string(key, themeName));
+                item.menu.addMenuItem(iconThemeNameItem);
             });
         }
     }
