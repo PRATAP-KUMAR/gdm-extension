@@ -23,6 +23,8 @@ install: $(ZIP_NAME)
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
+	@rm -rf /usr/local/share/gnome-shell/extensions/$(UUID)
+	@rm -rf /usr/local/share/glib-2.0/schemas/gschemas.compiled
 	@mkdir -p /usr/local/share/gnome-shell/extensions
 	@mkdir -p /usr/local/share/glib-2.0/schemas
 	gnome-extensions install -f "$(ZIP_NAME)"
@@ -31,6 +33,13 @@ else
 	@xhost si:localuser:gdm
 	@sudo -u gdm dbus-launch dconf reset -f /
 	@sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['$(UUID)']"
+	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-color "brown"
+	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-gradient-direction "vertical"
+	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-gradient-end-color "red"
+	@sudo -u gdm dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+	@sudo -u gdm dbus-launch gsettings set org.gnome.login-screen banner-message-enable true
+	@sudo -u gdm dbus-launch gsettings set org.gnome.login-screen banner-message-text "Welcome to GDM, you are seeing this message because you have installed gdm-extension. You can change this text from the System Settings menu from top-left."
+	@echo "gdm-extension is installed, you can tweak few things of GDM login screen from login screen itself."
 	@exit
 endif
 
@@ -38,10 +47,11 @@ uninstall:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
-	@rm --force $(ZIP_NAME)
+	@rm -rf $(ZIP_NAME)
 	@rm -rf /usr/local/share/gnome-shell/extensions/$(UUID)
 	@rm -rf /usr/local/share/glib-2.0/schemas/gschemas.compiled
 	@glib-compile-schemas /usr/local/share/glib-2.0/schemas/
+	@echo "gdm-extension is uninstalled, you may reset dconf for gdm user as mentioned in the README"
 	@exit
 endif
 
