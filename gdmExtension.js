@@ -9,6 +9,8 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as config from 'resource:///org/gnome/shell/misc/config.js';
 
+import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
+
 import ConfirmDialog from './confirmDialog.js';
 import GetThemes from './getThemes.js';
 import GetIcons from './getIcons.js';
@@ -129,21 +131,33 @@ const GdmExtension = GObject.registerClass(
 
         _subMenuThemes() {
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', false);
-            const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
-            shellDefaultThemeItem.connect('activate', () => {
-                Main.setThemeStylesheet(null);
-                Main.loadTheme();
-            });
-            subMenuItem.menu.addMenuItem(shellDefaultThemeItem);
-
             this.menu.addMenuItem(subMenuItem);
             this.getThemes(subMenuItem);
         }
 
         async getThemes(item, themes = []) {
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+            scrollView.add_actor(section.actor);
+
+            // Add Default Theme Item
+            const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
+            shellDefaultThemeItem.connect('key-focus-in', () => {
+                AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellDefaultThemeItem);
+            });
+            shellDefaultThemeItem.connect('activate', () => {
+                Main.setThemeStylesheet(null);
+                Main.loadTheme();
+            });
+            section.addMenuItem(shellDefaultThemeItem);
+            //
+
             await new GetThemes(themes)._collectThemes();
             themes.forEach(themeName => {
                 const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
+                shellThemeNameItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellThemeNameItem);
+                });
                 shellThemeNameItem.connect('activate', () => {
                     let styleSheet = null;
                     const stylesheetPaths = THEME_DIRECTORIES
@@ -162,20 +176,29 @@ const GdmExtension = GObject.registerClass(
                     Main.setThemeStylesheet(styleSheet);
                     Main.loadTheme();
                 });
-                item.menu.addMenuItem(shellThemeNameItem);
+                section.addMenuItem(shellThemeNameItem);
             });
+            item.menu.box.add_child(scrollView);
         }
 
         async getIcons(item, themes = []) {
             const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
             const key = 'icon-theme';
 
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+            scrollView.add_actor(section.actor);
+
             await new GetIcons(themes)._collectIconThemes();
             themes.forEach(themeName => {
                 const iconThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
+                iconThemeNameItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, iconThemeNameItem);
+                });
                 iconThemeNameItem.connect('activate', () => settings.set_string(key, themeName));
-                item.menu.addMenuItem(iconThemeNameItem);
+                section.addMenuItem(iconThemeNameItem);
             });
+            item.menu.box.add_child(scrollView);
         }
     }
 );
