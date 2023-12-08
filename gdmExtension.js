@@ -27,6 +27,7 @@ import {
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
+const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
 
 let subMenuItem = null;
 
@@ -113,12 +114,11 @@ const GdmExtension = GObject.registerClass(
         }
 
         _createBackgroundPrefs(item) {
-            const SCHEMA_ID = 'org.gnome.shell.extensions.gdm-extension';
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Color/Gradient Start Color', '#123456', 'background-color', 'Must be a valid color'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background End Color', '#456789', 'background-gradient-end-color', 'Must be a valid color or same as above color'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [none, horizontal, vertical]'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path', 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
-            item.menu.box.add_child(CreateActor(SCHEMA_ID, 'Background Size', 'cover', 'background-size', 'Must be one of [center, cover, contain]'));
+            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', 'background-color', 'Must be a valid color'));
+            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', 'background-gradient-end-color', 'Must be a valid color or same as above color'));
+            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [none, horizontal, vertical]'));
+            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path', 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
+            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Size', 'cover', 'background-size', 'Must be one of [center, cover, contain]'));
         }
 
         _subMenuIcons() {
@@ -140,9 +140,9 @@ const GdmExtension = GObject.registerClass(
             this.getThemes(subMenuItem);
         }
 
-        async getThemes(item, array = []) {
-            await new GetThemes(array)._collectThemes();
-            array.forEach(themeName => {
+        async getThemes(item, themes = []) {
+            await new GetThemes(themes)._collectThemes();
+            themes.forEach(themeName => {
                 const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
                 shellThemeNameItem.connect('activate', () => {
                     let styleSheet = null;
@@ -166,12 +166,12 @@ const GdmExtension = GObject.registerClass(
             });
         }
 
-        async getIcons(item, array = []) {
-            const settings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
+        async getIcons(item, themes = []) {
+            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
             const key = 'icon-theme';
 
-            await new GetIcons(array)._collectIconThemes();
-            array.forEach(themeName => {
+            await new GetIcons(themes)._collectIconThemes();
+            themes.forEach(themeName => {
                 const iconThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
                 iconThemeNameItem.connect('activate', () => settings.set_string(key, themeName));
                 item.menu.addMenuItem(iconThemeNameItem);
