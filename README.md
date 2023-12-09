@@ -56,13 +56,13 @@ Once you set colors, background, logo, banner message etc, then to prevent tweak
 you can hide the extension settings icon from the topbar by clicking the Hide button at the bottom of popup menu.
 
 ## Showing the Prefernces Icon
-if you want to operate from tty you need `systemd-container` pkg installed.
-Some distros ship it by default. If you dont have this package, install it first.
+if from tty  
+you need `systemd-container` pkg installed. Some distros ship it by default. If you dont have this package, install it first. and then run below commands  
 1. `sudo machinectl shell gdm@ /bin/bash`
 2. `gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
 
 If from terminal
-1. `xhost:si:localuser:gdm`
+1. `xhost si:localuser:gdm`
 2. `sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
 
 ## Known Issue
@@ -100,18 +100,19 @@ are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run `s
 ![GDM-Extension-15](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/c4930830-a148-45ac-b5e3-a137aebef522)
 
 ## Troubleshoot
-While customizing colors, gradient, wallpaper, if you encounter problems.
-1. from tty
-if you want to operate from tty you need `systemd-container` pkg installed.
-Some distros ship it by default. If you dont have this package, install it first.
-   1.1 `sudo machinectl shell gdm@ /bin/bash`
-   1.2 `dconf reset -f /` # This will reset all the settings for `gdm` user only, not the regular user.
+While customizing colors, gradient, wallpaper, if you encounter problems.  
+from tty  
+if you want to operate from tty you need `systemd-container` pkg installed. Some distros ship it by default.  
+If you dont have this package, install it first. Then run below commands.  
+   1. `sudo machinectl shell gdm@ /bin/bash`
+   2. `dconf reset -f /` # This will reset all the settings for `gdm` user only, not the regular user.
    Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
-   1.3 enable the extension `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
-2. from terminal
-   2.1 `xhost si:localuser:gdm`
-   2.2 `sudo -u gdm dbus-launch dconf reset -f /`
-   2.3 `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+   3. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"` # enabling the extension
+      
+from terminal
+   1. `xhost si:localuser:gdm`
+   2. `sudo -u gdm dbus-launch dconf reset -f /`
+   3. `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Disabling the extension
 Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions. There is a way to disable it. but its bit different.
