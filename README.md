@@ -67,7 +67,8 @@ If from terminal
 
 ## Known Issue
 When you choose to Disable Restart Buttons, the buttons are hidden as expected, but when you toggle the switch, the buttons
-are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run `sudo systemctl restart gdm.service`.
+are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
+`sudo systemctl restart gdm.service`.
 
 ![GDM-Extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b3e815c8-803b-4dd7-8ade-74876e5d2669)
 
