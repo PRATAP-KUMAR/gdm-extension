@@ -7,6 +7,9 @@
    ### 2. and make some settings according to extensions default.
    ### 3. You can change some main preferences easily from the login screen itself.
 
+## Preview of the gdm-extension
+![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/8212d320-69e4-4351-9882-0055b2d248ac)
+
 ## Installation
 ```
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
