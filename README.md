@@ -2,7 +2,7 @@
 
 ## Customize colors, background, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
 
-## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a week. when you install this extension, it will reset all your settings for `gdm` user and make some settings according to extensions default. You can change some main preferences easily from the login screen itself.
+## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a week. When you install this extension, it will reset all your settings for `gdm` user and make some settings according to extensions default. You can change some main preferences easily from the login screen itself.
 
 ## Installation
 ```
@@ -22,14 +22,14 @@ Above `make install` command does below.
 >      2. compile the schemas.
 >      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 >
-> ## Enabling the Extension for `gdm` user.
+> ### Enabling the Extension for `gdm` user.
 > 1. `xhost si:localuser:gdm`
 > 2. `sudo -u gdm dbus-launch dconf reset -f /`
 > 3. `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
-2. There are four main sections Background, Shell Themes, Icon Themes, System Settings.
+2. There are four main sections. Background, Shell Themes, Icon Themes, System Settings.
 3. For Background, if you are satisfied with your shell theme, you dont need to change any thing. If you prefer to choose
    colors, gradient, wallpaper then you can enter the valid colors for example `#456789`, `blue` etc. You must be careful
    while entering these.
@@ -101,7 +101,7 @@ are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
 ![GDM-Extension-15](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/c4930830-a148-45ac-b5e3-a137aebef522)
 
 ## Troubleshoot
-While customizing colors, gradient, wallpaper, if you encounter problems.  
+While customizing colors, gradient, wallpaper, or choosing shell themes or icon themes, if you encounter problems.  
 from tty  
 if you want to operate from tty you need `systemd-container` pkg installed. Some distros ship it by default.  
 If you dont have this package, install it first. Then run below commands.  
