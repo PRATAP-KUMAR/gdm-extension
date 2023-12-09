@@ -2,7 +2,10 @@
 
 ## Customize colors, background, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
 
-## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a week. When you install this extension, it will reset all your settings for `gdm` user and make some settings according to extensions default. You can change some main preferences easily from the login screen itself.
+## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a week. When you install this extension,
+   ### 1. it will reset all the settings for `gdm` user.
+   ### 2. and make some settings according to extensions default.
+   ### 3. You can change some main preferences easily from the login screen itself.
 
 ## Installation
 ```
@@ -56,8 +59,10 @@ Once you set colors, background, logo, banner message etc, then to prevent tweak
 you can hide the extension settings icon from the topbar by clicking the Hide button at the bottom of popup menu.
 
 ## Showing the Prefernces Icon
-if from tty  
-you need `systemd-container` pkg installed. Some distros ship it by default. If you dont have this package, install it first. and then run below commands  
+if you want to operate from tty you need `systemd-container` package installed. Some distros ship it by default.
+If you dont have this package, install it first. Then run below commands.
+
+from tty 
 1. `sudo machinectl shell gdm@ /bin/bash`
 2. `gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
 
@@ -102,9 +107,11 @@ are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
 
 ## Troubleshoot
 While customizing colors, gradient, wallpaper, or choosing shell themes or icon themes, if you encounter problems.  
-from tty  
-if you want to operate from tty you need `systemd-container` pkg installed. Some distros ship it by default.  
-If you dont have this package, install it first. Then run below commands.  
+
+if you want to operate from tty you need `systemd-container` package installed. Some distros ship it by default.  
+If you dont have this package, install it first. Then run below commands.
+
+from tty
    1. `sudo machinectl shell gdm@ /bin/bash`
    2. `dconf reset -f /` # This will reset all the settings for `gdm` user only, not the regular user.
    Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
