@@ -13,6 +13,12 @@
 ## Upcoming Feature by Dec 25th
 Apply blur to background image instantly from the login screen itself.
 
+Blur - 0
+![gdm-extension-blur-0](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4d1b7734-f1f4-4d63-9188-daeb98e2c6f5)
+
+Blu4 - 45
+![gdm-extension-blur-45](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/61ff7133-9454-436f-abc2-c906c5fd7646)
+
 ## Installation
 ```
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
