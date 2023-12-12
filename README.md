@@ -137,7 +137,7 @@ from terminal
 ## Disabling the extension
 Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions. There is a way to disable it. but its bit different.
 the best way is to remove the extension. from the downloaded repository, run
-`make uninstall` which does below and to install again, run `make install`
+`sudo make uninstall` which does below and to install again, run `sudo make install`
 
 > ## Removing the extension
 > 1. `sudo rm -r /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm`
