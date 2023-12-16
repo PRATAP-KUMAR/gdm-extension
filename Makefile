@@ -33,12 +33,7 @@ else
 	@xhost si:localuser:gdm
 	@sudo -u gdm dbus-launch dconf reset -f /
 	@sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['$(UUID)']"
-	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-color "brown"
-	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-gradient-direction "vertical"
-	@sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension background-gradient-end-color "red"
 	@sudo -u gdm dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
-	@sudo -u gdm dbus-launch gsettings set org.gnome.login-screen banner-message-enable true
-	@sudo -u gdm dbus-launch gsettings set org.gnome.login-screen banner-message-text "Welcome to GDM, you are seeing this message because you have installed gdm-extension. You can change this text from the System Settings menu from top-left."
 	@echo "gdm-extension is installed, you can tweak few things of GDM login screen from login screen itself."
 	@exit
 endif

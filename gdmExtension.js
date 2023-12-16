@@ -39,8 +39,6 @@ const GdmExtension = GObject.registerClass(
             super._init(0.0, 'GDM Settings Icon Indicator');
             this._settings = settings;
 
-            this._warningMessage = false;
-
             this._box = new St.BoxLayout();
             this.add_child(this._box);
 
@@ -110,17 +108,26 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuBackground() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Background', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._createBackgroundPrefs(subMenuItem);
+            let nMonitors = Main.layoutManager.monitors.length;
+            nMonitors = nMonitors > 4 ? 4 : nMonitors;
+            let n = 1;
+            while (nMonitors > 0) {
+                subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
+                this.menu.addMenuItem(subMenuItem);
+                this._createBackgroundPrefs(subMenuItem, n);
+                n += 1;
+                nMonitors -= 1;
+            }
         }
 
-        _createBackgroundPrefs(item) {
-            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', 'background-color', 'Must be a valid color'));
-            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', 'background-gradient-end-color', 'Must be a valid color or same as above color'));
-            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Gradient Direction', 'none, horizontal, vertical', 'background-gradient-direction', 'Must be one of [none, horizontal, vertical]'));
-            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', 'background-image-path', 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
-            item.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Size', 'cover', 'background-size', 'Must be one of [center, cover, contain]'));
+        _createBackgroundPrefs(smItem, n) {
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Gradient Direction', 'none, horizontal, vertical', `background-gradient-direction-${n}`, 'Must be one of [none, horizontal, vertical]'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', `background-image-path-${n}`, 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Size', 'cover', `background-size-${n}`, 'Must be one of [center, cover, contain]'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
         }
 
         _subMenuIcons() {
