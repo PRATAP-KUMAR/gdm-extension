@@ -59,7 +59,6 @@ Above `make install` command does below.
       background-color: #000000;
     }
     ```
-
     Topbar/Panel color is black now
     ![GDM-Extension-16](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/fa87d7ef-bb1a-47f1-a903-0e3f62aa1dcf)
 
@@ -85,35 +84,11 @@ When you choose to Disable Restart Buttons, the buttons are hidden as expected, 
 are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
 `sudo systemctl restart gdm.service`.
 
-![GDM-Extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b3e815c8-803b-4dd7-8ade-74876e5d2669)
+![gdm-extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/3b4d6492-92d0-4324-a09a-a8abf5631bad)
 
-![GDM-Extension-2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/877c1606-68d6-42b5-850a-257371dc9486)
+![gdm-extension-2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/d1dec679-8795-44a2-a07d-af4f961e59a3)
 
-![GDM-Extension-3](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/ce22896b-8faa-42a2-a27a-d52c7c6366e3)
-
-![GDM-Extension-4](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/e03ec12e-59d3-4f2a-8d2c-6b246c1f2dbf)
-
-![GDM-Extension-5](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/09ed0202-6f23-4677-a84b-adb4c69ea349)
-
-![GDM-Extension-6](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/bf3ade6c-0538-4530-879c-9b2d3004f7eb)
-
-![GDM-Extension-7](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/01954bd5-992c-42b5-ad4e-210fe18f14dd)
-
-![GDM-Extension-8](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/aaef329d-13b8-4948-a2f2-2b0e1e3e7fa1)
-
-![GDM-Extension-9](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/0160c263-08e9-4cc9-988f-5375deeb025d)
-
-![GDM-Extension-10](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/8f21a9d8-88a2-4969-9b06-146817cc6dc2)
-
-![GDM-Extension-11](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/11154dff-627f-4b38-afc3-5a4a4e17885e)
-
-![GDM-Extension-12](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/9eddae24-6bee-4586-82d4-841b16e878f2)
-
-![GDM-Extension-13](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/be5914c4-a0cc-451a-b819-c143565b070d)
-
-![GDM-Extension-14](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/47ba48e8-c19f-4d2d-b3b1-48b574551931)
-
-![GDM-Extension-15](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/c4930830-a148-45ac-b5e3-a137aebef522)
+![gdm-extension-3](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/d0dd7451-dfda-4d2d-858b-f3a064c09c39)
 
 ## Troubleshoot
 While customizing colors, gradient, wallpaper, or choosing shell themes or icon themes, if you encounter problems.  
