@@ -35,9 +35,11 @@ Above `make install` command does below.
 >      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
 >
 > ### Enabling the Extension for `gdm` user.
-> 1. `xhost si:localuser:gdm`
-> 2. `sudo -u gdm dbus-launch dconf reset -f /`
-> 3. `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+> ```
+> xhost si:localuser:gdm
+> sudo -u gdm dbus-launch dconf reset -f /
+> sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"
+> ```
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
