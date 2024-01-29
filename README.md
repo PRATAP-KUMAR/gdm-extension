@@ -7,7 +7,7 @@
 ## Preview of the gdm-extension
 ![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/bba74942-5f22-48e5-bc22-8ef6d4e93a0d)
 
-## Blur Feature, you can apply blur (this is a new feature, recently introduced)
+## Blur Feature, you can apply blur.
 Apply blur to background image instantly from the login screen itself.
 
 Blur value 0
