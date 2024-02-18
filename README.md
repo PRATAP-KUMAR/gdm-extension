@@ -33,7 +33,6 @@ Above `make install` command does below.
 >     `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
 >      2. compile the schemas.
 >      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
->      3. exit
 >
 > ### Enabling the Extension for `gdm` user.
 > ```
@@ -76,6 +75,7 @@ If you dont have this package, install it first. Then run below commands.
 from tty 
 1. `sudo machinectl shell gdm@ /bin/bash`
 2. `gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
+3. `exit`
 
 If from terminal
 1. `xhost si:localuser:gdm`
