@@ -33,6 +33,7 @@ Above `make install` command does below.
 >     `sudo mkdir -p /usr/local/share/glib-2.0/schemas` then
 >      2. compile the schemas.
 >      `sudo glib-compile-schemas schemas --targetdir /usr/local/share/glib-2.0/schemas/`
+>      3. exit
 >
 > ### Enabling the Extension for `gdm` user.
 > ```
