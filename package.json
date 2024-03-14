@@ -5,6 +5,7 @@
     "main": "extension.js",
     "author": "PRATAP PANABAKA",
     "devDependencies": {
+        "eslint": "^8.57.0",
         "eslint-plugin-jsdoc": "^46.8.2"
     }
 }

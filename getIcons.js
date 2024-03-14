@@ -11,51 +11,25 @@
 // Below code is edited by PRATAP PANABAKA <pratap@fastmail.fm>
 
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import enumerateDir from './enumerateDir.js';
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 
-Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
-Gio._promisify(Gio.File.prototype, 'query_info_async');
-Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');
+// Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
+// Gio._promisify(Gio.File.prototype, 'query_info_async');
+// Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');
 
 const GetIcons = GObject.registerClass(
     class GetIcons extends GObject.Object {
-        _init(array) {
-            this._array = array;
-        }
-
-        async _collectIconThemes() {
+        async _collectIcons() {
+            const icons = [];
             for (const dirName of ICON_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
-                for (const name of await this._enumerateDir(dir))
-                    this._array.push(name); // push all Icon folders
+                for (const name of await enumerateDir(dir))
+                    icons.push(name); // push all Icon folder names
             }
-        }
-
-        async _enumerateDir(dir) {
-            const fileInfos = [];
-            let fileEnum;
-            try {
-                fileEnum = await dir.enumerate_children_async(
-                    Gio.FILE_ATTRIBUTE_STANDARD_NAME,
-                    Gio.FileQueryInfoFlags.NONE,
-                    GLib.PRIORITY_DEFAULT, null);
-            } catch (e) {
-                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
-                    logError(e);
-                return [];
-            }
-
-            let infos;
-            do {
-                infos = await fileEnum.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
-                const filterdInfos = infos.filter(info => info.get_file_type() === Gio.FileType.DIRECTORY);
-                fileInfos.push(...filterdInfos);
-            } while (infos.length > 0);
-
-            return fileInfos.map(inform => inform.get_name());
+            return icons;
         }
     }
 );

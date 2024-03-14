@@ -133,19 +133,19 @@ const GdmExtension = GObject.registerClass(
         _subMenuIcons() {
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', false);
             this.menu.addMenuItem(subMenuItem);
-            this.getIcons(subMenuItem);
+            this._getIcons(subMenuItem);
         }
 
         _subMenuThemes() {
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', false);
             this.menu.addMenuItem(subMenuItem);
-            this.getThemes(subMenuItem);
+            this._getThemes(subMenuItem);
         }
 
-        async getThemes(item, themes = []) {
+        async _getThemes(item) {
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
-            scrollView.add_actor(section.actor);
+            scrollView.add_child(section.actor);
 
             // Add Default Theme Item
             const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
@@ -159,8 +159,9 @@ const GdmExtension = GObject.registerClass(
             section.addMenuItem(shellDefaultThemeItem);
             //
 
-            await new GetThemes(themes)._collectThemes();
-            themes.forEach(themeName => {
+            const object = new GetThemes();
+            const shellThemes = await object._collectThemes();
+            shellThemes.forEach(themeName => {
                 const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
                 shellThemeNameItem.connect('key-focus-in', () => {
                     AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellThemeNameItem);
@@ -188,15 +189,16 @@ const GdmExtension = GObject.registerClass(
             item.menu.box.add_child(scrollView);
         }
 
-        async getIcons(item, themes = []) {
+        async _getIcons(item) {
             const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
-            scrollView.add_actor(section.actor);
+            scrollView.add_child(section.actor);
 
-            await new GetIcons(themes)._collectIconThemes();
+            const object = new GetIcons();
+            const themes = await object._collectIcons();
             themes.forEach(themeName => {
                 const iconThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
                 iconThemeNameItem.connect('key-focus-in', () => {

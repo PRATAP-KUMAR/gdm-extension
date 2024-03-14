@@ -193,7 +193,7 @@ export default class GdmExtensionExtension extends Extension {
             effect: new Shell.BlurEffect({
                 name: 'gdm-extension-blur',
                 brightness: blurBrightness,
-                sigma: blurSigma * themeContext.scale_factor,
+                radius: blurSigma * themeContext.scale_factor,
             }),
         });
 
