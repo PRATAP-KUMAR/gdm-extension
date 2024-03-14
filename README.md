@@ -1,6 +1,6 @@
-# GDM-Extension - gnome-shell extension for GNOME 45
+# GDM-Extension - gnome-shell extension for GNOME v45 and v46
 
-## Customize colours, background, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
+## Customize colours, background, blur, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
 
 ## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a month. When you install this extension, it will reset all the gsettings/dconf-settings for the `gdm` user.
 
@@ -122,4 +122,4 @@ the best way is to remove the extension. from the downloaded repository, run
 
 <hr/>
 
-<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
+<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a>
