@@ -5,6 +5,8 @@
 ## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf-settings for the `gdm` user.
 
 ## Preview of the gdm-extension
+![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4d847964-12b5-405d-b7ff-52960e3afd6e)
+
 ![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/bba74942-5f22-48e5-bc22-8ef6d4e93a0d)
 
 ## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
