@@ -2,10 +2,12 @@
 
 ## Customize colours, background, blur, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
 
-## Please note that this extension is experimental and is being continously monitored on Arch Linux and Ubuntu 23.10 for a month. When you install this extension, it will reset all the gsettings/dconf-settings for the `gdm` user.
+## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf-settings for the `gdm` user.
 
 ## Preview of the gdm-extension
 ![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/bba74942-5f22-48e5-bc22-8ef6d4e93a0d)
+
+## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
 
 ## Blur Feature, you can apply blur.
 Apply blur to background image instantly from the login screen itself.

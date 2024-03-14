@@ -1,1 +1,14 @@
-../../../usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm/metadata.json
+{
+  "uuid": "gdm-extension@pratap.fastmail.fm",
+  "name": "GDM Extension",
+  "description": "Tweak few things of GDM Login Screen",
+  "shell-version": [
+    "45",
+    "46"
+  ],
+  "url": "https://github.com/PRATAP-KUMAR/gdm-extension/",
+  "settings-schema": "org.gnome.shell.extensions.gdm-extension",
+  "session-modes": [
+    "gdm"
+  ]
+}
