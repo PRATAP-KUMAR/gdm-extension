@@ -15,6 +15,7 @@ import ConfirmDialog from './confirmDialog.js';
 import GetThemes from './getThemes.js';
 import GetIcons from './getIcons.js';
 import CreateActor from './createActor.js';
+import GNOME_SHELL_VERSION from './shellVersion.js';
 
 import {
     addTapToClick,
@@ -145,7 +146,11 @@ const GdmExtension = GObject.registerClass(
         async _getThemes(item) {
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
-            scrollView.add_child(section.actor);
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
 
             // Add Default Theme Item
             const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
@@ -195,7 +200,11 @@ const GdmExtension = GObject.registerClass(
 
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
-            scrollView.add_child(section.actor);
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
 
             const object = new GetIcons();
             const themes = await object._collectIcons();

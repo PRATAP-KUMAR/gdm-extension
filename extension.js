@@ -23,13 +23,12 @@ import Shell from 'gi://Shell';
 
 // Resources
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Local
 import GdmExtension from './gdmExtension.js';
+import GNOME_SHELL_VERSION from './shellVersion.js';
 
-const GNOME_SHELL_VERSION = Number(Config.PACKAGE_VERSION.split('.')[0]);
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
 let m1BgColorCid = null;
