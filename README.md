@@ -1,4 +1,4 @@
-# GDM-Extension - gnome-shell extension for GNOME v45 and v46
+# gdm-extension - gnome-shell extension for GNOME v45 and v46
 
 ## Customize colours, background, blur, shell themes, icon themes, logo, banner message for GDM Login Screen from the login screen itself.
 
