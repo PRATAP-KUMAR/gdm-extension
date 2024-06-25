@@ -45,11 +45,12 @@ const recursiveDeleteCallback = async (file, fileType, cancellable = null, array
         return;
     }
 
-    case Gio.FileType.DIRECTORY:
-        recursiveFileOperation(file, recursiveDeleteCallback, cancellable, array);
-        break;
+    case Gio.FileType.DIRECTORY: {
+        return recursiveFileOperation(file, recursiveDeleteCallback, cancellable, array);
+    }
 
     default:
+        return null;
     }
 };
 
