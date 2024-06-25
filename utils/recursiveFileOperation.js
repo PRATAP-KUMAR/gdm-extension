@@ -38,20 +38,20 @@ Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
 
 const recursiveDeleteCallback = async (file, fileType, cancellable = null, array) => {
     switch (fileType) {
-        case Gio.FileType.REGULAR:
-        case Gio.FileType.SYMBOLIC_LINK: {
-            const fileInfo = await file.query_info_async('standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT, null);
-            array.push(fileInfo.get_name());
-            return
-        }
-
-        case Gio.FileType.DIRECTORY:
-            return recursiveFileOperation(file, recursiveDeleteCallback, cancellable, array);
-
-        default:
-            return null;
+    case Gio.FileType.REGULAR:
+    case Gio.FileType.SYMBOLIC_LINK: {
+        const fileInfo = await file.query_info_async('standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT, null);
+        array.push(fileInfo.get_name());
+        return;
     }
-}
+
+    case Gio.FileType.DIRECTORY:
+        recursiveFileOperation(file, recursiveDeleteCallback, cancellable, array);
+        break;
+
+    default:
+    }
+};
 
 /**
  * Recursively operate on @file and any children it may have.
@@ -60,10 +60,10 @@ const recursiveDeleteCallback = async (file, fileType, cancellable = null, array
  * @param {Function} callback - a function that will be passed the file,
  *     file type (e.g. regular, directory), and @cancellable
  * @param {Gio.Cancellable} [cancellable] - optional cancellable
+ * @param {object} array - array to hold font file names
  * @returns {Promise} a Promise for the operation
  */
 async function recursiveFileOperation(file, callback, cancellable = null, array) {
-
     const fileInfo = await file.query_info_async('standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT,
         cancellable);
@@ -99,11 +99,11 @@ async function recursiveFileOperation(file, callback, cancellable = null, array)
             }
         }
 
-        await Promise.all(branches)
+        await Promise.all(branches);
     }
 
     // Return the Promise for the top-level file
     return callback(file, cancellable, array);
 }
 
-export { recursiveFileOperation, recursiveDeleteCallback };
+export {recursiveFileOperation, recursiveDeleteCallback};

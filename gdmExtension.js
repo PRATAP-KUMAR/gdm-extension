@@ -52,7 +52,7 @@ const GdmExtension = GObject.registerClass(
             }));
 
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
-            this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
+            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
@@ -172,8 +172,8 @@ const GdmExtension = GObject.registerClass(
                     AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
                 });
                 fontNameItem.connect('activate', () => {
-                    const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA })
-                    dconf.set_string('font-name', `${font} 11`)
+                    const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
+                    dconf.set_string('font-name', `${font} 11`);
                 });
                 section.addMenuItem(fontNameItem);
             });
@@ -232,7 +232,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
+            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
