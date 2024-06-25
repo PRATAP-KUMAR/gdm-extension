@@ -165,7 +165,6 @@ const GdmExtension = GObject.registerClass(
 
             const object = new GetFonts();
             const fonts = await object._collectFonts();
-            Main.notify('fonts', JSON.stringify(fonts));
             fonts.forEach(font => {
                 const fontNameItem = new PopupMenu.PopupMenuItem(font);
                 fontNameItem.connect('key-focus-in', () => {
