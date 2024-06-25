@@ -27,7 +27,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 // Local
 import GdmExtension from './gdmExtension.js';
-import GNOME_SHELL_VERSION from './shellVersion.js';
+import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 

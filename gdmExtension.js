@@ -12,10 +12,11 @@ import * as config from 'resource:///org/gnome/shell/misc/config.js';
 import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
 
 import ConfirmDialog from './confirmDialog.js';
-import GetThemes from './getThemes.js';
-import GetIcons from './getIcons.js';
 import CreateActor from './createActor.js';
-import GNOME_SHELL_VERSION from './shellVersion.js';
+import GetFonts from './utils/getFonts.js';
+import GetIcons from './utils/getIcons.js';
+import GetThemes from './utils/getThemes.js';
+import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
 import {
     addTapToClick,
@@ -23,6 +24,7 @@ import {
     addClockShowDate,
     addClockShowSeconds,
     addClockShowWeekday,
+    addShowBatteryPercentage,
     addDisableRestartButtons,
     addDisableUserList
 } from './systemSettings.js';
@@ -31,6 +33,7 @@ const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
+const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
 let subMenuItem = null;
 
@@ -49,7 +52,7 @@ const GdmExtension = GObject.registerClass(
             }));
 
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
-            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
+            this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
@@ -73,6 +76,7 @@ const GdmExtension = GObject.registerClass(
             this._subMenuBackground();
             this._subMenuThemes();
             this._subMenuIcons();
+            this._subMenuFonts();
             this._subMenuSystemSettings();
 
             const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
@@ -87,6 +91,7 @@ const GdmExtension = GObject.registerClass(
             subMenuItem.menu.box.add_child(addClockShowDate());
             subMenuItem.menu.box.add_child(addClockShowSeconds());
             subMenuItem.menu.box.add_child(addClockShowWeekday());
+            subMenuItem.menu.box.add_child(addShowBatteryPercentage());
             subMenuItem.menu.box.add_child(addDisableRestartButtons());
             subMenuItem.menu.box.add_child(addDisableUserList());
             subMenuItem.menu.box.add_child(addShowBannerMessage());
@@ -143,6 +148,38 @@ const GdmExtension = GObject.registerClass(
             this._getThemes(subMenuItem);
         }
 
+        _subMenuFonts() {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Select Font', false);
+            this.menu.addMenuItem(subMenuItem);
+            this._getFonts(subMenuItem);
+        }
+
+        async _getFonts(item) {
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
+
+            const object = new GetFonts();
+            const fonts = await object._collectFonts();
+            Main.notify('fonts', JSON.stringify(fonts));
+            fonts.forEach(font => {
+                const fontNameItem = new PopupMenu.PopupMenuItem(font);
+                fontNameItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
+                });
+                fontNameItem.connect('activate', () => {
+                    const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA })
+                    dconf.set_string('font-name', `${font} 11`)
+                });
+                section.addMenuItem(fontNameItem);
+            });
+            item.menu.box.add_child(scrollView);
+        }
+
         async _getThemes(item) {
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
@@ -167,11 +204,11 @@ const GdmExtension = GObject.registerClass(
             const object = new GetThemes();
             const shellThemes = await object._collectThemes();
             shellThemes.forEach(themeName => {
-                const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
-                shellThemeNameItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellThemeNameItem);
+                const fontNameItem = new PopupMenu.PopupMenuItem(themeName);
+                fontNameItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
                 });
-                shellThemeNameItem.connect('activate', () => {
+                fontNameItem.connect('activate', () => {
                     let styleSheet = null;
                     const stylesheetPaths = THEME_DIRECTORIES
                         .map(dir => `${dir}/${themeName}/gnome-shell/gnome-shell.css`);
@@ -189,13 +226,13 @@ const GdmExtension = GObject.registerClass(
                     Main.setThemeStylesheet(styleSheet);
                     Main.loadTheme();
                 });
-                section.addMenuItem(shellThemeNameItem);
+                section.addMenuItem(fontNameItem);
             });
             item.menu.box.add_child(scrollView);
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
+            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();

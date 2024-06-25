@@ -16,10 +16,6 @@ import enumerateDir from './enumerateDir.js';
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 
-// Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
-// Gio._promisify(Gio.File.prototype, 'query_info_async');
-// Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');
-
 const GetIcons = GObject.registerClass(
     class GetIcons extends GObject.Object {
         async _collectIcons() {
