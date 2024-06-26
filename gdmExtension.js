@@ -35,6 +35,8 @@ const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
+const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
+
 let subMenuItem = null;
 
 const GdmExtension = GObject.registerClass(
@@ -149,7 +151,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuFonts() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Select Font', false);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
             this.menu.addMenuItem(subMenuItem);
             this._getFonts(subMenuItem);
         }
@@ -163,20 +165,24 @@ const GdmExtension = GObject.registerClass(
             else
                 scrollView.add_child(section.actor);
 
+            item.menu.box.add_child(scrollView);
+
             const object = new GetFonts();
             const fonts = await object._collectFonts();
+
             fonts.forEach(font => {
                 const fontNameItem = new PopupMenu.PopupMenuItem(font);
+
+                section.addMenuItem(fontNameItem);
+
                 fontNameItem.connect('key-focus-in', () => {
                     AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
                 });
+
                 fontNameItem.connect('activate', () => {
-                    const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
                     dconf.set_string('font-name', `${font} 11`);
                 });
-                section.addMenuItem(fontNameItem);
             });
-            item.menu.box.add_child(scrollView);
         }
 
         async _getThemes(item) {

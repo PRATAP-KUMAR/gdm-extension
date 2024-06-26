@@ -54,11 +54,12 @@ Above `make install` command does below.
 4. Important is that, you have to **hit Enter** when you write something in the entry box.
 5. Shell themes are collected from `["/usr/local/share/themes/", "/usr/share/themes"]` directories.
 6. Icon themes are collected from `["/usr/local/share/icons/", "/usr/share/icons"]` directories.
-7. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
+7. Fonts are collected from `["/usr/local/share/fonts", "/usr/share/fonts]` directories.
+8. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
    disable user list, disable restart buttons, show banner message.
-8. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
-9. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
-10. Optionally you can overrride styling with extensions css file. for example
+9. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
+10. You can choose distribution logo or your prefered one by giving the path. This is generally in the `/usr/share/pixmaps/` path.
+11. Optionally you can overrride styling with extensions css file. for example
     ```
     #panel {
       background-color: #000000;
