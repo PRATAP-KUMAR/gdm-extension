@@ -16,6 +16,7 @@ import CreateActor from './createActor.js';
 import GetFonts from './utils/getFonts.js';
 import GetIcons from './utils/getIcons.js';
 import GetThemes from './utils/getThemes.js';
+import updateOrnament from './utils/updateOrnament.js';
 import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
 import {
@@ -29,13 +30,14 @@ import {
     addDisableUserList
 } from './systemSettings.js';
 
+
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
-const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
+const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
 
 let subMenuItem = null;
 
@@ -54,7 +56,7 @@ const GdmExtension = GObject.registerClass(
             }));
 
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
-            this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
+            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
@@ -165,50 +167,70 @@ const GdmExtension = GObject.registerClass(
             else
                 scrollView.add_child(section.actor);
 
-            // Add Default Theme Item
-            const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
-            shellDefaultThemeItem.connect('key-focus-in', () => {
-                AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellDefaultThemeItem);
-            });
-            shellDefaultThemeItem.connect('activate', () => {
-                Main.setThemeStylesheet(null);
-                Main.loadTheme();
-            });
-            section.addMenuItem(shellDefaultThemeItem);
-            //
+            item.menu.box.add_child(scrollView);
 
             const object = new GetThemes();
             const shellThemes = await object._collectThemes();
-            shellThemes.forEach(themeName => {
-                const fontNameItem = new PopupMenu.PopupMenuItem(themeName);
-                fontNameItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
-                });
-                fontNameItem.connect('activate', () => {
-                    let styleSheet = null;
-                    const stylesheetPaths = THEME_DIRECTORIES
-                        .map(dir => `${dir}/${themeName}/gnome-shell/gnome-shell.css`);
 
-                    styleSheet = stylesheetPaths.find(path => {
-                        let file = Gio.file_new_for_path(path);
-                        return file.query_exists(null);
+            const collectShellThemes = themes => {
+                let _items = [];
+                // Add Default Theme Item
+                const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
+                shellDefaultThemeItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellDefaultThemeItem);
+                });
+                shellDefaultThemeItem.connect('activate', () => {
+                    Main.setThemeStylesheet(null);
+                    Main.loadTheme();
+                    this._settings.set_string('shell-theme', '');
+                    updateOrnament(shellThemeItems, 'Default');
+                });
+                _items.push(shellDefaultThemeItem);
+                section.addMenuItem(shellDefaultThemeItem);
+                //
+
+                themes.forEach(themeName => {
+                    const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
+                    _items.push(shellThemeNameItem);
+
+                    section.addMenuItem(shellThemeNameItem);
+
+                    shellThemeNameItem.connect('key-focus-in', () => {
+                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellThemeNameItem);
                     });
 
-                    if (styleSheet)
-                        this._settings.set_string('shell-theme', themeName);
-                    else
-                        this._settings.set_string('shell-theme', '');
+                    shellThemeNameItem.connect('activate', () => {
+                        let styleSheet = null;
+                        const stylesheetPaths = THEME_DIRECTORIES
+                            .map(dir => `${dir}/${themeName}/gnome-shell/gnome-shell.css`);
 
-                    Main.setThemeStylesheet(styleSheet);
-                    Main.loadTheme();
+                        styleSheet = stylesheetPaths.find(path => {
+                            let file = Gio.file_new_for_path(path);
+                            return file.query_exists(null);
+                        });
+
+                        if (styleSheet) {
+                            this._settings.set_string('shell-theme', themeName);
+                            updateOrnament(shellThemeItems, themeName);
+                        } else {
+                            this._settings.set_string('shell-theme', '');
+                            updateOrnament(shellThemeItems, 'Default');
+                        }
+
+                        Main.setThemeStylesheet(styleSheet);
+                        Main.loadTheme();
+                    });
                 });
-                section.addMenuItem(fontNameItem);
-            });
-            item.menu.box.add_child(scrollView);
+                return _items;
+            };
+
+            const shellThemeItems = collectShellThemes(shellThemes);
+            const text = this._settings.get_string('shell-theme') || 'Default';
+            updateOrnament(shellThemeItems, text);
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
+            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
@@ -219,28 +241,34 @@ const GdmExtension = GObject.registerClass(
             else
                 scrollView.add_child(section.actor);
 
-            const object = new GetIcons();
-            const themes = await object._collectIcons();
-            themes.forEach(themeName => {
-                const iconThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
-                iconThemeNameItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, iconThemeNameItem);
-                });
-                iconThemeNameItem.connect('activate', () => settings.set_string(key, themeName));
-                section.addMenuItem(iconThemeNameItem);
-            });
             item.menu.box.add_child(scrollView);
-        }
 
-        _updateOrnament(items) {
-            let dconfValue = dconf.get_string('font-name');
-            let modified = dconfValue.split(' ').slice(0, -1).join(' ');
-            items.forEach(item => {
-                if(item.label.get_text() === modified)
-                    item.setOrnament(PopupMenu.Ornament.DOT)
-                else
-                    item.setOrnament(PopupMenu.Ornament.NO_DOT)
-            })
+            const object = new GetIcons();
+            const  ICONS = await object._collectIcons();
+
+            const collectIcons = icons => {
+                let _items = [];
+                icons.forEach(iconThemeName => {
+                    const iconThemeNameItem = new PopupMenu.PopupMenuItem(iconThemeName);
+                    _items.push(iconThemeNameItem);
+
+                    section.addMenuItem(iconThemeNameItem);
+
+                    iconThemeNameItem.connect('key-focus-in', () => {
+                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, iconThemeNameItem);
+                    });
+
+                    iconThemeNameItem.connect('activate', () => {
+                        settings.set_string(key, iconThemeName);
+                        updateOrnament(iconItems, iconThemeName);
+                    });
+                });
+                return _items;
+            };
+
+            const iconItems = collectIcons(ICONS);
+            const text = settings.get_string(key);
+            updateOrnament(iconItems, text);
         }
 
         async _getFonts(item) {
@@ -255,14 +283,14 @@ const GdmExtension = GObject.registerClass(
             item.menu.box.add_child(scrollView);
 
             const object = new GetFonts();
-            const fonts = await object._collectFonts();
+            const FONTS = await object._collectFonts();
 
-            const colletItems = async (fonts) => {
-                let _items = []
-                fonts.forEach(font => {
-                    const fontNameItem = new PopupMenu.PopupMenuItem(font);
-
+            const colletFonts = fonts => {
+                let _items = [];
+                fonts.forEach(fontName => {
+                    const fontNameItem = new PopupMenu.PopupMenuItem(fontName);
                     _items.push(fontNameItem);
+
                     section.addMenuItem(fontNameItem);
 
                     fontNameItem.connect('key-focus-in', () => {
@@ -270,15 +298,16 @@ const GdmExtension = GObject.registerClass(
                     });
 
                     fontNameItem.connect('activate', () => {
-                        dconf.set_string('font-name', `${font} 11`);
-                        this._updateOrnament(items)
+                        dconf.set_string('font-name', `${fontName} 11`);
+                        updateOrnament(fontItems, fontName);
                     });
-                })
+                });
                 return _items;
-            }
+            };
 
-            const items = await colletItems(fonts);
-            this._updateOrnament(items);
+            const fontItems = await colletFonts(FONTS);
+            const text = dconf.get_string('font-name').split(' ').slice(0, -1).join(' ');
+            updateOrnament(fontItems, text);
         }
     }
 );
