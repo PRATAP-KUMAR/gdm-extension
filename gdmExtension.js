@@ -35,7 +35,7 @@ const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 
-const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
+const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
 
 let subMenuItem = null;
 
@@ -54,7 +54,7 @@ const GdmExtension = GObject.registerClass(
             }));
 
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
-            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
+            this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
@@ -156,35 +156,6 @@ const GdmExtension = GObject.registerClass(
             this._getFonts(subMenuItem);
         }
 
-        async _getFonts(item) {
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetFonts();
-            const fonts = await object._collectFonts();
-
-            fonts.forEach(font => {
-                const fontNameItem = new PopupMenu.PopupMenuItem(font);
-
-                section.addMenuItem(fontNameItem);
-
-                fontNameItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
-                });
-
-                fontNameItem.connect('activate', () => {
-                    dconf.set_string('font-name', `${font} 11`);
-                });
-            });
-        }
-
         async _getThemes(item) {
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
@@ -237,7 +208,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
+            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
@@ -259,6 +230,55 @@ const GdmExtension = GObject.registerClass(
                 section.addMenuItem(iconThemeNameItem);
             });
             item.menu.box.add_child(scrollView);
+        }
+
+        _updateOrnament(items) {
+            let dconfValue = dconf.get_string('font-name');
+            let modified = dconfValue.split(' ').slice(0, -1).join(' ');
+            items.forEach(item => {
+                if(item.label.get_text() === modified)
+                    item.setOrnament(PopupMenu.Ornament.DOT)
+                else
+                    item.setOrnament(PopupMenu.Ornament.NO_DOT)
+            })
+        }
+
+        async _getFonts(item) {
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
+
+            item.menu.box.add_child(scrollView);
+
+            const object = new GetFonts();
+            const fonts = await object._collectFonts();
+
+            const colletItems = async (fonts) => {
+                let _items = []
+                fonts.forEach(font => {
+                    const fontNameItem = new PopupMenu.PopupMenuItem(font);
+
+                    _items.push(fontNameItem);
+                    section.addMenuItem(fontNameItem);
+
+                    fontNameItem.connect('key-focus-in', () => {
+                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
+                    });
+
+                    fontNameItem.connect('activate', () => {
+                        dconf.set_string('font-name', `${font} 11`);
+                        this._updateOrnament(items)
+                    });
+                })
+                return _items;
+            }
+
+            const items = await colletItems(fonts);
+            this._updateOrnament(items);
         }
     }
 );

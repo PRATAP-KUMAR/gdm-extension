@@ -12,7 +12,7 @@
 
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import {recursiveFileOperation, recursiveDeleteCallback} from './recursiveFileOperation.js';
+import {recursiveFileOperation, recursiveGetFileNamesCallback} from './recursiveFileOperation.js';
 
 const FONT_DIRECTORIES = ['/usr/local/share/fonts', '/usr/share/fonts'];
 
@@ -22,7 +22,7 @@ const GetFonts = GObject.registerClass(
             let fontNames = [];
             for (const dirName of FONT_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
-                await recursiveFileOperation(dir, recursiveDeleteCallback, null, fontNames);
+                await recursiveFileOperation(dir, recursiveGetFileNamesCallback, fontNames);
             }
             const modified = fontNames
                 .filter(name => name.trim().endsWith('.ttf') || name.trim().endsWith('.otf')) // get only font files

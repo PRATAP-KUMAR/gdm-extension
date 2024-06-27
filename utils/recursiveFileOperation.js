@@ -36,21 +36,25 @@ Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
  * @returns {Promise|null} a Promise for the operation, or %null to ignore
  */
 
-const recursiveDeleteCallback = async (file, fileType, cancellable = null, array) => {
+const recursiveGetFileNamesCallback = async (file, fileType, array) => {
     switch (fileType) {
-    case Gio.FileType.REGULAR:
-    case Gio.FileType.SYMBOLIC_LINK: {
-        const fileInfo = await file.query_info_async('standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT, null);
-        array.push(fileInfo.get_name());
-        return;
-    }
+        case Gio.FileType.REGULAR: {
+            const fileInfo = await file.query_info_async(
+                'standard::*',
+                Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
+                GLib.PRIORITY_DEFAULT,
+                null
+            );
+            array.push(fileInfo.get_name());
+            return;
+        }
 
-    case Gio.FileType.DIRECTORY: {
-        return recursiveFileOperation(file, recursiveDeleteCallback, cancellable, array);
-    }
+        case Gio.FileType.DIRECTORY: {
+            return recursiveFileOperation(file, recursiveGetFileNamesCallback, array);
+        }
 
-    default:
-        return null;
+        default:
+            return null;
     }
 };
 
@@ -64,25 +68,23 @@ const recursiveDeleteCallback = async (file, fileType, cancellable = null, array
  * @param {object} array - array to hold font file names
  * @returns {Promise} a Promise for the operation
  */
-async function recursiveFileOperation(file, callback, cancellable = null, array) {
+async function recursiveFileOperation(file, callback, array) {
     const fileInfo = await file.query_info_async('standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT,
-        cancellable);
+        null);
 
     const fileType = fileInfo.get_file_type();
 
     // If @file is a directory, collect all the operations as Promise branches
     // and resolve them in parallel
     if (fileType === Gio.FileType.DIRECTORY) {
-        const iter = await file.enumerate_children_async('standard::type',
-            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT,
-            cancellable);
+        const iter = await file.enumerate_children_async('standard::type', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT, null);
 
         const branches = [];
 
         while (true) {
             // eslint-disable-next-line
-            const fileInfos = await iter.next_files_async(100, GLib.PRIORITY_DEFAULT, cancellable);
+            const fileInfos = await iter.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
 
             if (fileInfos.length === 0)
                 break;
@@ -93,18 +95,18 @@ async function recursiveFileOperation(file, callback, cancellable = null, array)
 
                 // The callback decides whether to process a file, including
                 // whether to recurse into a directory
-                const branch = callback(child, childType, cancellable, array);
+                const branch = callback(child, childType, array);
 
                 if (branch)
                     branches.push(branch);
             }
         }
 
-        await Promise.all(branches);
+        await Promise.all(branches).catch(e => console.log(e));
     }
 
     // Return the Promise for the top-level file
-    return callback(file, cancellable, array);
+    return callback(file, array);
 }
 
-export {recursiveFileOperation, recursiveDeleteCallback};
+export { recursiveFileOperation, recursiveGetFileNamesCallback };
