@@ -22,8 +22,9 @@ const GetIcons = GObject.registerClass(
             const icons = [];
             for (const dirName of ICON_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
-                for (const name of await enumerateDir(dir))
-                    icons.push(name); // push all Icon folder names
+                if (dir.query_exists(null))
+                    for (const name of await enumerateDir(dir))
+                        icons.push(name); // push all Icon folder names
             }
             return icons;
         }

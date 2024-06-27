@@ -25,20 +25,21 @@ const GetThemes = GObject.registerClass(
             const themes = [];
             for (const dirName of THEME_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
-                for (const name of await enumerateDir(dir)) {
-                    const file = dir.resolve_relative_path(
-                        `${name}/gnome-shell/gnome-shell.css`);
-                    try {
-                        await file.query_info_async(
-                            Gio.FILE_ATTRIBUTE_STANDARD_NAME,
-                            Gio.FileQueryInfoFlags.NONE,
-                            GLib.PRIORITY_DEFAULT, null);
-                        themes.push(name); // push valid names only
-                    } catch (e) {
-                        if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
-                            logError(e);
+                if (dir.query_exists(null))
+                    for (const name of await enumerateDir(dir)) {
+                        const file = dir.resolve_relative_path(
+                            `${name}/gnome-shell/gnome-shell.css`);
+                        try {
+                            await file.query_info_async(
+                                Gio.FILE_ATTRIBUTE_STANDARD_NAME,
+                                Gio.FileQueryInfoFlags.NONE,
+                                GLib.PRIORITY_DEFAULT, null);
+                            themes.push(name); // push valid names only
+                        } catch (e) {
+                            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                                logError(e);
+                        }
                     }
-                }
             }
             return themes;
         }

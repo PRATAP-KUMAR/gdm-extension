@@ -1,6 +1,5 @@
 <schemalist>
-    <schema id="org.gnome.shell.extensions.gdm-extension"
-        path="/org/gnome/shell/extensions/gdm-extension/">
+    <schema id="org.gnome.shell.extensions.gdm-extension" path="/org/gnome/shell/extensions/gdm-extension/">
 
         <key name="background-color-1" type="s">
             <default>"#0e2f44"</default>

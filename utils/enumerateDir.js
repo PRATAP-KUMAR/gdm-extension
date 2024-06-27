@@ -33,6 +33,7 @@ const enumerateDir = async dir => {
     let infos;
     do {
         infos = await fileEnum.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
+
         const filterdInfos = infos.filter(info => info.get_file_type() === Gio.FileType.DIRECTORY);
         fileInfos.push(...filterdInfos);
     } while (infos.length > 0);

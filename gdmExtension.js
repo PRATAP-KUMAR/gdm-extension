@@ -30,14 +30,16 @@ import {
     addDisableUserList
 } from './systemSettings.js';
 
+import GetBackgrounds from './utils/getBackgrounds.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
+const BACKGROUND_INTERFACE_SCHEMA = 'org.gnome.desktop.background';
 
-const dconf = new Gio.Settings({schema_id: DESKTOP_INTERFACE_SCHEMA});
+const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
 
 let subMenuItem = null;
 
@@ -56,7 +58,7 @@ const GdmExtension = GObject.registerClass(
             }));
 
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
-            this._box.add_child(new St.Label({text: this._customLabel, y_align: Clutter.ActorAlign.CENTER}));
+            this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
             this._confirmDialog = {
                 subject: ('title', 'Hide GDM Settings Icon?'),
@@ -125,6 +127,7 @@ const GdmExtension = GObject.registerClass(
                 subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
                 this.menu.addMenuItem(subMenuItem);
                 this._createBackgroundPrefs(subMenuItem, n);
+                this._subMenuBackgrounds(n);
                 n += 1;
                 nMonitors -= 1;
             }
@@ -134,7 +137,6 @@ const GdmExtension = GObject.registerClass(
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Gradient Direction', 'none, horizontal, vertical', `background-gradient-direction-${n}`, 'Must be one of [none, horizontal, vertical]'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Image Path', '/usr/local/share/backgrounds/wp.jpg', `background-image-path-${n}`, 'Make sure gadient-direction is set to "none"\nif you provide valid image path here'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Size', 'cover', `background-size-${n}`, 'Must be one of [center, cover, contain]'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
@@ -156,6 +158,12 @@ const GdmExtension = GObject.registerClass(
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
             this.menu.addMenuItem(subMenuItem);
             this._getFonts(subMenuItem);
+        }
+
+        _subMenuBackgrounds(n) {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Background Image for Monitor ${n}`, false);
+            this.menu.addMenuItem(subMenuItem);
+            this._getBackgrounds(subMenuItem, n);
         }
 
         async _getThemes(item) {
@@ -230,7 +238,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({schema_id: INTERFACE_SCHEMA});
+            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
             const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
@@ -244,7 +252,7 @@ const GdmExtension = GObject.registerClass(
             item.menu.box.add_child(scrollView);
 
             const object = new GetIcons();
-            const  ICONS = await object._collectIcons();
+            const ICONS = await object._collectIcons();
 
             const collectIcons = icons => {
                 let _items = [];
@@ -305,9 +313,49 @@ const GdmExtension = GObject.registerClass(
                 return _items;
             };
 
-            const fontItems = await colletFonts(FONTS);
+            const fontItems = colletFonts(FONTS);
             const text = dconf.get_string('font-name').split(' ').slice(0, -1).join(' ');
             updateOrnament(fontItems, text);
+        }
+
+        async _getBackgrounds(item, n) {
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
+
+            item.menu.box.add_child(scrollView);
+
+            const object = new GetBackgrounds();
+            const BACKGROUNDS = await object._collectBackgrounds();
+            console.log(BACKGROUNDS.length);
+
+            const collectBackgrounds = backgrounds => {
+                let _items = [];
+                backgrounds.forEach(backgroundName => {
+                    const backgroundNameItem = new PopupMenu.PopupMenuItem(backgroundName);
+                    _items.push(backgroundNameItem);
+
+                    section.addMenuItem(backgroundNameItem);
+
+                    backgroundNameItem.connect('key-focus-in', () => {
+                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, backgroundNameItem);
+                    });
+
+                    backgroundNameItem.connect('activate', () => {
+                        this._settings.set_string(`background-image-path-${n}`, backgroundName);
+                        this._settings.set_string(`background-gradient-direction-${n}`, 'none')
+                    });
+                });
+                return _items;
+            };
+
+            const backgroundItems = collectBackgrounds(BACKGROUNDS);
+            // const text = '';
+            // updateOrnament(backgroundItems, text);
         }
     }
 );

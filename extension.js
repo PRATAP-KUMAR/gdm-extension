@@ -126,7 +126,7 @@ export default class GdmExtensionExtension extends Extension {
                 `background-gradient-direction-${n}`,
                 `background-gradient-end-color-${n}`,
                 `background-image-path-${n}`,
-                `background-image-size-${n}`,
+                `background-size-${n}`,
                 `blur-brightness-${n}`,
                 `blur-sigma-${n}`,
             ]
@@ -170,7 +170,7 @@ export default class GdmExtensionExtension extends Extension {
         let monitor = monitors[monitorIdx];
 
         let imagePath = this._settings.get_string(`background-image-path-${n}`);
-        let file = Gio.file_new_for_path(imagePath);
+        let file = Gio.file_new_for_uri(imagePath);
         let isPathExists = file.query_exists(null);
 
         let blurBrightness = this._settings.get_double(`blur-brightness-${n}`);
@@ -193,7 +193,7 @@ export default class GdmExtensionExtension extends Extension {
             background-gradient-direction: ${this._settings.get_string(`background-gradient-direction-${n}`)};
             background-gradient-start: ${this._settings.get_string(`background-color-${n}`)};
             background-gradient-end: ${this._settings.get_string(`background-gradient-end-color-${n}`)};
-            background-image: ${isPathExists ? `url(file://${imagePath})` : 'none'};
+            background-image: ${isPathExists ? `url(${imagePath})` : 'none'};
             background-size: ${this._settings.get_string(`background-size-${n}`)};
             `,
             x: monitor.x,
