@@ -31,6 +31,7 @@ import {
 } from './systemSettings.js';
 
 import GetBackgrounds from './utils/getBackgrounds.js';
+import createMenuItem from './utils/backgroundSettings/createMenuItem.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -136,10 +137,15 @@ const GdmExtension = GObject.registerClass(
         _createBackgroundPrefs(smItem, n) {
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Gradient Direction', 'none, horizontal, vertical', `background-gradient-direction-${n}`, 'Must be one of [none, horizontal, vertical]'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Size', 'cover', `background-size-${n}`, 'Must be one of [center, cover, contain]'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8'));
+            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8, 1'));
             smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
+
+            this._catchGradientDirection = [];
+            const gradientDirectionMenuItem = createMenuItem('Gradient Direction', ['none', 'horizontal', 'vertical'], this._settings, `background-gradient-direction-${n}`, this._catchGradientDirection)
+            smItem.menu.box.add_child(gradientDirectionMenuItem);
+
+            const backgroundSizeMenuItem = createMenuItem('Background size', ['center', 'cover', 'contain'], this._settings, `background-size-${n}`);
+            smItem.menu.box.add_child(backgroundSizeMenuItem);
         }
 
         _subMenuIcons() {
@@ -161,7 +167,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuBackgrounds(n) {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Background Image for Monitor ${n}`, false);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Background Image for Monitor - ${n}`, false);
             this.menu.addMenuItem(subMenuItem);
             this._getBackgrounds(subMenuItem, n);
         }
@@ -331,7 +337,6 @@ const GdmExtension = GObject.registerClass(
 
             const object = new GetBackgrounds();
             const BACKGROUNDS = await object._collectBackgrounds();
-            console.log(BACKGROUNDS.length);
 
             const collectBackgrounds = backgrounds => {
                 let _items = [];
@@ -348,14 +353,16 @@ const GdmExtension = GObject.registerClass(
                     backgroundNameItem.connect('activate', () => {
                         this._settings.set_string(`background-image-path-${n}`, backgroundName);
                         this._settings.set_string(`background-gradient-direction-${n}`, 'none')
+                        updateOrnament(backgroundItems, backgroundName);
+                        updateOrnament(this._catchGradientDirection, 'none');
                     });
                 });
                 return _items;
             };
 
             const backgroundItems = collectBackgrounds(BACKGROUNDS);
-            // const text = '';
-            // updateOrnament(backgroundItems, text);
+            const text = this._settings.get_string(`background-image-path-${n}`)
+            updateOrnament(backgroundItems, text);
         }
     }
 );
