@@ -23,25 +23,26 @@ const GetLogos = GObject.registerClass(
             for (const dirName of LOGO_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
                 if (dir.query_exists(null))
-                    for (const name of await enumerateFiles(dir))
-                        logos.push(`${dirName}/${name}`); // push all file names
+                    for (const name of await enumerateFiles(dir)) {
+                        if (
+                            name.endsWith('.jpg') ||
+                            name.endsWith('.jpeg') ||
+                            name.endsWith('.png') ||
+                            name.endsWith('.svg') ||
+                            name.endsWith('.gif') ||
+                            name.endsWith('.JPG') ||
+                            name.endsWith('.JPEG') ||
+                            name.endsWith('.PNG') ||
+                            name.endsWith('.SVG') ||
+                            name.endsWith('GIF')
+                        ) {
+                            logos.push(`${dirName}/${name}`); // push all file names
+                        }
+                    }
             }
-
-            const filtered = logos
-                .map(path => path.trim())
-                .filter(path =>
-                    path.endsWith('.jpg') ||
-                    path.endsWith('.jpeg') ||
-                    path.endsWith('.png') ||
-                    path.endsWith('.gif') ||
-                    path.endsWith('.JPG') ||
-                    path.endsWith('.JPEG') ||
-                    path.endsWith('.PNG') ||
-                    path.endsWith('GIF'));
-
-            return filtered;
+            return logos;
         }
     }
-);
+)
 
 export default GetLogos;

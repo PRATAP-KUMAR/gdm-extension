@@ -163,7 +163,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuLogos() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logos', false);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo - (bottom of login screen)', false);
             this.menu.addMenuItem(subMenuItem);
             this._getLogos(subMenuItem);
         }
