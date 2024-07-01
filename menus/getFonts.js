@@ -12,7 +12,7 @@
 
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import { recursiveFileOperation, recursiveGetFileNamesCallback } from './recursiveFileOperation.js';
+import { recursiveFileOperation, recursiveGetFileNamesCallback } from '../utils/recursiveFileOperation.js';
 
 const FONT_DIRECTORIES = ['/usr/local/share/fonts', '/usr/share/fonts'];
 

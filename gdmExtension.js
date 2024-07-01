@@ -11,12 +11,14 @@ import * as config from 'resource:///org/gnome/shell/misc/config.js';
 
 import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
 
-import ConfirmDialog from './confirmDialog.js';
-import CreateActor from './createActor.js';
-import GetFonts from './utils/getFonts.js';
-import GetIcons from './utils/getIcons.js';
-import GetThemes from './utils/getThemes.js';
+import createActor from './utils/createActor.js';
+
+import GetFonts from './menus/getFonts.js';
+import GetIcons from './menus/getIcons.js';
+import GetThemes from './menus/getThemes.js';
+
 import updateOrnament from './utils/updateOrnament.js';
+
 import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
 import {
@@ -30,17 +32,19 @@ import {
     addDisableUserList
 } from './systemSettings.js';
 
-import GetBackgrounds from './utils/getBackgrounds.js';
-import createMenuItem from './utils/backgroundSettings/createMenuItem.js';
+import GetBackgrounds from './menus/getBackgrounds.js';
+
+import ConfirmDialog from './utils/confirmDialog.js';
+import createMenuItem from './utils/createMenuItem.js';
+import GetLogos from './menus/getLogos.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
-const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
-const EXTENSION_SCHEMA = 'org.gnome.shell.extensions.gdm-extension';
-const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
-const BACKGROUND_INTERFACE_SCHEMA = 'org.gnome.desktop.background';
 
-const dconf = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
+const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
+
+const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
+const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
 
 let subMenuItem = null;
 
@@ -85,6 +89,7 @@ const GdmExtension = GObject.registerClass(
             this._subMenuIcons();
             this._subMenuFonts();
             this._subMenuSystemSettings();
+            this._subMenuLogos();
 
             const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
             hideExtensionMenuItem.connect('activate', () => this._openModal(this._settings));
@@ -95,17 +100,20 @@ const GdmExtension = GObject.registerClass(
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('System Settings', false);
 
             subMenuItem.menu.box.add_child(addTapToClick());
+
             subMenuItem.menu.box.add_child(addClockShowDate());
             subMenuItem.menu.box.add_child(addClockShowSeconds());
             subMenuItem.menu.box.add_child(addClockShowWeekday());
+
+            const clockFormat = createMenuItem('Clock - Format', ['12h', '24h'], dconfDesktopSettings, 'clock-format')
+            subMenuItem.menu.box.add_child(clockFormat);
+
             subMenuItem.menu.box.add_child(addShowBatteryPercentage());
             subMenuItem.menu.box.add_child(addDisableRestartButtons());
             subMenuItem.menu.box.add_child(addDisableUserList());
             subMenuItem.menu.box.add_child(addShowBannerMessage());
 
-            subMenuItem.menu.box.add_child(CreateActor(LOGIN_SCREEN_SCHEMA, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
-            subMenuItem.menu.box.add_child(CreateActor(LOGIN_SCREEN_SCHEMA, 'Logo', '/usr/share/pixmaps/logo.svg', 'logo'));
-            subMenuItem.menu.box.add_child(CreateActor(INTERFACE_SCHEMA, 'clock format', '12h or 24h', 'clock-format', 'must be one of [12h, 24h]'));
+            subMenuItem.menu.box.add_child(createActor(dconfLoginSettings, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
 
             this.menu.addMenuItem(subMenuItem);
         }
@@ -135,10 +143,10 @@ const GdmExtension = GObject.registerClass(
         }
 
         _createBackgroundPrefs(smItem, n) {
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8, 1'));
-            smItem.menu.box.add_child(CreateActor(EXTENSION_SCHEMA, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
+            smItem.menu.box.add_child(createActor(this._settings, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
+            smItem.menu.box.add_child(createActor(this._settings, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
+            smItem.menu.box.add_child(createActor(this._settings, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8, 1'));
+            smItem.menu.box.add_child(createActor(this._settings, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
 
             this._catchGradientDirection = [];
             const gradientDirectionMenuItem = createMenuItem('Gradient Direction', ['none', 'horizontal', 'vertical'], this._settings, `background-gradient-direction-${n}`, this._catchGradientDirection)
@@ -152,6 +160,65 @@ const GdmExtension = GObject.registerClass(
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', false);
             this.menu.addMenuItem(subMenuItem);
             this._getIcons(subMenuItem);
+        }
+
+        _subMenuLogos() {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logos', false);
+            this.menu.addMenuItem(subMenuItem);
+            this._getLogos(subMenuItem);
+        }
+
+        async _getLogos(item) {
+            const scrollView = new St.ScrollView();
+            const section = new PopupMenu.PopupMenuSection();
+
+            if (GNOME_SHELL_VERSION === 45)
+                scrollView.add_actor(section.actor);
+            else
+                scrollView.add_child(section.actor);
+
+            item.menu.box.add_child(scrollView);
+
+            const object = new GetLogos();
+            const LOGOS = await object._collectLogos();
+
+            const collectLogos = logos => {
+                let _items = [];
+
+                // Add None Item to not to show the logo
+                const logoNoneItem = new PopupMenu.PopupMenuItem('None');
+                logoNoneItem.connect('key-focus-in', () => {
+                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, logoNoneItem);
+                });
+                logoNoneItem.connect('activate', () => {
+                    dconfLoginSettings.set_string('logo', '');
+                    updateOrnament(logoItems, 'None');
+                });
+                _items.push(logoNoneItem);
+                section.addMenuItem(logoNoneItem);
+                //
+
+                logos.forEach(logoName => {
+                    const logoNameItem = new PopupMenu.PopupMenuItem(logoName);
+                    _items.push(logoNameItem);
+
+                    section.addMenuItem(logoNameItem);
+
+                    logoNameItem.connect('key-focus-in', () => {
+                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, logoNameItem);
+                    });
+
+                    logoNameItem.connect('activate', () => {
+                        dconfLoginSettings.set_string('logo', logoName);
+                        updateOrnament(logoItems, logoName);
+                    });
+                });
+                return _items;
+            };
+
+            const logoItems = collectLogos(LOGOS);
+            const text = dconfLoginSettings.get_string('logo') || 'None'
+            updateOrnament(logoItems, text);
         }
 
         _subMenuThemes() {
@@ -188,6 +255,7 @@ const GdmExtension = GObject.registerClass(
 
             const collectShellThemes = themes => {
                 let _items = [];
+
                 // Add Default Theme Item
                 const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
                 shellDefaultThemeItem.connect('key-focus-in', () => {
@@ -244,8 +312,6 @@ const GdmExtension = GObject.registerClass(
         }
 
         async _getIcons(item) {
-            const settings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
-            const key = 'icon-theme';
 
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
@@ -273,7 +339,7 @@ const GdmExtension = GObject.registerClass(
                     });
 
                     iconThemeNameItem.connect('activate', () => {
-                        settings.set_string(key, iconThemeName);
+                        dconfDesktopSettings.set_string('icon-theme', iconThemeName);
                         updateOrnament(iconItems, iconThemeName);
                     });
                 });
@@ -281,7 +347,7 @@ const GdmExtension = GObject.registerClass(
             };
 
             const iconItems = collectIcons(ICONS);
-            const text = settings.get_string(key);
+            const text = dconfDesktopSettings.get_string('icon-theme');
             updateOrnament(iconItems, text);
         }
 
@@ -312,7 +378,7 @@ const GdmExtension = GObject.registerClass(
                     });
 
                     fontNameItem.connect('activate', () => {
-                        dconf.set_string('font-name', `${fontName} 11`);
+                        dconfDesktopSettings.set_string('font-name', `${fontName} 11`);
                         updateOrnament(fontItems, fontName);
                     });
                 });
@@ -320,7 +386,7 @@ const GdmExtension = GObject.registerClass(
             };
 
             const fontItems = colletFonts(FONTS);
-            const text = dconf.get_string('font-name').split(' ').slice(0, -1).join(' ');
+            const text = dconfDesktopSettings.get_string('font-name').split(' ').slice(0, -1).join(' ');
             updateOrnament(fontItems, text);
         }
 

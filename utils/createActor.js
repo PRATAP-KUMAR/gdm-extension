@@ -7,8 +7,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 let getInput;
 let convert;
 
-const CreateActor = (SCHEMA_ID, label, hintText, key, permenentHint = null) => {
-    const settings = new Gio.Settings({schema_id: SCHEMA_ID});
+const createActor = (settings, label, hintText, key, permenentHint = null) => {
     const menuItem = new PopupMenu.PopupBaseMenuItem();
 
     if (key.startsWith('blur-brightness')) {
@@ -47,4 +46,4 @@ const CreateActor = (SCHEMA_ID, label, hintText, key, permenentHint = null) => {
     return menuItem;
 };
 
-export default CreateActor;
+export default createActor;

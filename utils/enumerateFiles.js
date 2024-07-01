@@ -16,7 +16,7 @@ import GLib from 'gi://GLib';
 Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
 Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');
 
-const enumerateDir = async dir => {
+const enumerateFiles = async dir => {
     const fileInfos = [];
     let fileEnum;
     try {
@@ -33,11 +33,11 @@ const enumerateDir = async dir => {
     let infos;
     do {
         infos = await fileEnum.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
-        const filterdInfos = infos.filter(info => info.get_file_type() === Gio.FileType.DIRECTORY);
+        const filterdInfos = infos.filter(info => info.get_file_type() === Gio.FileType.REGULAR);
         fileInfos.push(...filterdInfos);
     } while (infos.length > 0);
 
     return fileInfos.map(info => info.get_name());
 };
 
-export default enumerateDir;
+export default enumerateFiles;

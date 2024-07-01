@@ -12,7 +12,7 @@
 
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import enumerateDir from './enumerateDir.js';
+import enumerateDir from '../utils/enumerateDir.js';
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 

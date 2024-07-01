@@ -12,7 +12,7 @@
 
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
-import { recursiveFileOperation, recursiveGetFileNamesCallback } from './recursiveFileOperation.js';
+import { recursiveFileOperation, recursiveGetFileNamesCallback } from '../utils/recursiveFileOperation.js';
 
 const BACKGROUND_DIRECTORIES = ['/usr/local/share/backgrounds', '/usr/share/backgrounds'];
 

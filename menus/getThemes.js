@@ -13,7 +13,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import enumerateDir from './enumerateDir.js';
+import enumerateDir from '../utils/enumerateDir.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
