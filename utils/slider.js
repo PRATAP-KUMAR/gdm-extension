@@ -11,7 +11,7 @@ const Slider = GObject.registerClass(
             this._settings = settings;
             this._dconfKey = key;
 
-            this._holdValueForIntDoubleConversion = null;
+            this._holdValueForIntDoubleConversion = this._settings.get_int(this._dconfKey);
 
             // Watch for changes and set an accessible name for the slider
             this._sliderChangedId = this.slider.connect('notify::value',
