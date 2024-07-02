@@ -155,7 +155,7 @@ const GdmExtension = GObject.registerClass(
 
             // Blur Brightness
             menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0', y_align: Clutter.ActorAlign.CENTER }));
+            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
             smItem.menu.box.add_child(menuItem);
 
             smItem.menu.box.add_child(new Slider(this._settings, `blur-brightness-${n}`));
@@ -181,7 +181,7 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuLogos() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo (at bottom of login screen)', false);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo (small icon at bottom of login screen)', false);
             this.menu.addMenuItem(subMenuItem);
             this._getLogos(subMenuItem);
         }
