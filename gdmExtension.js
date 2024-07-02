@@ -91,6 +91,7 @@ const GdmExtension = GObject.registerClass(
             this._subMenuIcons();
             this._subMenuFonts();
             this._subMenuSystemSettings();
+            this._subMenuLogos();
 
             const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
             hideExtensionMenuItem.connect('activate', () => this._openModal(this._settings));
@@ -115,12 +116,6 @@ const GdmExtension = GObject.registerClass(
             subMenuItem.menu.box.add_child(addShowBannerMessage());
 
             subMenuItem.menu.box.add_child(createActor(dconfLoginSettings, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
-
-            menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Logo (at bottom of login screen)', y_align: Clutter.ActorAlign.CENTER }));
-            subMenuItem.menu.box.add_child(menuItem);
-
-            this._subMenuLogos(subMenuItem);
 
             this.menu.addMenuItem(subMenuItem);
         }
@@ -160,7 +155,7 @@ const GdmExtension = GObject.registerClass(
 
             // Blur Brightness
             menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1', y_align: Clutter.ActorAlign.CENTER }));
+            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0', y_align: Clutter.ActorAlign.CENTER }));
             smItem.menu.box.add_child(menuItem);
 
             smItem.menu.box.add_child(new Slider(this._settings, `blur-brightness-${n}`));
@@ -185,7 +180,8 @@ const GdmExtension = GObject.registerClass(
             this._getIcons(subMenuItem);
         }
 
-        _subMenuLogos(subMenuItem) {
+        _subMenuLogos() {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo (at bottom of login screen)', false);
             this.menu.addMenuItem(subMenuItem);
             this._getLogos(subMenuItem);
         }
