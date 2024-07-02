@@ -12,6 +12,7 @@ import * as config from 'resource:///org/gnome/shell/misc/config.js';
 import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
 
 import createActor from './utils/createActor.js';
+import Slider from './utils/slider.js';
 
 import GetFonts from './menus/getFonts.js';
 import GetIcons from './menus/getIcons.js';
@@ -143,10 +144,10 @@ const GdmExtension = GObject.registerClass(
         }
 
         _createBackgroundPrefs(smItem, n) {
+            let menuItem = null;
+
             smItem.menu.box.add_child(createActor(this._settings, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
             smItem.menu.box.add_child(createActor(this._settings, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
-            smItem.menu.box.add_child(createActor(this._settings, 'Blur Brightness', '0.65', `blur-brightness-${n}`, 'must be between 0 to 1, ex: 0.25, 0.4, 0.65, 0.8, 1'));
-            smItem.menu.box.add_child(createActor(this._settings, 'Blur Sigma', '45', `blur-sigma-${n}`, 'must be >= 0'));
 
             this._catchGradientDirection = [];
             const gradientDirectionMenuItem = createMenuItem('Gradient Direction', ['none', 'horizontal', 'vertical'], this._settings, `background-gradient-direction-${n}`, this._catchGradientDirection)
@@ -154,6 +155,23 @@ const GdmExtension = GObject.registerClass(
 
             const backgroundSizeMenuItem = createMenuItem('Background size', ['center', 'cover', 'contain'], this._settings, `background-size-${n}`);
             smItem.menu.box.add_child(backgroundSizeMenuItem);
+
+            // Blur Brightness
+            menuItem = new PopupMenu.PopupBaseMenuItem();
+            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1', y_align: Clutter.ActorAlign.CENTER }));
+            smItem.menu.box.add_child(menuItem);
+
+            smItem.menu.box.add_child(new Slider(this._settings, `blur-brightness-${n}`));
+            //
+
+            // Blur Sigma
+            menuItem = new PopupMenu.PopupBaseMenuItem();
+            menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
+            smItem.menu.box.add_child(menuItem);
+
+            smItem.menu.box.add_child(new Slider(this._settings, `blur-sigma-${n}`));
+            //
+
         }
 
         _subMenuIcons() {

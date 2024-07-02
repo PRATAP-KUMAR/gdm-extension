@@ -122,28 +122,28 @@
         </key>
 
         <key name="blur-sigma-1" type="i">
-            <range min="0" />
+            <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="blur-sigma-2" type="i">
-            <range min="0" />
+            <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="blur-sigma-3" type="i">
-            <range min="0" />
+            <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="blur-sigma-4" type="i">
-            <range min="0" />
+            <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
@@ -188,5 +188,6 @@
             <summary>Summary</summary>
             <description>Description</description>
         </key>
+
     </schema>
 </schemalist>
