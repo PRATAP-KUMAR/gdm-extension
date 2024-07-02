@@ -48,6 +48,7 @@ const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
 const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
 
 let subMenuItem = null;
+let menuItem = null;
 
 const GdmExtension = GObject.registerClass(
     class GdmExtension extends PanelMenu.Button {
@@ -90,7 +91,6 @@ const GdmExtension = GObject.registerClass(
             this._subMenuIcons();
             this._subMenuFonts();
             this._subMenuSystemSettings();
-            this._subMenuLogos();
 
             const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
             hideExtensionMenuItem.connect('activate', () => this._openModal(this._settings));
@@ -116,6 +116,12 @@ const GdmExtension = GObject.registerClass(
 
             subMenuItem.menu.box.add_child(createActor(dconfLoginSettings, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
 
+            menuItem = new PopupMenu.PopupBaseMenuItem();
+            menuItem.add_child(new St.Label({ text: 'Logo (at bottom of login screen)', y_align: Clutter.ActorAlign.CENTER }));
+            subMenuItem.menu.box.add_child(menuItem);
+
+            this._subMenuLogos(subMenuItem);
+
             this.menu.addMenuItem(subMenuItem);
         }
 
@@ -134,9 +140,6 @@ const GdmExtension = GObject.registerClass(
             nMonitors = nMonitors > 4 ? 4 : nMonitors;
             let n = 1;
             while (nMonitors > 0) {
-                subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
-                this.menu.addMenuItem(subMenuItem);
-                this._createBackgroundPrefs(subMenuItem, n);
                 this._subMenuBackgrounds(n);
                 n += 1;
                 nMonitors -= 1;
@@ -144,7 +147,6 @@ const GdmExtension = GObject.registerClass(
         }
 
         _createBackgroundPrefs(smItem, n) {
-            let menuItem = null;
 
             smItem.menu.box.add_child(createActor(this._settings, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
             smItem.menu.box.add_child(createActor(this._settings, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
@@ -172,6 +174,9 @@ const GdmExtension = GObject.registerClass(
             smItem.menu.box.add_child(new Slider(this._settings, `blur-sigma-${n}`));
             //
 
+            menuItem = new PopupMenu.PopupBaseMenuItem();
+            menuItem.add_child(new St.Label({ text: 'Backgrounds', y_align: Clutter.ActorAlign.CENTER }));
+            smItem.menu.box.add_child(menuItem);
         }
 
         _subMenuIcons() {
@@ -180,8 +185,7 @@ const GdmExtension = GObject.registerClass(
             this._getIcons(subMenuItem);
         }
 
-        _subMenuLogos() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo - (bottom of login screen)', false);
+        _subMenuLogos(subMenuItem) {
             this.menu.addMenuItem(subMenuItem);
             this._getLogos(subMenuItem);
         }
@@ -252,8 +256,9 @@ const GdmExtension = GObject.registerClass(
         }
 
         _subMenuBackgrounds(n) {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Background Image for Monitor - ${n}`, false);
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
             this.menu.addMenuItem(subMenuItem);
+            this._createBackgroundPrefs(subMenuItem, n);
             this._getBackgrounds(subMenuItem, n);
         }
 
