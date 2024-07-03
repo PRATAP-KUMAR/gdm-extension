@@ -31,6 +31,11 @@ export const addClockShowWeekday = () => {
     return widget;
 };
 
+export const addShowBatteryPercentage = () => {
+    widget = ATIndicator.prototype._buildItem('Show Battery Percentage', INTERFACE_SCHEMA, 'show-battery-percentage');
+    return widget;
+};
+
 export const addDisableRestartButtons = () => {
     widget = ATIndicator.prototype._buildItem('Disable Restart Buttons', LOGIN_SCREEN_SCHEMA, 'disable-restart-buttons');
     return widget;
