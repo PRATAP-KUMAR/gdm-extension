@@ -5,7 +5,7 @@
 
 ## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf for the  **`gdm`**  user.
 
-## **Warning**: Though this extension is being tested since Dec 2023, In very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line.
+## **Warning**: Though this extension is being tested since Dec 2023, In very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line. This gdm-extension installs at /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm
 
 ## Preview of the gdm-extension
 
