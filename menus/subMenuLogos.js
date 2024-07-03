@@ -6,13 +6,13 @@ import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-import GetLogos from './getLogos.js';
+import GetLogos from '../getNamesAsync/getLogos.js';
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
 
 const subMenuLogos = (gdmExtension) => {
-    gdmExtension._subMenuMenuItemLogos = new PopupMenu.PopupSubMenuMenuItem('Logos', false);
+    gdmExtension._subMenuMenuItemLogos = new PopupMenu.PopupSubMenuMenuItem('Logo (small icon at bottom of login screen)', false);
     setLogos(gdmExtension._subMenuMenuItemLogos)
 
     return gdmExtension._subMenuMenuItemLogos;

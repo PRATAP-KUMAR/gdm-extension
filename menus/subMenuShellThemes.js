@@ -10,7 +10,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-import GetShellThemes from './getShellThemes.js';
+import GetShellThemes from '../getNamesAsync/getShellThemes.js';
 
 const subMenuShellThemes = (gdmExtension) => {
     gdmExtension._subMenuMenuItemShellThemes = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', false);

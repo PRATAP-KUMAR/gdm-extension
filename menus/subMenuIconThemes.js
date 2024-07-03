@@ -7,7 +7,7 @@ import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-import GetIconThemes from './getIconThemes.js';
+import GetIconThemes from '../getNamesAsync/getIconThemes.js';
 
 const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
 

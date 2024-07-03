@@ -6,7 +6,7 @@ import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-import GetFonts from './getFonts.js';
+import GetFonts from '../getNamesAsync/getFonts.js';
 
 const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
 const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });

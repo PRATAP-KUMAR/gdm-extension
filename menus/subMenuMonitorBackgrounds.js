@@ -10,7 +10,7 @@ import updateOrnament from '../utils/updateOrnament.js';
 import Slider from '../utils/slider.js';
 import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
 
-import GetBackgrounds from './getBackgrounds.js';
+import GetBackgrounds from '../getNamesAsync/getBackgrounds.js';
 
 const subMenuMonitorBackgrounds = (gdmExtension, n) => {
     gdmExtension._subMenuMenuItemMonitorBackground = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
@@ -86,7 +86,7 @@ const setBackgrounds = async (gdmExtension, n) => {
                 gdmExtension._settings.set_string(`background-image-path-${n}`, backgroundName);
                 gdmExtension._settings.set_string(`background-gradient-direction-${n}`, 'none')
                 updateOrnament(backgroundItems, backgroundName);
-                // updateOrnament(this._catchGradientDirection, 'none');
+                updateOrnament(gdmExtension._catchGradientDirection, 'none');
             });
         });
         return _items;
