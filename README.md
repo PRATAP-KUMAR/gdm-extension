@@ -1,27 +1,18 @@
 # gdm-extension - gnome-shell extension for GNOME v45 and v46
 
-## 1. Customize background colors, image, blur for each monitor upto 4 monitors max for GDM Login Screen from the login screen itself.
-## 2. Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
+## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
+## Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
 
-## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf-settings for the `gdm` user.
+## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf for the  **`gdm`**  user.
 
-## Warning: Though this extension is bening tested since Dec 2023, In very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line.
+## **Warning**: Though this extension is being tested since Dec 2023, In very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line.
 
 ## Preview of the gdm-extension
-![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4d847964-12b5-405d-b7ff-52960e3afd6e)
-
-![gdm-extension](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/bba74942-5f22-48e5-bc22-8ef6d4e93a0d)
 
 ## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
 
 ## Blur Feature, you can apply blur.
 Apply blur to background image instantly from the login screen itself.
-
-Blur value 0
-![gdm-extension-blur-0](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4d1b7734-f1f4-4d63-9188-daeb98e2c6f5)
-
-Blur value 45
-![gdm-extension-blur-45](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/61ff7133-9454-436f-abc2-c906c5fd7646)
 
 ## Installation
 ```
@@ -77,12 +68,6 @@ When you choose to Disable Restart Buttons, the buttons are hidden as expected, 
 are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
 `sudo systemctl restart gdm.service`.
 
-![gdm-extension-1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/3b4d6492-92d0-4324-a09a-a8abf5631bad)
-
-![gdm-extension-2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/d1dec679-8795-44a2-a07d-af4f961e59a3)
-
-![gdm-extension-3](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/d0dd7451-dfda-4d2d-858b-f3a064c09c39)
-
 ## Troubleshoot
 While customizing colors, gradient, wallpaper, or choosing shell themes or icon themes, if you encounter problems.  
 
@@ -107,4 +92,4 @@ the best way is to remove the extension. from the downloaded repository, run
 
 <hr/>
 
-<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a>
+<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
