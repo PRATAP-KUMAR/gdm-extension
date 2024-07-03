@@ -9,6 +9,15 @@
 
 ## Preview of the gdm-extension
 
+![1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/5575a0ea-677b-41e1-aea6-0215209dd1eb)
+![2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/f6d13533-9407-4f18-b2db-449702e78c59)
+![3](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4e1e9f75-6174-479b-94bd-7437380af435)
+![4](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/3b6a6b85-fd95-4edf-a8f7-869ce21b34d3)
+![5](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b08bb4da-a8ea-4414-b3ba-84c3244b4195)
+![6](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/9a2094c5-4190-4cc8-a52b-d02098222dc5)
+![7](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/5e49761e-2b65-4794-8642-ab9bf1afaec2)
+![8](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/f7fdd6bb-3b98-4dfc-a2fd-dc4b71bfaa43)
+
 ## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
 
 ## Blur Feature, you can apply blur.
