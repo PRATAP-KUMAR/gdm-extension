@@ -1,37 +1,20 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
-import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as config from 'resource:///org/gnome/shell/misc/config.js';
 
-import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
-
-import GetFonts from './menus/getFonts.js';
-
-import updateOrnament from './utils/updateOrnament.js';
-
-import GNOME_SHELL_VERSION from './utils/shellVersion.js';
-
 import subMenuSystemSettings from './menus/subMenuSystemSettings.js';
-import subMenuMonitorBackground from './menus/subMenuMonitorBackgrounds.js';
+import subMenuMonitorBackgrounds from './menus/subMenuMonitorBackgrounds.js';
 
 import hideExtensionButton from './buttons/hideExtensionButton.js';
 import subMenuIconThemes from './menus/subMenuIconThemes.js';
 import subMenuShellThemes from './menus/subMenuShellThemes.js';
 import subMenuLogos from './menus/subMenuLogos.js';
-
-const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
-
-const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
-const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
-
-let subMenuItem = null;
+import subMenuFonts from './menus/subMenuFonts.js';
 
 const GdmExtension = GObject.registerClass(
     class GdmExtension extends PanelMenu.Button {
@@ -51,14 +34,24 @@ const GdmExtension = GObject.registerClass(
             this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
             this._subMenuMonitorBackgrounds();  // Monitor background settings
+
+            const generateIconThemes = subMenuIconThemes(this);
+            this.menu.addMenuItem(generateIconThemes); // Icon Themes
             
+            const generateShellThemes = subMenuShellThemes(this);
+            this.menu.addMenuItem(generateShellThemes); // Shell Themes
+
+            const generateFonts = subMenuFonts(this);
+            this.menu.addMenuItem(generateFonts); // Font Themes
             
-            this.menu.addMenuItem(subMenuIconThemes(this)); // Icon Themes
-            this.menu.addMenuItem(subMenuLogos(this)); // Icon Themes
-            this.menu.addMenuItem(subMenuShellThemes(this)); // Shell Themes
-            this.menu.addMenuItem(subMenuSystemSettings(this)); // System Settings Menu
-            this.menu.addMenuItem(hideExtensionButton(this)); // Extension Hide Button
-            this._subMenuFonts();
+            const generateSystemSettings = subMenuSystemSettings(this);
+            this.menu.addMenuItem(generateSystemSettings); // System Settings Menu
+
+            const generateLogos = subMenuLogos(this);
+            this.menu.addMenuItem(generateLogos); // Logos
+
+            const generateHideExtensionButton = hideExtensionButton(this);
+            this.menu.addMenuItem(generateHideExtensionButton); // Extension Hide Button
         }
 
         _subMenuMonitorBackgrounds() {
@@ -66,55 +59,11 @@ const GdmExtension = GObject.registerClass(
             nMonitors = nMonitors > 4 ? 4 : nMonitors;
             let n = 1;
             while (nMonitors > 0) {
-                this.menu.addMenuItem(subMenuMonitorBackground(this, n)); // Add per Monitor background settings
+                const generateMonitorBackgrounds = subMenuMonitorBackgrounds(this, n);
+                this.menu.addMenuItem(generateMonitorBackgrounds); // Add per Monitor background settings
                 n += 1;
                 nMonitors -= 1;
             }
-        }
-
-        _subMenuFonts() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._getFonts(subMenuItem);
-        }
-
-        async _getFonts(item) {
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetFonts();
-            const FONTS = await object._collectFonts();
-
-            const colletFonts = fonts => {
-                let _items = [];
-                fonts.forEach(fontName => {
-                    const fontNameItem = new PopupMenu.PopupMenuItem(fontName);
-                    _items.push(fontNameItem);
-
-                    section.addMenuItem(fontNameItem);
-
-                    fontNameItem.connect('key-focus-in', () => {
-                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, fontNameItem);
-                    });
-
-                    fontNameItem.connect('activate', () => {
-                        dconfDesktopSettings.set_string('font-name', `${fontName} 11`);
-                        updateOrnament(fontItems, fontName);
-                    });
-                });
-                return _items;
-            };
-
-            const fontItems = colletFonts(FONTS);
-            const text = dconfDesktopSettings.get_string('font-name').split(' ').slice(0, -1).join(' ');
-            updateOrnament(fontItems, text);
         }
     }
 );
