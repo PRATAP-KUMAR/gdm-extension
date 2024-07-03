@@ -63,14 +63,18 @@ you can hide the extension settings icon from the topbar by clicking the Hide bu
 if you want to operate from tty you need `systemd-container` package installed. Some distros ship it by default.
 If you dont have this package, install it first. Then run below commands.
 
-from tty 
-1. `sudo machinectl shell gdm@ /bin/bash`
-2. `gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
-3. `exit`
+If running from tty
+```
+sudo machinectl shell gdm@ /bin/bash
+gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
+exit
+```
 
-If from terminal
-1. `xhost si:localuser:gdm`
-2. `sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false`
+If running from terminal
+```
+xhost si:localuser:gdm
+sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
+```
 
 ## Known Issue
 When you choose to Disable Restart Buttons, the buttons are hidden as expected, but when you toggle the switch, the buttons
@@ -83,16 +87,20 @@ While customizing colors, gradient, wallpaper, or choosing shell themes or icon 
 if you want to operate from tty you need `systemd-container` package installed. Some distros ship it by default.  
 If you dont have this package, install it first. Then run below commands.
 
-from tty
-   1. `sudo machinectl shell gdm@ /bin/bash`
-   2. `dconf reset -f /` # This will reset all the settings for `gdm` user only, not the regular user.
-   Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
-   3. `gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"` # enabling the extension
+If running from tty
+```
+sudo machinectl shell gdm@ /bin/bash
+dconf reset -f / # This will reset all the settings for `gdm` user only, not the regular user.
+# Make sure if you configured any other settings yourself for `gdm` user. Make a dconf dump way for that.
+gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # enabling the extension
+```
       
-from terminal
-   1. `xhost si:localuser:gdm`
-   2. `sudo -u gdm dbus-launch dconf reset -f /`
-   3. `sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"`
+If running from terminal
+```
+xhost si:localuser:gdm
+sudo -u gdm dbus-launch dconf reset -f /
+sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"
+```
 
 ## Disabling the extension
 Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions. There is a way to disable it. but its bit different.
