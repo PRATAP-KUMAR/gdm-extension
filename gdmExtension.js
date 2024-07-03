@@ -11,35 +11,20 @@ import * as config from 'resource:///org/gnome/shell/misc/config.js';
 
 import * as AnimationUtils from 'resource:///org/gnome/shell/misc/animationUtils.js';
 
-import createActor from './utils/createActor.js';
-import Slider from './utils/slider.js';
-
 import GetFonts from './menus/getFonts.js';
-import GetIcons from './menus/getIcons.js';
-import GetThemes from './menus/getThemes.js';
 
 import updateOrnament from './utils/updateOrnament.js';
 
 import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
-import {
-    addTapToClick,
-    addShowBannerMessage,
-    addClockShowDate,
-    addClockShowSeconds,
-    addClockShowWeekday,
-    addShowBatteryPercentage,
-    addDisableRestartButtons,
-    addDisableUserList
-} from './systemSettings.js';
-
-import GetBackgrounds from './menus/getBackgrounds.js';
-
-import ConfirmDialog from './utils/confirmDialog.js';
-import createMenuItem from './utils/createMenuItem.js';
 import GetLogos from './menus/getLogos.js';
 
-const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
+import subMenuSystemSettings from './menus/subMenuSystemSettings.js';
+import subMenuMonitorBackground from './menus/subMenuMonitorBackgrounds.js';
+
+import hideExtensionButton from './buttons/hideExtensionButton.js';
+import subMenuIconThemes from './menus/subMenuIconThemes.js';
+import subMenuShellThemes from './menus/subMenuShellThemes.js';
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
@@ -48,7 +33,6 @@ const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
 const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
 
 let subMenuItem = null;
-let menuItem = null;
 
 const GdmExtension = GObject.registerClass(
     class GdmExtension extends PanelMenu.Button {
@@ -67,123 +51,38 @@ const GdmExtension = GObject.registerClass(
             this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
             this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
-            this._confirmDialog = {
-                subject: ('title', 'Hide GDM Settings Icon?'),
-                description: 'Are you sure to Hide the preferences icon?\n' +
-                    'If you hide it now, you can not access the settings any more for now.\n\n' +
-                    'You can show it later from dconf/gsettings key as mentioned in the README of this extensions repository and can change the settings again',
-                confirmButtons: [
-                    {
-                        signal: 'cancel',
-                        label: ('button', 'Cancel'),
-                        key: Clutter.KEY_Escape,
-                    },
-                    {
-                        signal: 'proceed',
-                        label: ('button', 'Hide'),
-                        default: true,
-                    },
-                ],
-            };
-
-            this._subMenuBackground();
-            this._subMenuThemes();
-            this._subMenuIcons();
+            this._subMenuMonitorBackgrounds();  // Monitor background settings
+            
             this._subMenuFonts();
-            this._subMenuSystemSettings();
             this._subMenuLogos();
-
-            const hideExtensionMenuItem = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
-            hideExtensionMenuItem.connect('activate', () => this._openModal(this._settings));
-            this.menu.addMenuItem(hideExtensionMenuItem);
+            
+            this.menu.addMenuItem(subMenuIconThemes(this)); // Icon Themes
+            this.menu.addMenuItem(subMenuShellThemes(this)); // Shell Themes
+            this.menu.addMenuItem(subMenuSystemSettings(this)); // System Settings Menu
+            this.menu.addMenuItem(hideExtensionButton(this)); // Extension Hide Button
         }
 
-        _subMenuSystemSettings() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('System Settings', false);
-
-            subMenuItem.menu.box.add_child(addTapToClick());
-
-            subMenuItem.menu.box.add_child(addClockShowDate());
-            subMenuItem.menu.box.add_child(addClockShowSeconds());
-            subMenuItem.menu.box.add_child(addClockShowWeekday());
-
-            const clockFormat = createMenuItem('Clock - Format', ['12h', '24h'], dconfDesktopSettings, 'clock-format')
-            subMenuItem.menu.box.add_child(clockFormat);
-
-            subMenuItem.menu.box.add_child(addShowBatteryPercentage());
-            subMenuItem.menu.box.add_child(addDisableRestartButtons());
-            subMenuItem.menu.box.add_child(addDisableUserList());
-            subMenuItem.menu.box.add_child(addShowBannerMessage());
-
-            subMenuItem.menu.box.add_child(createActor(dconfLoginSettings, 'Banner Message Text', 'Banner Message', 'banner-message-text'));
-
-            this.menu.addMenuItem(subMenuItem);
-        }
-
-        _openModal(settings) {
-            let modal = new ConfirmDialog(this._confirmDialog);
-
-            modal.connect('proceed', () => {
-                settings.set_boolean('hide-gdm-settings-icon', true);
-            });
-
-            modal.open();
-        }
-
-        _subMenuBackground() {
+        _subMenuMonitorBackgrounds() {
             let nMonitors = Main.layoutManager.monitors.length;
             nMonitors = nMonitors > 4 ? 4 : nMonitors;
             let n = 1;
             while (nMonitors > 0) {
-                this._subMenuBackgrounds(n);
+                this.menu.addMenuItem(subMenuMonitorBackground(this, n)); // Add per Monitor background settings
                 n += 1;
                 nMonitors -= 1;
             }
-        }
-
-        _createBackgroundPrefs(smItem, n) {
-
-            smItem.menu.box.add_child(createActor(this._settings, 'Background Color/Gradient Start Color', '#123456', `background-color-${n}`, 'Must be a valid color'));
-            smItem.menu.box.add_child(createActor(this._settings, 'Background End Color', '#456789', `background-gradient-end-color-${n}`, 'Must be a valid color or same as above color'));
-
-            this._catchGradientDirection = [];
-            const gradientDirectionMenuItem = createMenuItem('Gradient Direction', ['none', 'horizontal', 'vertical'], this._settings, `background-gradient-direction-${n}`, this._catchGradientDirection)
-            smItem.menu.box.add_child(gradientDirectionMenuItem);
-
-            const backgroundSizeMenuItem = createMenuItem('Background size', ['center', 'cover', 'contain'], this._settings, `background-size-${n}`);
-            smItem.menu.box.add_child(backgroundSizeMenuItem);
-
-            // Blur Brightness
-            menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
-            smItem.menu.box.add_child(menuItem);
-
-            smItem.menu.box.add_child(new Slider(this._settings, `blur-brightness-${n}`));
-            //
-
-            // Blur Sigma
-            menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
-            smItem.menu.box.add_child(menuItem);
-
-            smItem.menu.box.add_child(new Slider(this._settings, `blur-sigma-${n}`));
-            //
-
-            menuItem = new PopupMenu.PopupBaseMenuItem();
-            menuItem.add_child(new St.Label({ text: 'Backgrounds', y_align: Clutter.ActorAlign.CENTER }));
-            smItem.menu.box.add_child(menuItem);
-        }
-
-        _subMenuIcons() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._getIcons(subMenuItem);
         }
 
         _subMenuLogos() {
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo (small icon at bottom of login screen)', false);
             this.menu.addMenuItem(subMenuItem);
             this._getLogos(subMenuItem);
+        }
+
+        _subMenuFonts() {
+            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
+            this.menu.addMenuItem(subMenuItem);
+            this._getFonts(subMenuItem);
         }
 
         async _getLogos(item) {
@@ -239,137 +138,6 @@ const GdmExtension = GObject.registerClass(
             updateOrnament(logoItems, text);
         }
 
-        _subMenuThemes() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Shell Themes', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._getThemes(subMenuItem);
-        }
-
-        _subMenuFonts() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._getFonts(subMenuItem);
-        }
-
-        _subMenuBackgrounds(n) {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
-            this.menu.addMenuItem(subMenuItem);
-            this._createBackgroundPrefs(subMenuItem, n);
-            this._getBackgrounds(subMenuItem, n);
-        }
-
-        async _getThemes(item) {
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetThemes();
-            const shellThemes = await object._collectThemes();
-
-            const collectShellThemes = themes => {
-                let _items = [];
-
-                // Add Default Theme Item
-                const shellDefaultThemeItem = new PopupMenu.PopupMenuItem('Default');
-                shellDefaultThemeItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellDefaultThemeItem);
-                });
-                shellDefaultThemeItem.connect('activate', () => {
-                    Main.setThemeStylesheet(null);
-                    Main.loadTheme();
-                    this._settings.set_string('shell-theme', '');
-                    updateOrnament(shellThemeItems, 'Default');
-                });
-                _items.push(shellDefaultThemeItem);
-                section.addMenuItem(shellDefaultThemeItem);
-                //
-
-                themes.forEach(themeName => {
-                    const shellThemeNameItem = new PopupMenu.PopupMenuItem(themeName);
-                    _items.push(shellThemeNameItem);
-
-                    section.addMenuItem(shellThemeNameItem);
-
-                    shellThemeNameItem.connect('key-focus-in', () => {
-                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, shellThemeNameItem);
-                    });
-
-                    shellThemeNameItem.connect('activate', () => {
-                        let styleSheet = null;
-                        const stylesheetPaths = THEME_DIRECTORIES
-                            .map(dir => `${dir}/${themeName}/gnome-shell/gnome-shell.css`);
-
-                        styleSheet = stylesheetPaths.find(path => {
-                            let file = Gio.file_new_for_path(path);
-                            return file.query_exists(null);
-                        });
-
-                        if (styleSheet) {
-                            this._settings.set_string('shell-theme', themeName);
-                            updateOrnament(shellThemeItems, themeName);
-                        } else {
-                            this._settings.set_string('shell-theme', '');
-                            updateOrnament(shellThemeItems, 'Default');
-                        }
-
-                        Main.setThemeStylesheet(styleSheet);
-                        Main.loadTheme();
-                    });
-                });
-                return _items;
-            };
-
-            const shellThemeItems = collectShellThemes(shellThemes);
-            const text = this._settings.get_string('shell-theme') || 'Default';
-            updateOrnament(shellThemeItems, text);
-        }
-
-        async _getIcons(item) {
-
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetIcons();
-            const ICONS = await object._collectIcons();
-
-            const collectIcons = icons => {
-                let _items = [];
-                icons.forEach(iconThemeName => {
-                    const iconThemeNameItem = new PopupMenu.PopupMenuItem(iconThemeName);
-                    _items.push(iconThemeNameItem);
-
-                    section.addMenuItem(iconThemeNameItem);
-
-                    iconThemeNameItem.connect('key-focus-in', () => {
-                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, iconThemeNameItem);
-                    });
-
-                    iconThemeNameItem.connect('activate', () => {
-                        dconfDesktopSettings.set_string('icon-theme', iconThemeName);
-                        updateOrnament(iconItems, iconThemeName);
-                    });
-                });
-                return _items;
-            };
-
-            const iconItems = collectIcons(ICONS);
-            const text = dconfDesktopSettings.get_string('icon-theme');
-            updateOrnament(iconItems, text);
-        }
-
         async _getFonts(item) {
             const scrollView = new St.ScrollView();
             const section = new PopupMenu.PopupMenuSection();
@@ -407,47 +175,6 @@ const GdmExtension = GObject.registerClass(
             const fontItems = colletFonts(FONTS);
             const text = dconfDesktopSettings.get_string('font-name').split(' ').slice(0, -1).join(' ');
             updateOrnament(fontItems, text);
-        }
-
-        async _getBackgrounds(item, n) {
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetBackgrounds();
-            const BACKGROUNDS = await object._collectBackgrounds();
-
-            const collectBackgrounds = backgrounds => {
-                let _items = [];
-                backgrounds.forEach(backgroundName => {
-                    const backgroundNameItem = new PopupMenu.PopupMenuItem(backgroundName);
-                    _items.push(backgroundNameItem);
-
-                    section.addMenuItem(backgroundNameItem);
-
-                    backgroundNameItem.connect('key-focus-in', () => {
-                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, backgroundNameItem);
-                    });
-
-                    backgroundNameItem.connect('activate', () => {
-                        this._settings.set_string(`background-image-path-${n}`, backgroundName);
-                        this._settings.set_string(`background-gradient-direction-${n}`, 'none')
-                        updateOrnament(backgroundItems, backgroundName);
-                        updateOrnament(this._catchGradientDirection, 'none');
-                    });
-                });
-                return _items;
-            };
-
-            const backgroundItems = collectBackgrounds(BACKGROUNDS);
-            const text = this._settings.get_string(`background-image-path-${n}`)
-            updateOrnament(backgroundItems, text);
         }
     }
 );

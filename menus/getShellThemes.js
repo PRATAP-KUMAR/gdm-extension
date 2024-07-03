@@ -19,10 +19,10 @@ const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
 Gio._promisify(Gio.File.prototype, 'query_info_async');
 
-const GetThemes = GObject.registerClass(
-    class GetThemes extends GObject.Object {
-        async _collectThemes() {
-            const themes = [];
+const GetShellThemes = GObject.registerClass(
+    class GetShellThemes extends GObject.Object {
+        async _collectShellThemes() {
+            const shellThemes = [];
             for (const dirName of THEME_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
                 if (dir.query_exists(null))
@@ -34,16 +34,16 @@ const GetThemes = GObject.registerClass(
                                 Gio.FILE_ATTRIBUTE_STANDARD_NAME,
                                 Gio.FileQueryInfoFlags.NONE,
                                 GLib.PRIORITY_DEFAULT, null);
-                            themes.push(name); // push valid names only
+                            shellThemes.push(name); // push valid names only
                         } catch (e) {
                             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                                 logError(e);
                         }
                     }
             }
-            return themes;
+            return shellThemes;
         }
     }
 );
 
-export default GetThemes;
+export default GetShellThemes;

@@ -16,19 +16,19 @@ import enumerateDir from '../utils/enumerateDir.js';
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 
-const GetIcons = GObject.registerClass(
-    class GetIcons extends GObject.Object {
-        async _collectIcons() {
-            const icons = [];
+const GetIconThemes = GObject.registerClass(
+    class GetIconThemes extends GObject.Object {
+        async _collectIconThemes() {
+            const iconThemes = [];
             for (const dirName of ICON_DIRECTORIES) {
                 const dir = Gio.File.new_for_path(dirName);
                 if (dir.query_exists(null))
                     for (const name of await enumerateDir(dir))
-                        icons.push(name); // push all Icon folder names
+                        iconThemes.push(name); // push all Icon folder names
             }
-            return icons;
+            return iconThemes;
         }
     }
 );
 
-export default GetIcons;
+export default GetIconThemes;
