@@ -17,14 +17,13 @@ import updateOrnament from './utils/updateOrnament.js';
 
 import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
-import GetLogos from './menus/getLogos.js';
-
 import subMenuSystemSettings from './menus/subMenuSystemSettings.js';
 import subMenuMonitorBackground from './menus/subMenuMonitorBackgrounds.js';
 
 import hideExtensionButton from './buttons/hideExtensionButton.js';
 import subMenuIconThemes from './menus/subMenuIconThemes.js';
 import subMenuShellThemes from './menus/subMenuShellThemes.js';
+import subMenuLogos from './menus/subMenuLogos.js';
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
@@ -53,13 +52,13 @@ const GdmExtension = GObject.registerClass(
 
             this._subMenuMonitorBackgrounds();  // Monitor background settings
             
-            this._subMenuFonts();
-            this._subMenuLogos();
             
             this.menu.addMenuItem(subMenuIconThemes(this)); // Icon Themes
+            this.menu.addMenuItem(subMenuLogos(this)); // Icon Themes
             this.menu.addMenuItem(subMenuShellThemes(this)); // Shell Themes
             this.menu.addMenuItem(subMenuSystemSettings(this)); // System Settings Menu
             this.menu.addMenuItem(hideExtensionButton(this)); // Extension Hide Button
+            this._subMenuFonts();
         }
 
         _subMenuMonitorBackgrounds() {
@@ -73,69 +72,10 @@ const GdmExtension = GObject.registerClass(
             }
         }
 
-        _subMenuLogos() {
-            subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Logo (small icon at bottom of login screen)', false);
-            this.menu.addMenuItem(subMenuItem);
-            this._getLogos(subMenuItem);
-        }
-
         _subMenuFonts() {
             subMenuItem = new PopupMenu.PopupSubMenuMenuItem('Fonts', false);
             this.menu.addMenuItem(subMenuItem);
             this._getFonts(subMenuItem);
-        }
-
-        async _getLogos(item) {
-            const scrollView = new St.ScrollView();
-            const section = new PopupMenu.PopupMenuSection();
-
-            if (GNOME_SHELL_VERSION === 45)
-                scrollView.add_actor(section.actor);
-            else
-                scrollView.add_child(section.actor);
-
-            item.menu.box.add_child(scrollView);
-
-            const object = new GetLogos();
-            const LOGOS = await object._collectLogos();
-
-            const collectLogos = logos => {
-                let _items = [];
-
-                // Add None Item to not to show the logo
-                const logoNoneItem = new PopupMenu.PopupMenuItem('None');
-                logoNoneItem.connect('key-focus-in', () => {
-                    AnimationUtils.ensureActorVisibleInScrollView(scrollView, logoNoneItem);
-                });
-                logoNoneItem.connect('activate', () => {
-                    dconfLoginSettings.set_string('logo', '');
-                    updateOrnament(logoItems, 'None');
-                });
-                _items.push(logoNoneItem);
-                section.addMenuItem(logoNoneItem);
-                //
-
-                logos.forEach(logoName => {
-                    const logoNameItem = new PopupMenu.PopupMenuItem(logoName);
-                    _items.push(logoNameItem);
-
-                    section.addMenuItem(logoNameItem);
-
-                    logoNameItem.connect('key-focus-in', () => {
-                        AnimationUtils.ensureActorVisibleInScrollView(scrollView, logoNameItem);
-                    });
-
-                    logoNameItem.connect('activate', () => {
-                        dconfLoginSettings.set_string('logo', logoName);
-                        updateOrnament(logoItems, logoName);
-                    });
-                });
-                return _items;
-            };
-
-            const logoItems = collectLogos(LOGOS);
-            const text = dconfLoginSettings.get_string('logo') || 'None'
-            updateOrnament(logoItems, text);
         }
 
         async _getFonts(item) {

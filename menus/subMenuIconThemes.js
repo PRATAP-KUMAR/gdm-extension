@@ -14,7 +14,7 @@ const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
 const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
 
 const subMenuIconThemes = (gdmExtension) => {
-    gdmExtension._subMenuMenuItemIconThemes = new PopupMenu.PopupSubMenuMenuItem('Icon Theme', false);
+    gdmExtension._subMenuMenuItemIconThemes = new PopupMenu.PopupSubMenuMenuItem('Icon Themes', false);
     setIconThemes(gdmExtension._subMenuMenuItemIconThemes)
 
     return gdmExtension._subMenuMenuItemIconThemes;
