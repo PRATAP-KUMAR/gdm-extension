@@ -1,5 +1,5 @@
 ﻿# gdm-extension
-## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and v46
+## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and v46.
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
 ## Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
