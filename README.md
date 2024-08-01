@@ -17,7 +17,7 @@ sudo make install
 ```
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
-## Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
+## Customize Shell theme, Icon theme, Fonts, Logo, Banner message for GDM Login Screen from the login screen itself.
 
 
 ## Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
