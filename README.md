@@ -1,31 +1,13 @@
 ﻿# gdm-extension
 ## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and v46.
 
-## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
-## Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
-
 ## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46, When you install this extension, it will reset all the gsettings/dconf for the  **`gdm`**  user.
 
 ## Warning: Though this extension is being tested since Dec 2023, In very very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line. This gdm-extension installs at 
+
 ```
 /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm
 ```
-
-## Preview of the gdm-extension
-
-![1](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/5575a0ea-677b-41e1-aea6-0215209dd1eb)
-![2](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/f6d13533-9407-4f18-b2db-449702e78c59)
-![3](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/4e1e9f75-6174-479b-94bd-7437380af435)
-![4](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/3b6a6b85-fd95-4edf-a8f7-869ce21b34d3)
-![5](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/b08bb4da-a8ea-4414-b3ba-84c3244b4195)
-![6](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/9a2094c5-4190-4cc8-a52b-d02098222dc5)
-![7](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/5e49761e-2b65-4794-8642-ab9bf1afaec2)
-![8](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/f7fdd6bb-3b98-4dfc-a2fd-dc4b71bfaa43)
-
-## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
-
-## Blur Feature, you can apply blur.
-Apply blur to background image instantly from the login screen itself.
 
 ## Installation
 ```
@@ -33,6 +15,27 @@ git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
 sudo make install
 ```
+
+## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
+## Customize Shell theme, Icon theme, Logo, Banner message for GDM Login Screen from the login screen itself.
+
+
+## Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
+
+![1](https://github.com/user-attachments/assets/b96664f1-582c-4b67-b7b0-1f4f80459e14)
+![2](https://github.com/user-attachments/assets/d797c2fc-5aec-4f49-9798-2b4cc586ee23)
+![3](https://github.com/user-attachments/assets/0591b2ea-08f5-4249-b5e4-51ba18aba3ac)
+![4](https://github.com/user-attachments/assets/29b205c6-c774-43f2-9772-27a86b729073)
+![5](https://github.com/user-attachments/assets/7463e143-b1d0-441b-a11f-e5c225f30e6b)
+![6](https://github.com/user-attachments/assets/24ba45f8-38c7-4e60-a422-30494ab9fa00)
+![7](https://github.com/user-attachments/assets/04412af0-b5af-4f53-8a2c-0821d6fd9621)
+![9](https://github.com/user-attachments/assets/a8d2f693-fe68-486e-b017-1588de538d7f)
+![8](https://github.com/user-attachments/assets/51aeaa67-f0f3-4b1b-8d48-d007c1385241)
+![10](https://github.com/user-attachments/assets/4fe29c40-b65f-43ec-a367-74cf3497030f)
+
+
+## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
+
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
 2. Based on number of monitors connected, it will popup a menu for all monitors like `Monitor - 1`, `Monitor - 2` upto 4 monitors.
