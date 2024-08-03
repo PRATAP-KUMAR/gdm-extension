@@ -9,6 +9,10 @@
 /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm
 ```
 
+## prerequisites packages
+1. zip
+2. dbus-x11
+
 ## Installation
 ```
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
@@ -18,7 +22,6 @@ sudo make install
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
 ## Customize Shell theme, Icon theme, Fonts, Logo, Banner message for GDM Login Screen from the login screen itself.
-
 
 ## Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
 
@@ -72,14 +75,14 @@ If you dont have this package, install it first. Then run below commands.
 
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash
+sudo machinectl shell gdm@ /bin/bash # replace 'gdm' with 'Debian-gdm' if you are using debian
 gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
 exit
 ```
 
 If running from terminal
 ```
-xhost si:localuser:gdm
+xhost si:localuser:gdm # replace 'gdm' with 'Debian-gdm' if you are using debian
 sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
 ```
 
@@ -96,16 +99,16 @@ If you dont have this package, install it first. Then run below commands.
 
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash
+sudo machinectl shell gdm@ /bin/bash # replace 'gdm' with 'Debian-gdm' if you are using debian
 dconf reset -f / # This will reset all the settings for `gdm` user only, not the regular user.
 gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # enabling the extension
 ```
       
 If running from terminal
 ```
-xhost si:localuser:gdm
-sudo -u gdm dbus-launch dconf reset -f /
-sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']"
+xhost si:localuser:gdm # replace 'gdm' with 'Debian-gdm' if you are using debian
+sudo -u gdm dbus-launch dconf reset -f / # replace 'gdm' with 'Debian-gdm' if you are using debian
+sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # replace 'gdm' with 'Debian-gdm' if you are using debian
 ```
 
 ## Disabling the extension

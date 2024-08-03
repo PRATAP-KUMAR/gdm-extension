@@ -6,6 +6,13 @@ DOMAIN   := pratap.fastmail.fm
 UUID	 := $(NAME)@$(DOMAIN)
 ZIP_NAME := $(UUID).zip
 
+# Findout if 'Debian-gdm' user exists, other wise use 'gdm'
+ifeq ($(shell getent passwd Debian-gdm > /dev/null 2&>1 && echo 1 || echo 0), 1)
+	GDM_USER = Debian-gdm
+else
+	GDM_USER = gdm
+endif
+
 # Some of the recipes below depend on some of these files.
 JS_FILES = $(shell find -type f -and \( -name "*.js" \))
 
@@ -30,10 +37,10 @@ else
 	gnome-extensions install -f "$(ZIP_NAME)"
 	@mv -f $(HOME)/.local/share/gnome-shell/extensions/$(UUID)/ /usr/local/share/gnome-shell/extensions/
 	@glib-compile-schemas /usr/local/share/gnome-shell/extensions/$(UUID)/schemas --targetdir /usr/local/share/glib-2.0/schemas
-	@xhost si:localuser:gdm
-	@sudo -u gdm dbus-launch dconf reset -f /
-	@sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['$(UUID)']"
-	@sudo -u gdm dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+	@xhost si:localuser:$(GDM_USER)
+	@sudo -u $(GDM_USER) dbus-launch dconf reset -f /
+	@sudo -u $(GDM_USER) dbus-launch gsettings set org.gnome.shell enabled-extensions "['$(UUID)']"
+	@sudo -u $(GDM_USER) dbus-launch gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 	@echo "gdm-extension is installed, you can tweak few things of GDM login screen from login screen itself."
 	@exit
 endif
