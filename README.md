@@ -10,8 +10,8 @@
 ```
 
 ## prerequisites packages
-1. zip
-2. dbus-x11
+1. `zip`
+2. `dbus-x11`
 
 ## Installation
 ```
@@ -73,17 +73,19 @@ you can hide the extension settings icon from the topbar by clicking the Hide bu
 if you want to operate from tty you need `systemd-container` package installed. Some distros ship it by default.
 If you dont have this package, install it first. Then run below commands.
 
+### Please note that `gdm` user is named `Debian-gdm` for debian OS. If you are using Debian OS, please replace `gdm` user with `Debian-gdm` where ever applicable in below commands.
+
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash # replace 'gdm' with 'Debian-gdm' if you are using debian
+sudo machinectl shell gdm@ /bin/bash # check not at line number 76. gdm || Debian-gdm
 gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
 exit
 ```
 
 If running from terminal
 ```
-xhost si:localuser:gdm # replace 'gdm' with 'Debian-gdm' if you are using debian
-sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
+xhost si:localuser:gdm # check not at line number 76. gdm || Debian-gdm
+sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false # check not at line number 76. gdm || Debian-gdm
 ```
 
 ## Known Issue
@@ -99,16 +101,17 @@ If you dont have this package, install it first. Then run below commands.
 
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash # replace 'gdm' with 'Debian-gdm' if you are using debian
+sudo machinectl shell gdm@ /bin/bash
 dconf reset -f / # This will reset all the settings for `gdm` user only, not the regular user.
 gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # enabling the extension
 ```
       
 If running from terminal
 ```
-xhost si:localuser:gdm # replace 'gdm' with 'Debian-gdm' if you are using debian
-sudo -u gdm dbus-launch dconf reset -f / # replace 'gdm' with 'Debian-gdm' if you are using debian
-sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # replace 'gdm' with 'Debian-gdm' if you are using debian
+xhost si:localuser:gdm # check not at line number 76. gdm || Debian-gdm
+sudo -u gdm dbus-launch dconf reset -f / # check not at line number 76. gdm || Debian-gdm
+sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # check not at line number 76. gdm || Debian-gdm
+# Also add any other extensions UUID those are enabled for gdm login screen.
 ```
 
 ## Disabling the extension
