@@ -20,7 +20,8 @@
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
 sudo make install
-# Observation: Occassionaly when system is updated, I noticed that this extension stops working. In such a case you need to run `sudo make install` from the downloaded repo path.
+
+# Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo make install` again.
 ```
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
