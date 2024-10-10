@@ -1,7 +1,8 @@
 ﻿# gdm-extension
-## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and v46.
+ 
+## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and above.
 
-## Please note that this extension is experimental and is being continously monitored on Arch Linux with gnome-shell v46. When you run the Makefile, it will reset all the gsettings/dconf for the  **`gdm`**  user. If you have other extensions enabled for gdm login screen, then you have to add the UUID of those extensions. See line numbers 106 and 113.
+## Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v46~~ v47. When you run the Makefile, it will reset all the gsettings/dconf for the  **`gdm`**  user. If you have other extensions enabled for gdm login screen, then you have to add the UUID of those extensions.
 
 ## Warning: Though this extension is being tested since Dec 2023, In very very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line. This gdm-extension installs at 
 
@@ -9,7 +10,7 @@
 /usr/local/share/gnome-shell/extensions/gdm-extension@pratap.fastmail.fm
 ```
 
-## prerequisites packages
+## prerequisite packages
 1. `zip`
 2. `dbus-x11`
 3. `systemd-container`
@@ -19,6 +20,7 @@
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
 sudo make install
+# Observation: Occassionaly when system is updated, I noticed that this extension stops working. In such a case you need to run `sudo make install` from the downloaded repo path.
 ```
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
@@ -76,15 +78,15 @@ you can hide the extension settings icon from the topbar by clicking the Hide bu
 
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash # check note at line number 76. gdm || Debian-gdm
+sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
 gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
 exit
 ```
 
 If running from terminal
 ```
-xhost si:localuser:gdm # # check note at line number 76. gdm || Debian-gdm
-sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false # check not at line number 76. gdm || Debian-gdm
+xhost si:localuser:gdm # gdm || Debian-gdm
+sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false # gdm || Debian-gdm
 ```
 
 ## Known Issue
@@ -100,16 +102,16 @@ If you dont have this package, install it first. Then run below commands.
 
 If running from tty
 ```
-sudo machinectl shell gdm@ /bin/bash # check note at line number 76. gdm || Debian-gdm
+sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
 dconf reset -f / # This will reset all the settings for `gdm` user only, not the regular user.
 gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # enabling the extension
 ```
       
 If running from terminal
 ```
-xhost si:localuser:gdm # check note at line number 76. gdm || Debian-gdm
-sudo -u gdm dbus-launch dconf reset -f / # check note at line number 76. gdm || Debian-gdm
-sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # check note at line number 76. gdm || Debian-gdm
+xhost si:localuser:gdm # gdm || Debian-gdm
+sudo -u gdm dbus-launch dconf reset -f / # gdm || Debian-gdm
+sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # gdm || Debian-gdm
 # Also add any other extensions UUID those are enabled for gdm login screen.
 ```
 
