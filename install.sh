@@ -57,5 +57,6 @@ glib-compile-schemas /usr/local/share/gnome-shell/extensions/$UUID/schemas --tar
 xhost si:localuser:$GDM_USER
 sudo -u $GDM_USER dbus-launch gsettings set org.gnome.shell enabled-extensions "['$UUID']"
 xhost -si:localuser:$GDM_USER
+rm -rf $ZIP_NAME
 echo -e "\n     ~~~~~~~~~~~~~~~~\n     gdm-extension is installed, you can tweak few things of GDM login screen from the login screen itself with this extension\n     ~~~~~~~~~~~~~~~~\n"
 exit 0
