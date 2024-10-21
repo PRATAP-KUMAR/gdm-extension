@@ -1,8 +1,8 @@
 ﻿# gdm-extension
  
-## A gnome-shell extension for customizing GDM Login Screen for GNOME v45 and above.
+## A gnome-shell extension for customizing GDM Login Screen for GNOME v42 and above.
 
-## Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v46~~ v47. When you run the Makefile, it will reset all the gsettings/dconf for the  **`gdm`**  user. If you have other extensions enabled for gdm login screen, then you have to add the UUID of those extensions.
+## Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v46~~ v47. If you have other extensions enabled for gdm login screen, then you have to add the UUID of those extensions.
 
 ## Warning: Though this extension is being tested since Dec 2023, In very very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line. This gdm-extension installs at 
 
@@ -19,9 +19,9 @@
 ```
 git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
-sudo make install
+sudo ./install.sh
 
-# Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo make install` again.
+# Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo ./install.sh` again.
 ```
 
 ## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
@@ -119,7 +119,7 @@ sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-
 ## Disabling the extension
 Since this is a special extension which runs only on GDM, disabling is not possible as normal extensions.
 The best way is to remove the extension. from the downloaded repository, run
-`sudo make uninstall` and to install again, run `sudo make install`
+`sudo ./uninstall.sh` and to install again, run `sudo ./install.sh`
 
 <hr/>
 

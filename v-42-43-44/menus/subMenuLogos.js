@@ -1,0 +1,75 @@
+// import Gio from 'gi://Gio';
+// import St from 'gi://St';
+
+const { Gio, St } = imports.gi;
+
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+
+// import updateOrnament from '../utils/updateOrnament.js';
+const { updateOrnament } = Me.imports.utils.updateOrnament;
+
+// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+const PopupMenu = imports.ui.popupMenu;
+
+// import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
+const { GNOME_SHELL_VERSION } = Me.imports.utils.shellVersion;
+
+// import GetLogos from '../getNamesAsync/getLogos.js';
+const { GetLogos } = Me.imports.getNamesAsync.getLogos;
+
+const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+const dconfLoginSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
+
+var subMenuLogos = (gdmExtension) => {
+    gdmExtension._subMenuMenuItemLogos = new PopupMenu.PopupSubMenuMenuItem('Logo (small icon at bottom of login screen)', false);
+    setLogos(gdmExtension._subMenuMenuItemLogos)
+
+    return gdmExtension._subMenuMenuItemLogos;
+}
+
+const setLogos = async (item) => {
+    const scrollView = new St.ScrollView();
+    const section = new PopupMenu.PopupMenuSection();
+
+    if (GNOME_SHELL_VERSION === 42)
+        scrollView.add_actor(section.actor);
+    else
+        scrollView.add_child(section.actor);
+
+    item.menu.box.add_child(scrollView);
+
+    const object = new GetLogos();
+    const LOGOS = await object._collectLogos();
+
+    const collectLogos = logos => {
+        let _items = [];
+
+        // Add None Item to not to show the logo
+        const logoNoneItem = new PopupMenu.PopupMenuItem('None');
+        logoNoneItem.connect('activate', () => {
+            dconfLoginSettings.set_string('logo', '');
+            updateOrnament(logoItems, 'None');
+        });
+        _items.push(logoNoneItem);
+        section.addMenuItem(logoNoneItem);
+        //
+
+        logos.forEach(logoName => {
+            const logoNameItem = new PopupMenu.PopupMenuItem(logoName);
+            _items.push(logoNameItem);
+
+            section.addMenuItem(logoNameItem);
+
+            logoNameItem.connect('activate', () => {
+                dconfLoginSettings.set_string('logo', logoName);
+                updateOrnament(logoItems, logoName);
+            });
+        });
+        return _items;
+    };
+
+    const logoItems = collectLogos(LOGOS);
+    const text = dconfLoginSettings.get_string('logo') || 'None'
+    updateOrnament(logoItems, text);
+}
