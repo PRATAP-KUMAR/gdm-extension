@@ -3,9 +3,11 @@
   "name": "GDM Extension",
   "description": "Tweak few things of GDM Login Screen",
   "shell-version": [
-    "42"
+    "42",
+    "43",
+    "44"
   ],
   "url": "https://github.com/PRATAP-KUMAR/gdm-extension/",
   "settings-schema": "org.gnome.shell.extensions.gdm-extension",
-  "session-modes": ["user", "gdm"]
+  "session-modes": ["gdm"]
 }
