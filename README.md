@@ -1,7 +1,7 @@
 ﻿# gdm-extension
 
 ### Warning: 
-Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v46~~ v47.
+Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v45~~ ~~v46~~ v47.
 
 Though this extension is being tested since Dec 2023, In very very rare case there could be a chance of being unable to reach even to TTY. In such a case, a bootable USB is required to remove this extension. So please make sure you have a bootable USB and some experience on how to mount drives and remove files with command line. This gdm-extension installs at 
 ```
