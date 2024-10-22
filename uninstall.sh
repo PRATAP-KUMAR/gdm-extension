@@ -13,4 +13,4 @@ then
 fi
 
 rm -rf /usr/local/share/gnome-shell/extensions/$UUID
-echo -e "\n     ~~~~~\n     gdm-extension is uninstalled\n     ~~~~~\n"
+echo -e "\n~~~~~ gdm-extension is uninstalled ~~~~~\n"

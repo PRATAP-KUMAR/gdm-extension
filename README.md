@@ -24,8 +24,8 @@ sudo ./install.sh
 # Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo ./install.sh` again.
 ```
 
-## Customize background colors, image, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
-## Customize Shell theme, Icon theme, Fonts, Logo, Banner message for GDM Login Screen from the login screen itself.
+## Customize background colors, images, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
+## Customize Shell themes, Icon themes, Fonts, Logo, Banner messages for GDM Login Screen from the login screen itself.
 
 ## Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
 
@@ -40,8 +40,6 @@ sudo ./install.sh
 ![8](https://github.com/user-attachments/assets/51aeaa67-f0f3-4b1b-8d48-d007c1385241)
 ![10](https://github.com/user-attachments/assets/4fe29c40-b65f-43ec-a367-74cf3497030f)
 
-
-## You can customize different colors/backgrounds with different blur for multiple monitors of upto 4.
 
 ## Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
@@ -80,20 +78,22 @@ you can hide the extension settings icon from the topbar by clicking the Hide bu
 If running from tty
 ```
 sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
-gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false
+dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-settings-icon false
 exit
+sudo systemctl restart gdm.
 ```
 
 If running from terminal
 ```
 xhost si:localuser:gdm # gdm || Debian-gdm
-sudo -u gdm dbus-launch gsettings set org.gnome.shell.extensions.gdm-extension hide-gdm-settings-icon false # gdm || Debian-gdm
+sudo -u gdm dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-settings-icon false # gdm || Debian-gdm
+xhost -si:localuser:gdm # gdm || Debian-gdm
 ```
 
 ## Known Issue
 When you choose to Disable Restart Buttons, the buttons are hidden as expected, but when you toggle the switch, the buttons
 are not shown. To sort out this, go to any tty by CTRL+AL+F4 etc and then run
-`sudo systemctl restart gdm.service`.
+`sudo systemctl restart gdm`.
 
 ## Troubleshoot
 While customizing colors, gradient, wallpaper, or choosing shell themes or icon themes, if you encounter problems.  
@@ -104,16 +104,20 @@ If you dont have this package, install it first. Then run below commands.
 If running from tty
 ```
 sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
-dconf reset -f / # This will reset all the settings for `gdm` user only, not the regular user.
-gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # enabling the extension
+dconf read /org/gnome/shell/enabled-extensions # read if you have any other extensions enabled for GDM login screen
+dconf reset -f /org/gnome/shell/enabled-extensions # This will reset the key for enabled-extensions
+dconf write /org/gnome/shell/enabled-extensions "@as ['gdm-extension@pratap.fastmail.fm']" # enabling the extension
+# Also add any other extensions UUID those are enabled(before discovering this extension) for gdm login screen in the above array.
 ```
-      
+
 If running from terminal
 ```
 xhost si:localuser:gdm # gdm || Debian-gdm
-sudo -u gdm dbus-launch dconf reset -f / # gdm || Debian-gdm
-sudo -u gdm dbus-launch gsettings set org.gnome.shell enabled-extensions "['gdm-extension@pratap.fastmail.fm']" # gdm || Debian-gdm
-# Also add any other extensions UUID those are enabled for gdm login screen.
+sudo -u gdm dconf read /org/gnome/shell/enabled-extensions # read if you have any other extensions enabled for GDM login screen
+sudo -u gdm dconf reset -f /org/gnome/shell/enabled-extensions # This will reset the key for enabled-extensions
+sudo -u gdm dconf write /org/gnome/shell/enabled-extensions "@as ['gdm-extension@pratap.fastmail.fm']" # enabling the extension
+# Also add any other extensions UUID those are enabled(before discovering this extension) for gdm login screen in the above array.
+xhost -si:localuser:gdm # gdm || Debian-gdm
 ```
 
 ## Disabling the extension
