@@ -21,10 +21,7 @@ const setLogos = async (item) => {
     const scrollView = new St.ScrollView();
     const section = new PopupMenu.PopupMenuSection();
 
-    if (GNOME_SHELL_VERSION === 42)
-        scrollView.add_actor(section.actor);
-    else
-        scrollView.add_child(section.actor);
+    scrollView.add_actor(section.actor);
 
     item.menu.box.add_child(scrollView);
 

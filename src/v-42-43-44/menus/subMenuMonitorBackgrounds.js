@@ -8,6 +8,7 @@ const { updateOrnament } = Me.imports.utils.updateOrnament;
 const { createActor } = Me.imports.utils.createActor;
 const { createMenuItem } = Me.imports.utils.createMenuItem;
 const { GetBackgrounds } = Me.imports.getNamesAsync.getBackgrounds;
+const { Sliding } = Me.imports.utils.sliding;
 
 var subMenuMonitorBackgrounds = (gdmExtension, n) => {
     gdmExtension._subMenuMenuItemMonitorBackground = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
@@ -30,18 +31,20 @@ const createBackgroundPrefs = (gdmExtension, n) => {
     const backgroundSizeMenuItem = createMenuItem('Background size', ['center', 'cover', 'contain'], gdmExtension._settings, `background-size-${n}`);
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(backgroundSizeMenuItem);
 
-    // Blur Brightness
-    menuItem = new PopupMenu.PopupBaseMenuItem();
-    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-
-    //
-
     // Blur Sigma
     menuItem = new PopupMenu.PopupBaseMenuItem();
     menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
+    const blurSigmaSlider = new Sliding(gdmExtension._settings, `blur-sigma-${n}`);
+    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(blurSigmaSlider);
+    //
 
+    // Blur Brightness
+    menuItem = new PopupMenu.PopupBaseMenuItem();
+    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
+    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
+    const blurBrightnessSlider = new Sliding(gdmExtension._settings, `blur-brightness-${n}`);
+    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(blurBrightnessSlider);
     //
 }
 
