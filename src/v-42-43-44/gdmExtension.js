@@ -1,41 +1,19 @@
-// import Clutter from 'gi://Clutter';
-// import GObject from 'gi://GObject';
-// import GLib from 'gi://GLib';
-// import St from 'gi://St';
+const { Clutter, GObject, GLib, St } = imports.gi;
 
-const {Clutter, GObject, GLib, St} = imports.gi;
-
-// import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 const Main = imports.ui.main;
-
-// import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 const PanelMenu = imports.ui.panelMenu;
-// import * as config from 'resource:///org/gnome/shell/misc/config.js';
 const Config = imports.misc.config;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import hideExtensionButton from './buttons/hideExtensionButton.js';
-const {hideExtensionButton} = Me.imports.buttons.hideExtensionButton;
-
-// import subMenuSystemSettings from './menus/subMenuSystemSettings.js';
-const {subMenuSystemSettings} = Me.imports.menus.subMenuSystemSettings;
-
-// import subMenuMonitorBackgrounds from './menus/subMenuMonitorBackgrounds.js';
-const {subMenuMonitorBackgrounds} = Me.imports.menus.subMenuMonitorBackgrounds;
-
-// import subMenuIconThemes from './menus/subMenuIconThemes.js';
-const {subMenuIconThemes} = Me.imports.menus.subMenuIconThemes;
-
-// import subMenuShellThemes from './menus/subMenuShellThemes.js';
-const {subMenuShellThemes} = Me.imports.menus.subMenuShellThemes;
-
-// import subMenuLogos from './menus/subMenuLogos.js';
-const {subMenuLogos} = Me.imports.menus.subMenuLogos;
-
-// import subMenuFonts from './menus/subMenuFonts.js';
-const {subMenuFonts} = Me.imports.menus.subMenuFonts;
+const { hideExtensionButton } = Me.imports.buttons.hideExtensionButton;
+const { subMenuSystemSettings } = Me.imports.menus.subMenuSystemSettings;
+const { subMenuMonitorBackgrounds } = Me.imports.menus.subMenuMonitorBackgrounds;
+const { subMenuIconThemes } = Me.imports.menus.subMenuIconThemes;
+const { subMenuShellThemes } = Me.imports.menus.subMenuShellThemes;
+const { subMenuLogos } = Me.imports.menus.subMenuLogos;
+const { subMenuFonts } = Me.imports.menus.subMenuFonts;
 
 var GdmExtension = GObject.registerClass(
     class GdmExtension extends PanelMenu.Button {
@@ -58,13 +36,13 @@ var GdmExtension = GObject.registerClass(
 
             const generateIconThemes = subMenuIconThemes(this);
             this.menu.addMenuItem(generateIconThemes); // Icon Themes
-            
+
             const generateShellThemes = subMenuShellThemes(this);
             this.menu.addMenuItem(generateShellThemes); // Shell Themes
 
             const generateFonts = subMenuFonts(this);
             this.menu.addMenuItem(generateFonts); // Font Themes
-            
+
             const generateSystemSettings = subMenuSystemSettings(this);
             this.menu.addMenuItem(generateSystemSettings); // System Settings Menu
 

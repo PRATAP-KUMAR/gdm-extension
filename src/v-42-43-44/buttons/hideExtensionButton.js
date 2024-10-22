@@ -1,13 +1,9 @@
-// import Clutter from 'gi://Clutter';
 const { Clutter } = imports.gi;
-
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const PopupMenu = imports.ui.popupMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import ConfirmDialog from "../utils/confirmDialog.js";
 const { ConfirmDialog } = Me.imports.utils.confirmDialog;
 
 var hideExtensionButton = (gdmExtension) => {

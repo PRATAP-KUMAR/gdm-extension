@@ -1,8 +1,4 @@
-// import GObject from 'gi://GObject';
 const { GObject } = imports.gi;
-
-// import * as Dialog from 'resource:///org/gnome/shell/ui/dialog.js';
-// import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;

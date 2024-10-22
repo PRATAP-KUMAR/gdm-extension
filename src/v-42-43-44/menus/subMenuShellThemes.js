@@ -1,22 +1,12 @@
 
 const { Gio, St } = imports.gi;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import updateOrnament from '../utils/updateOrnament.js';
 const { updateOrnament } = Me.imports.utils.updateOrnament;
-
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const PopupMenu = imports.ui.popupMenu;
-
-// import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-const GNOME_SHELL_VERSION = Me.imports.utils.shellVersion;
-
-const Main = imports.ui.main;
-
-
-// import GetShellThemes from '../getNamesAsync/getShellThemes.js';
 const { GetShellThemes } = Me.imports.getNamesAsync.getShellThemes;
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
@@ -36,10 +26,7 @@ const setShellThemes = async (gdmExtension) => {
     const scrollView = new St.ScrollView();
     const section = new PopupMenu.PopupMenuSection();
 
-    if (GNOME_SHELL_VERSION === 45)
-        scrollView.add_actor(section.actor);
-    else
-        scrollView.add_child(section.actor);
+    scrollView.add_actor(section.actor);
 
     item.menu.box.add_child(scrollView);
 

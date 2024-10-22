@@ -1,5 +1,5 @@
-// import Gio from 'gi://Gio';
 const { Gio } = imports.gi;
+const PopupMenu = imports.ui.popupMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -15,13 +15,7 @@ const {
     addDisableUserList
 } = Me.imports.systemSettings;
 
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const PopupMenu = imports.ui.popupMenu;
-
-// import createActor from "../utils/createActor.js";
 const { createActor } = Me.imports.utils.createActor;
-
-// import createMenuItem from "../utils/createMenuItem.js";
 const { createMenuItem } = Me.imports.utils.createMenuItem;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';

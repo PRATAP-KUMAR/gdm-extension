@@ -10,13 +10,12 @@
 // source code: https://extensions.gnome.org/extension/19/user-themes/
 // Below code is tweaked by PRATAP PANABAKA <pratap@fastmail.fm>
 
-const {Gio, GObject, GLib} = imports.gi;
+const { Gio, GObject, GLib } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import enumerateDir from '../utils/enumerateDir.js';
-const {enumerateDir} = Me.imports.utils.enumerateDir;
+const { enumerateDir } = Me.imports.utils.enumerateDir;
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 

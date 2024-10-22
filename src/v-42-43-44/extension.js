@@ -16,38 +16,11 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-// GI
-// import Gio from 'gi://Gio';
-// import St from 'gi://St';
-// import Shell from 'gi://Shell';
 const { Gio, St, Shell } = imports.gi;
-
-// Resources
-// import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 const Main = imports.ui.main;
-// import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
-
-const {GNOME_SHELL_VERSION} = Me.imports.utils.shellVersion;
-
-// // Local
-// import GdmExtension from './gdmExtension.js';
-// import GNOME_SHELL_VERSION from './utils/shellVersion.js';
-
-// // GNOME Shell imports
-// const Main = imports.ui.main;
-// const ExtensionUtils = imports.misc.extensionUtils;
-// const Me = ExtensionUtils.getCurrentExtension();
-
-
-// // You can import your modules using the extension object we imported as `Me`.
-// const ExampleLib = Me.imports.exampleLib;
-
-
-// let myObject = new ExampleLib.ExportedClass();
-// ExampleLib.exportedFunction(0, ExampleLib.EXPORTED_VARIABLE);
 
 const { GdmExtension } = Me.imports.gdmExtension;
 
@@ -197,15 +170,11 @@ class GdmExtensionExtension {
         let blurSigma = this._settings.get_int(`blur-sigma-${n}`);
 
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let blurEffect = GNOME_SHELL_VERSION <= 45 ? {
+        let blurEffect = {
             name: 'gdm-extension-blur',
             brightness: blurBrightness,
             sigma: blurSigma * themeContext.scale_factor,
-        } : {
-            name: 'gdm-extension-blur',
-            brightness: blurBrightness,
-            radius: blurSigma * themeContext.scale_factor,
-        };
+        }
 
         let widget = new St.Widget({
             style: `

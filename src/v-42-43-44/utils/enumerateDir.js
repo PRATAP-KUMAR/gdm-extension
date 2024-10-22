@@ -10,10 +10,7 @@
 // source code: https://extensions.gnome.org/extension/19/user-themes/
 // Below code is edited by PRATAP PANABAKA <pratap@fastmail.fm>
 
-// import Gio from 'gi://Gio';
-// import GLib from 'gi://GLib';
-
-const {Gio, GLib} = imports.gi;
+const { Gio, GLib } = imports.gi;
 
 Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
 Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');

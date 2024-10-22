@@ -10,10 +10,7 @@
 // source code: https://extensions.gnome.org/extension/19/user-themes/
 // Below code is tweaked by PRATAP PANABAKA <pratap@fastmail.fm>
 
-// import Gio from 'gi://Gio';
-// import GObject from 'gi://GObject';
-
-const {Gio, GObject} = imports.gi;
+const { Gio, GObject } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();

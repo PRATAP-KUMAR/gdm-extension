@@ -1,4 +1,3 @@
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const PopupMenu = imports.ui.popupMenu;
 
 var updateOrnament = (items, text) => {

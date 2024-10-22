@@ -1,8 +1,5 @@
-// import St from 'gi://St';
-// import Clutter from 'gi://Clutter';
 const { St, Clutter } = imports.gi;
 
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 const PopupMenu = imports.ui.popupMenu;
 
 let getInput;

@@ -1,21 +1,10 @@
-// import Gio from 'gi://Gio';
-// import St from 'gi://St';
-
 const { Gio, St } = imports.gi;
+const PopupMenu = imports.ui.popupMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import updateOrnament from '../utils/updateOrnament.js';
 const { updateOrnament } = Me.imports.utils.updateOrnament;
-
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const PopupMenu = imports.ui.popupMenu;
-
-// import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-const { GNOME_SHELL_VERSION } = Me.imports.utils.shellVersion;
-
-// import GetLogos from '../getNamesAsync/getLogos.js';
 const { GetLogos } = Me.imports.getNamesAsync.getLogos;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';

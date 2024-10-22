@@ -1,7 +1,4 @@
-// import GLib from 'gi://GLib';
-// import Gio from 'gi://Gio';
-
-const {GLib, Gio} = imports.gi;
+const { GLib, Gio } = imports.gi;
 
 /* Gio.File */
 Gio._promisify(Gio.File.prototype, 'enumerate_children_async');

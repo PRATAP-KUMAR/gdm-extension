@@ -11,13 +11,12 @@
 // Below code is edited by PRATAP PANABAKA <pratap@fastmail.fm>
 
 
-const {Gio, GObject} = imports.gi;
+const { Gio, GObject } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import enumerateDir from '../utils/enumerateDir.js';
-const {enumerateDir} = Me.imports.utils.enumerateDir;
+const { enumerateDir } = Me.imports.utils.enumerateDir;
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 

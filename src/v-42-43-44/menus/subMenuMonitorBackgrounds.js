@@ -1,27 +1,12 @@
-// import Gio from 'gi://Gio';
-// import St from 'gi://St';
-
 const { Gio, St, Clutter } = imports.gi;
+const PopupMenu = imports.ui.popupMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import updateOrnament from '../utils/updateOrnament.js';
 const { updateOrnament } = Me.imports.utils.updateOrnament;
-
-// import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
-const PopupMenu = imports.ui.popupMenu;
-
-// import createActor from '../utils/createActor.js';
 const { createActor } = Me.imports.utils.createActor;
-
-// import createMenuItem from '../utils/createMenuItem.js';
 const { createMenuItem } = Me.imports.utils.createMenuItem;
-
-// import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
-const {GNOME_SHELL_VERSION} = Me.imports.utils.shellVersion;
-
-// import GetBackgrounds from '../getNamesAsync/getBackgrounds.js';
 const { GetBackgrounds } = Me.imports.getNamesAsync.getBackgrounds;
 
 var subMenuMonitorBackgrounds = (gdmExtension, n) => {
@@ -70,10 +55,7 @@ const setBackgrounds = async (gdmExtension, n) => {
     const scrollView = new St.ScrollView();
     const section = new PopupMenu.PopupMenuSection();
 
-    if (GNOME_SHELL_VERSION <= 45)
-        scrollView.add_actor(section.actor);
-    else
-        scrollView.add_child(section.actor);
+    scrollView.add_actor(section.actor);
 
     item.menu.box.add_child(scrollView);
 

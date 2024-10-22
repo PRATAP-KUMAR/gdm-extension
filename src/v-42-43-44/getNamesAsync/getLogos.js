@@ -15,7 +15,6 @@ const { Gio, GObject } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
-// import enumerateDir from '../utils/enumerateFiles.js';
 const { enumerateFiles } = Me.imports.utils.enumerateFiles;
 
 const LOGO_DIRECTORIES = ['/usr/local/share/pixmaps', '/usr/share/pixmaps'];
