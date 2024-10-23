@@ -81,7 +81,7 @@ If running from tty
 sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
 dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-settings-icon false
 exit
-sudo systemctl restart gdm.
+sudo systemctl restart gdm
 ```
 
 If running from terminal

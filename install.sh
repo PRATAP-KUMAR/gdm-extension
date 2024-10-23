@@ -57,7 +57,7 @@ rm -rf $ZIP_NAME
 xhost si:localuser:$GDM_USER > /dev/null
 sudo -u $GDM_USER dbus-launch dconf read /org/gnome/shell/enabled-extensions | echo -e "$(awk '{print $1}') $(date)" >> ../../enabled-extensions.txt
 sudo -u $GDM_USER dbus-launch dconf write /org/gnome/shell/enabled-extensions "@as ['$UUID']"
-xhost \-si:localuser:$GDM_USER > /dev/null
+xhost -si:localuser:$GDM_USER > /dev/null
 echo -e "\tgdm-extension is installed. You can set below for GDM Login Screen from the login screen itself\n
 \t1. icon-theme
 \t2. shell-theme
