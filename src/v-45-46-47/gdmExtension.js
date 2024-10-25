@@ -1,5 +1,6 @@
 import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import St from 'gi://St';
 
@@ -15,6 +16,11 @@ import subMenuIconThemes from './menus/subMenuIconThemes.js';
 import subMenuShellThemes from './menus/subMenuShellThemes.js';
 import subMenuLogos from './menus/subMenuLogos.js';
 import subMenuFonts from './menus/subMenuFonts.js';
+import subMenuAccentColors from './menus/subMenuAccentColors.js';
+
+const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
+const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
+const haveAccentColor = dconfDesktopSettings.list_keys().includes('accent-color');
 
 const GdmExtension = GObject.registerClass(
     class GdmExtension extends PanelMenu.Button {
@@ -37,13 +43,18 @@ const GdmExtension = GObject.registerClass(
 
             const generateIconThemes = subMenuIconThemes(this);
             this.menu.addMenuItem(generateIconThemes); // Icon Themes
-            
+
             const generateShellThemes = subMenuShellThemes(this);
             this.menu.addMenuItem(generateShellThemes); // Shell Themes
 
+            if (haveAccentColor) {
+                const generateAccentColors = subMenuAccentColors(this);
+                this.menu.addMenuItem(generateAccentColors); // Accent Colors
+            }
+
             const generateFonts = subMenuFonts(this);
             this.menu.addMenuItem(generateFonts); // Font Themes
-            
+
             const generateSystemSettings = subMenuSystemSettings(this);
             this.menu.addMenuItem(generateSystemSettings); // System Settings Menu
 
