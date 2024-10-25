@@ -52,20 +52,21 @@ sudo ./install.sh
 5. Important is that, you have to **hit Enter** when you write something in the entry box.
 6. Icon themes are collected from `["/usr/local/share/icons/", "/usr/share/icons"]` directories.
 7. Shell themes are collected from `["/usr/local/share/themes/", "/usr/share/themes"]` directories.
-8. Fonts are collected from `["/usr/local/share/fonts", "/usr/share/fonts]` directories.
-9. Fonts are filtered by `FontFamilyName` based on font file naming convention and `StyleName` is ignored by this extension.
-10. You can choose distribution logo from `["/usr/local/share/pixmaps", "/usr/share/pixmaps]`
-11. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
+8. Accent Colors - For GNOME 47 accent-colors feature added. If you wish to set topbar color with respect to accent-colors
+   uncomment the code for `#panel` in this extensions `stylesheet.css` file.
+9. Fonts are collected from `["/usr/local/share/fonts", "/usr/share/fonts]` directories.
+10. Fonts are filtered by `FontFamilyName` based on font file naming convention and `StyleName` is ignored by this extension.
+11. You can choose distribution logo from `["/usr/local/share/pixmaps", "/usr/share/pixmaps]`
+12. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
    disable user list, disable restart buttons, show banner message.
-12. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
-13. Optionally you can overrride styling with extensions css file. for example
+13. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
+14. Optionally you can overrride styling with extensions css file. for example
     ```
     #panel {
-      background-color: #000000;
+      background-color: -st-accent-color;
     }
     ```
-    Topbar/Panel color is black now
-    ![GDM-Extension-16](https://github.com/PRATAP-KUMAR/gdm-extension/assets/40719899/fa87d7ef-bb1a-47f1-a903-0e3f62aa1dcf)
+    Topbar/Panel color will syncronize with the accent-color now (Note that accent-color is introduced in GNOME 47, so for earlier versions Accent Color option will not be shown in this extensions menu.)
 
 ### Hiding the Preferences Icon from GDM Login Screen
 Once you enable the extension it is available for regular users too on the Login Screen.
