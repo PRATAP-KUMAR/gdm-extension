@@ -28,8 +28,6 @@ const setAccentColors = async (item) => {
 
     item.menu.box.add_child(scrollView);
 
-    // const ACCENT_COLORS = ["blue", "teal", "green", "yellow", "orange", "red", "pink", "purple", "slate"]
-
     const ACCENT_COLORS =
         new Gio.Settings({ schema_id: "org.gnome.desktop.interface" })
             .get_range('accent-color')
