@@ -10,8 +10,7 @@ Though this extension is being tested since Dec 2023, In very very rare case the
  
 ### A gnome-shell extension for customizing GDM Login Screen for GNOME v42 and above.
 Customize background colors, images, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
-Customize Shell themes, Icon themes, Fonts, Logo, Banner messages for GDM Login Screen from the login screen itself.
-
+Customize Shell themes, Accent Colors, Icon themes, Fonts, Logo, Banner messages for GDM Login Screen from the login screen itself.
 
 ### prerequisite packages
 1. `zip`
@@ -27,7 +26,6 @@ sudo ./install.sh
 # Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo ./install.sh` again.
 ```
 
-
 ### Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
 
 ![1](https://github.com/user-attachments/assets/b96664f1-582c-4b67-b7b0-1f4f80459e14)
@@ -40,7 +38,6 @@ sudo ./install.sh
 ![9](https://github.com/user-attachments/assets/a8d2f693-fe68-486e-b017-1588de538d7f)
 ![8](https://github.com/user-attachments/assets/51aeaa67-f0f3-4b1b-8d48-d007c1385241)
 ![10](https://github.com/user-attachments/assets/4fe29c40-b65f-43ec-a367-74cf3497030f)
-
 
 ### Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
