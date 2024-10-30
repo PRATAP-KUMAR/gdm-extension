@@ -37,7 +37,7 @@ const createBackgroundPrefs = (gdmExtension, n) => {
     menuItem = new PopupMenu.PopupBaseMenuItem();
     menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(new Slider(gdmExtension._settings, `blur-sigma-${n}`));
+    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(new Slider(gdmExtension._settings, `blur-radius-${n}`));
     //
 
     // Blur Brightness
