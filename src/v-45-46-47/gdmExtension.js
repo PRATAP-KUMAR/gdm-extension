@@ -36,7 +36,7 @@ const GdmExtension = GObject.registerClass(
                 style_class: 'system-status-icon',
             }));
 
-            this._customLabel = `${GLib.get_os_info('PRETTY_NAME')} | ${config.PACKAGE_NAME.toUpperCase()} ${config.PACKAGE_VERSION}`;
+            this._customLabel = "gdm-extension";
             this._box.add_child(new St.Label({ text: this._customLabel, y_align: Clutter.ActorAlign.CENTER }));
 
             this._subMenuMonitorBackgrounds();  // Monitor background settings
