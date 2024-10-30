@@ -26,58 +26,18 @@ const { GdmExtension } = Me.imports.gdmExtension;
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
-let m1BgColorCid = null;
-let m1BgGrDirCid = null;
-let m1BgGrEndColorCid = null;
-let m1BgImagePathCid = null;
-let m1BgImageSizeCid = null;
-let m1BgImageBlurBrightnessCid = null;
-let m1BgImageBlurSigmaCid = null;
-
-const MONITOR_ONE = [m1BgColorCid, m1BgGrDirCid, m1BgGrEndColorCid, m1BgImagePathCid, m1BgImageSizeCid, m1BgImageBlurBrightnessCid, m1BgImageBlurSigmaCid];
-
-let m2BgColorCid = null;
-let m2BgGrDirCid = null;
-let m2BgGrEndColorCid = null;
-let m2BgImagePathCid = null;
-let m2BgImageSizeCid = null;
-let m2BgImageBlurBrightnessCid = null;
-let m2BgImageBlurSigmaCid = null;
-
-const MONITOR_TWO = [m2BgColorCid, m2BgGrDirCid, m2BgGrEndColorCid, m2BgImagePathCid, m2BgImageSizeCid, m2BgImageBlurBrightnessCid, m2BgImageBlurSigmaCid];
-
-let m3BgColorCid = null;
-let m3BgGrDirCid = null;
-let m3BgGrEndColorCid = null;
-let m3BgImagePathCid = null;
-let m3BgImageSizeCid = null;
-let m3BgImageBlurBrightnessCid = null;
-let m3BgImageBlurSigmaCid = null;
-
-const MONITOR_THREE = [m3BgColorCid, m3BgGrDirCid, m3BgGrEndColorCid, m3BgImagePathCid, m3BgImageSizeCid, m3BgImageBlurBrightnessCid, m3BgImageBlurSigmaCid];
-
-let m4BgColorCid = null;
-let m4BgGrDirCid = null;
-let m4BgGrEndColorCid = null;
-let m4BgImagePathCid = null;
-let m4BgImageSizeCid = null;
-let m4BgImageBlurBrightnessCid = null;
-let m4BgImageBlurSigmaCid = null;
-
-const MONITOR_FOUR = [m4BgColorCid, m4BgGrDirCid, m4BgGrEndColorCid, m4BgImagePathCid, m4BgImageSizeCid, m4BgImageBlurBrightnessCid, m4BgImageBlurSigmaCid];
-
-let m1Widget = null;
-let m2Widget = null;
-let m3Widget = null;
-let m4Widget = null;
-
-let shellThemeChangedId = null;
-let visibilityChangedId = null;
-
+let m1Widget, m2Widget, m3Widget, m4Widget;
 
 class GdmExtensionExtension {
     enable() {
         this._settings = ExtensionUtils.getSettings();
+
+        // for disconnecting signals
+        this._keys = this._settings.list_keys();
+        this._keys.forEach(key => {
+            this[`_${key}_changedId`] = null;
+        })
+        //
 
         this._indicator = new GdmExtension(this._settings); // Gdm Extension button
         Main.panel.addToStatusArea(this.uuid, this._indicator, 0, 'left'); // Added to panel left
@@ -125,7 +85,9 @@ class GdmExtensionExtension {
             `blur-brightness-${n}`,
             `blur-sigma-${n}`,
         ]
-            .map(key => this._settings.connect(`changed::${key}`, this._onChangesFromGDMScreen.bind(this, n)));
+            .forEach(key => {
+                this[`_${key}_changedId`] = this._settings.connect(`changed::${key}`, this._onChangesFromGDMScreen.bind(this, n))
+            });
     }
 
     _connectionSettings() {
@@ -153,8 +115,10 @@ class GdmExtensionExtension {
             nMonitors -= 1;
         }
 
-        visibilityChangedId = this._settings.connect('changed::hide-gdm-settings-icon', this._onVisibilityChange.bind(this));
-        shellThemeChangedId = this._settings.connect('changed::shell-theme', this._onShellThemeChanged.bind(this));
+        let visibilityKey = "hide-gdm-extension-icon";
+        let shellThemeKey = "shell-theme";
+        this[`_${visibilityKey}_changedId`] = this._settings.connect(`changed::${visibilityKey}`, this._onVisibilityChange.bind(this));
+        this[`_${shellThemeKey}_changedId`] = this._settings.connect(`changed::${shellThemeKey}`, this._onShellThemeChanged.bind(this));
     }
 
     _createWidget(n) {
@@ -246,29 +210,20 @@ class GdmExtensionExtension {
     }
 
     _onVisibilityChange() {
-        if (this._settings.get_boolean('hide-gdm-settings-icon'))
+        if (this._settings.get_boolean('hide-gdm-extension-icon'))
             this._indicator.hide();
         else
             this._indicator.show();
     }
 
     _disconnectSignals() {
-        MONITOR_ONE.forEach(id => {
-            if (id)
-                this._settings.disconnect(id);
-        });
-        MONITOR_TWO.forEach(id => {
-            if (id)
-                this._settings.disconnect(id);
-        });
-        MONITOR_THREE.forEach(id => {
-            if (id)
-                this._settings.disconnect(id);
-        });
-        MONITOR_FOUR.forEach(id => {
-            if (id)
-                this._settings.disconnect(id);
-        });
+        this._keys.forEach(key => {
+            if (this[`_${key}_changedId`]) {
+                this._settings.disconnect(this[`_${key}_changedId`]);
+                this[`_${key}_changedId`] = null;
+            }
+        })
+        this._keys = null;
     }
 
     // session-mode used is ['gdm'] only because this extension purpose
@@ -277,12 +232,14 @@ class GdmExtensionExtension {
         this._indicator.destroy();
         this._indicator = null;
 
-        this._disconnectSignals();
+        this._disconnectSignals(); // disconnect all signals
 
-        if (shellThemeChangedId)
-            this._settings.disconnect(shellThemeChangedId);
-        if (visibilityChangedId)
-            this._settings.disconnect(visibilityChangedId);
+        [m1Widget, m2Widget, m3Widget, m4Widget].forEach(widget => {
+            if (widget) {
+                widget.destroy();
+                widget = null;
+            }
+        });
 
         Main.layoutManager.disconnect(this._starupPreparedId);
         Main.layoutManager.disconnect(this._monitorsChangedId);

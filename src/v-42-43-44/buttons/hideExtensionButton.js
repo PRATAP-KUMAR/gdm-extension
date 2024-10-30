@@ -15,9 +15,7 @@ var hideExtensionButton = (gdmExtension) => {
 
 const confirmDialog = {
     subject: ('title', 'Hide GDM Settings Icon?'),
-    description: 'Are you sure to Hide the preferences icon?\n' +
-        'If you hide it now, you can not access the settings for now.\n\n' +
-        'You can show it later from dconf/gsettings key as mentioned in the README of this extensions repository and can change the settings again',
+    description: "Are you sure to hide the gdm-extension icon? To show the icon back, please refere to the gsettings command provided in the README of github repository.",
     confirmButtons: [
         {
             signal: 'cancel',
@@ -37,7 +35,7 @@ const openModal = (gdmExtension) => {
     const modal = new ConfirmDialog(confirmDialog);
 
     modal.connect('proceed', () => {
-        settings.set_boolean('hide-gdm-settings-icon', true);
+        settings.set_boolean('hide-gdm-extension-icon', true);
     });
 
     modal.open();

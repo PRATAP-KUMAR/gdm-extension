@@ -29,9 +29,9 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import GdmExtension from './gdmExtension.js';
 import GNOME_SHELL_VERSION from './utils/shellVersion.js';
 
-let m1Widget, m2Widget, m3Widget, m4Widget;
-
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
+
+let m1Widget, m2Widget, m3Widget, m4Widget;
 
 export default class GdmExtensionExtension extends Extension {
     enable() {
@@ -141,12 +141,12 @@ export default class GdmExtensionExtension extends Extension {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         let blurEffect = GNOME_SHELL_VERSION === 45 ? {
             name: 'gdm-extension-blur',
-            brightness: blurBrightness,
             sigma: blurRadius * themeContext.scale_factor,
+            brightness: blurBrightness,
         } : {
             name: 'gdm-extension-blur',
-            brightness: blurBrightness,
             radius: blurRadius * themeContext.scale_factor,
+            brightness: blurBrightness,
         };
 
         let widget = new St.Widget({
