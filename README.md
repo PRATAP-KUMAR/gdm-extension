@@ -85,7 +85,7 @@ sudo systemctl restart gdm
 If running from terminal
 ```
 xhost si:localuser:gdm # gdm || Debian-gdm
-sudo -u gdm dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-button false # gdm || Debian-gdm
+sudo -u gdm dbus-launch dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-button false # gdm || Debian-gdm
 xhost -si:localuser:gdm # gdm || Debian-gdm
 ```
 
@@ -112,9 +112,9 @@ dconf write /org/gnome/shell/enabled-extensions "@as ['gdm-extension@pratap.fast
 If running from terminal
 ```
 xhost si:localuser:gdm # gdm || Debian-gdm
-sudo -u gdm dconf read /org/gnome/shell/enabled-extensions # read if you have any other extensions enabled for GDM login screen
-sudo -u gdm dconf reset -f /org/gnome/shell/enabled-extensions # This will reset the key for enabled-extensions
-sudo -u gdm dconf write /org/gnome/shell/enabled-extensions "@as ['gdm-extension@pratap.fastmail.fm']" # enabling the extension
+sudo -u gdm dbus-launch dconf read /org/gnome/shell/enabled-extensions # read if you have any other extensions enabled for GDM login screen
+sudo -u gdm dbus-launch dconf reset -f /org/gnome/shell/enabled-extensions # This will reset the key for enabled-extensions
+sudo -u gdm dbus-launch dconf write /org/gnome/shell/enabled-extensions "@as ['gdm-extension@pratap.fastmail.fm']" # enabling the extension
 # Also add any other extensions UUID those are enabled(before discovering this extension) for gdm login screen in the above array.
 xhost -si:localuser:gdm # gdm || Debian-gdm
 ```
