@@ -121,28 +121,28 @@
             <description>Description</description>
         </key>
 
-        <key name="blur-radius-1" type="i">
+        <key name="blur-sigma-1" type="i">
             <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
-        <key name="blur-radius-2" type="i">
+        <key name="blur-sigma-2" type="i">
             <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
-        <key name="blur-radius-3" type="i">
+        <key name="blur-sigma-3" type="i">
             <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
-        <key name="blur-radius-4" type="i">
+        <key name="blur-sigma-4" type="i">
             <range min="0" max="100" />
             <default>0</default>
             <summary>Summary</summary>
