@@ -14,7 +14,7 @@ import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import { recursiveFileOperation, recursiveGetFileNamesCallback } from '../utils/recursiveFileOperation.js';
 
-const BACKGROUND_DIRECTORIES = ['/usr/share/gnome/backgrounds', '/usr/local/share/backgrounds', '/usr/share/backgrounds'];
+const BACKGROUND_DIRECTORIES = ['/usr/local/share/backgrounds', '/usr/share/backgrounds'];
 
 const GetBackgrounds = GObject.registerClass(
     class GetBackgrounds extends GObject.Object {
