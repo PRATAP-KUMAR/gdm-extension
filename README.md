@@ -124,6 +124,36 @@ Since this is a special extension which runs only on GDM, disabling is not possi
 The best way is to remove the extension. from the downloaded repository, run
 `sudo ./uninstall.sh` and to install again, run `sudo ./install.sh`
 
+```
+[admin@Xuxa gdm-extension]$ sudo ./uninstall.sh 
+[sudo] password for admin: 
+
+~~~~~ gdm-extension is uninstalled ~~~~~
+
+[admin@Xuxa gdm-extension]$ sudo ./install.sh 
+
+
+	~~~~~~~~~~~~~~~~ gdm-extension ~~~~~~~~~~~~~~~~
+
+	running the script...
+
+	1. gnome-shell version 47 detected
+	2. Creating zip file from the directory v-45-46-47
+	3. Zip file created
+	4. Doing the main stuff
+
+	gdm-extension is installed. You can set below for GDM Login Screen from the login screen itself
+
+	1. icon-theme
+	2. shell-theme
+	3. fonts
+	4. background with color, gradient or image with blur for multi-monitors
+
+	~~~~~~~~~~~~~~~~~~ Thank You ~~~~~~~~~~~~~~~~~~
+
+[admin@Xuxa gdm-extension]$ 
+```
+
 ### Issues
 If you find any issues please raise [here](https://github.com/PRATAP-KUMAR/gdm-extension/issues)
 
