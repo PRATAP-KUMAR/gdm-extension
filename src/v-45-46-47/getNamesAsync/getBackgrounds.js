@@ -14,7 +14,7 @@ import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
 import { recursiveFileOperation, recursiveGetFileNamesCallback } from '../utils/recursiveFileOperation.js';
 
-const BACKGROUND_DIRECTORIES = ['/usr/local/share/backgrounds', '/usr/share/backgrounds'];
+const BACKGROUND_DIRECTORIES = ['/usr/share/gnome/backgrounds', '/usr/local/share/backgrounds', '/usr/share/backgrounds'];
 
 const GetBackgrounds = GObject.registerClass(
     class GetBackgrounds extends GObject.Object {
@@ -28,15 +28,20 @@ const GetBackgrounds = GObject.registerClass(
 
             const filtered = backgroundFileNames
                 .map(name => name.trim())
-                .filter(name =>
-                    name.endsWith('.jpg') ||
-                    name.endsWith('.jpeg') ||
-                    name.endsWith('.png') ||
-                    name.endsWith('.gif') ||
-                    name.endsWith('.JPG') ||
-                    name.endsWith('.JPEG') ||
-                    name.endsWith('.PNG') ||
-                    name.endsWith('GIF'));
+                .filter(
+                    name =>
+                        name.endsWith('.jpg') ||
+                        name.endsWith('.jpeg') ||
+                        name.endsWith('.png') ||
+                        name.endsWith('.gif') ||
+                        name.endsWith('.webp') ||
+                        name.endsWith('.JPG') ||
+                        name.endsWith('.JPEG') ||
+                        name.endsWith('.PNG') ||
+                        name.endsWith('.GIF') ||
+                        name.endsWith('.WEBP')
+                )
+
 
             return filtered;
         }

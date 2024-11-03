@@ -7,8 +7,9 @@ const Me = ExtensionUtils.getCurrentExtension();
 const { updateOrnament } = Me.imports.utils.updateOrnament;
 const { createActor } = Me.imports.utils.createActor;
 const { createMenuItem } = Me.imports.utils.createMenuItem;
-const { GetBackgrounds } = Me.imports.getNamesAsync.getBackgrounds;
 const { Sliding } = Me.imports.utils.sliding;
+
+const { GetBackgrounds } = Me.imports.getNamesAsync.getBackgrounds;
 
 var subMenuMonitorBackgrounds = (gdmExtension, n) => {
     gdmExtension._subMenuMenuItemMonitorBackground = new PopupMenu.PopupSubMenuMenuItem(`Monitor - ${n}`, false);
@@ -34,17 +35,15 @@ const createBackgroundPrefs = (gdmExtension, n) => {
     // Blur Sigma
     menuItem = new PopupMenu.PopupBaseMenuItem();
     menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new Sliding(gdmExtension._settings, `blur-sigma-${n}`));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-    const blurSigmaSlider = new Sliding(gdmExtension._settings, `blur-sigma-${n}`);
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(blurSigmaSlider);
     //
 
     // Blur Brightness
     menuItem = new PopupMenu.PopupBaseMenuItem();
-    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new Sliding(gdmExtension._settings, `blur-brightness-${n}`));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-    const blurBrightnessSlider = new Sliding(gdmExtension._settings, `blur-brightness-${n}`);
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(blurBrightnessSlider);
     //
 }
 
