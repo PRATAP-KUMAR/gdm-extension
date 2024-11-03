@@ -1,18 +1,21 @@
 import Clutter from 'gi://Clutter';
+import St from 'gi://St';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import ConfirmDialog from "../utils/confirmDialog.js";
 
 const hideExtensionButton = (gdmExtension) => {
-    gdmExtension._hideExtensionButton = new PopupMenu.PopupMenuItem('Hide Extension Settings Button from Topbar');
-    gdmExtension._hideExtensionButton.connect('activate', () => openModal(gdmExtension));
+    gdmExtension._hideExtensionButton = new PopupMenu.PopupBaseMenuItem();
+    let hideButton = new St.Button({ label: 'Hide gdm-extension button', style_class: "button", x_align: Clutter.ActorAlign.CENTER, x_expand: true });
+    hideButton.connect('clicked', () => openModal(gdmExtension));
+    gdmExtension._hideExtensionButton.add_child(hideButton);
 
     return gdmExtension._hideExtensionButton;
 }
 
 const confirmDialog = {
-    subject: ('title', 'Hide GDM Settings Icon?'),
-    description: "Are you sure to hide the gdm-extension icon? To show the icon back, please refere to the gsettings command provided in the README of github repository.",
+    subject: ('title', 'Hide gdm-extension button?'),
+    description: "Are you sure to hide the gdm-extension button? To show the button back, please refere to the gsettings command provided in the README of github repository.",
     confirmButtons: [
         {
             signal: 'cancel',
@@ -32,7 +35,7 @@ const openModal = (gdmExtension) => {
     const modal = new ConfirmDialog(confirmDialog);
 
     modal.connect('proceed', () => {
-        settings.set_boolean('hide-gdm-extension-icon', true);
+        settings.set_boolean('hide-gdm-extension-button', true);
     });
 
     modal.open();

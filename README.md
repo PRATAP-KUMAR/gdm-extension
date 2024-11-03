@@ -68,7 +68,7 @@ sudo ./install.sh
 ### Hiding the Preferences Icon from GDM Login Screen
 Once you enable the extension it is available for regular users too on the Login Screen.
 Once you set colors, background, logo, banner message etc, then to prevent tweaking from non sudo users,
-you can hide the extension settings icon from the topbar by clicking the Hide button at the bottom of popup menu.
+you can hide the extension settings button from the topbar by clicking the Hide button at the bottom of popup menu.
 
 ### Showing the Prefernces Icon
 
@@ -77,7 +77,7 @@ Please note that `gdm` user is named `Debian-gdm` for debian OS. If you are usin
 If running from tty
 ```
 sudo machinectl shell gdm@ /bin/bash # gdm || Debian-gdm
-dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-icon false
+dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-button false
 exit
 sudo systemctl restart gdm
 ```
@@ -85,7 +85,7 @@ sudo systemctl restart gdm
 If running from terminal
 ```
 xhost si:localuser:gdm # gdm || Debian-gdm
-sudo -u gdm dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-icon false # gdm || Debian-gdm
+sudo -u gdm dconf write /org/gnome/shell/extensions/gdm-extension/hide-gdm-extension-button false # gdm || Debian-gdm
 xhost -si:localuser:gdm # gdm || Debian-gdm
 ```
 

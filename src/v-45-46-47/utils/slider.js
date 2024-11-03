@@ -6,6 +6,7 @@ const Slider = GObject.registerClass(
         _init(settings, key) {
             super._init({
                 iconName: 'display-brightness-symbolic',
+                x_expand: true,
             });
 
             this._settings = settings;

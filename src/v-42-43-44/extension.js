@@ -115,7 +115,7 @@ class GdmExtensionExtension {
             nMonitors -= 1;
         }
 
-        let visibilityKey = "hide-gdm-extension-icon";
+        let visibilityKey = "hide-gdm-extension-button";
         let shellThemeKey = "shell-theme";
         this[`_${visibilityKey}_changedId`] = this._settings.connect(`changed::${visibilityKey}`, this._onVisibilityChange.bind(this));
         this[`_${shellThemeKey}_changedId`] = this._settings.connect(`changed::${shellThemeKey}`, this._onShellThemeChanged.bind(this));
@@ -210,7 +210,7 @@ class GdmExtensionExtension {
     }
 
     _onVisibilityChange() {
-        if (this._settings.get_boolean('hide-gdm-extension-icon'))
+        if (this._settings.get_boolean('hide-gdm-extension-button'))
             this._indicator.hide();
         else
             this._indicator.show();

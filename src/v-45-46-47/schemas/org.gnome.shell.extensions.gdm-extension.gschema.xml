@@ -183,7 +183,7 @@
             <description>Description</description>
         </key>
 
-        <key name="hide-gdm-extension-icon" type="b">
+        <key name="hide-gdm-extension-button" type="b">
             <default>false</default>
             <summary>Summary</summary>
             <description>Description</description>

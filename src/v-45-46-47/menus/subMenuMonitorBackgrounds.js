@@ -36,15 +36,15 @@ const createBackgroundPrefs = (gdmExtension, n) => {
     // Blur Sigma
     menuItem = new PopupMenu.PopupBaseMenuItem();
     menuItem.add_child(new St.Label({ text: 'Blur Sigma 0 to 100', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new Slider(gdmExtension._settings, `blur-radius-${n}`));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(new Slider(gdmExtension._settings, `blur-radius-${n}`));
     //
 
     // Blur Brightness
     menuItem = new PopupMenu.PopupBaseMenuItem();
-    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1 (Only applicable if Blur Sigma is > 0)', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new St.Label({ text: 'Blur Brightness 0 to 1', y_align: Clutter.ActorAlign.CENTER }));
+    menuItem.add_child(new Slider(gdmExtension._settings, `blur-brightness-${n}`));
     gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(menuItem);
-    gdmExtension._subMenuMenuItemMonitorBackground.menu.box.add_child(new Slider(gdmExtension._settings, `blur-brightness-${n}`));
     //
 }
 
