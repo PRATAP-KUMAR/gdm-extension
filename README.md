@@ -73,7 +73,8 @@ you can hide the extension settings button from the topbar by clicking the Hide 
 
 ### Showing the Prefernces Icon
 
-Please note that `gdm` user is named `Debian-gdm` for debian OS. If you are using Debian OS, please replace `gdm` user with `Debian-gdm` where ever applicable in below commands.
+> [!IMPORTANT] 
+> Please note that `gdm` user is named `Debian-gdm` for debian OS. If you are using Debian OS, please replace `gdm` user with `Debian-gdm` where ever applicable in below commands.
 
 If running from tty
 ```
