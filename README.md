@@ -24,7 +24,7 @@ git clone https://github.com/PRATAP-KUMAR/gdm-extension/
 cd gdm-extension
 sudo ./install.sh
 
-# Observation: Occassionaly when system is updated or due to someother system errors, this extension stops working. In such a case you need to run `sudo ./install.sh` again.
+# Observation: Occassionaly when system is crashed or due to someother system errors, this extension stops working. In such a case you need to run `sudo ./install.sh` again.
 ```
 
 ### Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
