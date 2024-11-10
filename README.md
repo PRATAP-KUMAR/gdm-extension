@@ -28,6 +28,18 @@ sudo ./install.sh
 ```
 
 ### Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
+![1](https://github.com/user-attachments/assets/cf26b8d2-525f-43f8-909d-593d259011f3)
+![2](https://github.com/user-attachments/assets/624c3a96-bc18-4657-a421-8a0b502f9e00)
+![3](https://github.com/user-attachments/assets/702e54b4-3019-4f6c-9ee2-f64657a0056b)
+![4](https://github.com/user-attachments/assets/7666f91d-e665-49c1-a5cb-108098b1653b)
+![5](https://github.com/user-attachments/assets/1b9b2146-610e-4435-8f2f-da507cb854f8)
+![6](https://github.com/user-attachments/assets/9240b6a0-cf43-4ba4-bf1c-47e408026fe6)
+![7](https://github.com/user-attachments/assets/ca3aca4a-4657-4cf1-8101-810aad2f09e4)
+![8](https://github.com/user-attachments/assets/934a67d2-6ba1-42c2-ad74-14dbd1a1460e)
+![9](https://github.com/user-attachments/assets/066fcb6c-8560-4cc7-8b88-6ee56d438cc2)
+![10](https://github.com/user-attachments/assets/d77cb20d-4a6b-40c7-becb-453f711fd25d)
+
+
 
 ### Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
