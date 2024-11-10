@@ -17,17 +17,17 @@ export const addShowBannerMessage = () => {
 };
 
 export const addClockShowDate = () => {
-    widget = ATIndicator.prototype._buildItem('Clock - Show Date', INTERFACE_SCHEMA, 'clock-show-date');
+    widget = ATIndicator.prototype._buildItem('Show Date', INTERFACE_SCHEMA, 'clock-show-date');
     return widget;
 };
 
 export const addClockShowSeconds = () => {
-    widget = ATIndicator.prototype._buildItem('Clock - Show Seconds', INTERFACE_SCHEMA, 'clock-show-seconds');
+    widget = ATIndicator.prototype._buildItem('Show Seconds', INTERFACE_SCHEMA, 'clock-show-seconds');
     return widget;
 };
 
 export const addClockShowWeekday = () => {
-    widget = ATIndicator.prototype._buildItem('Clock - Show Weekday', INTERFACE_SCHEMA, 'clock-show-weekday');
+    widget = ATIndicator.prototype._buildItem('Show Weekday', INTERFACE_SCHEMA, 'clock-show-weekday');
     return widget;
 };
 

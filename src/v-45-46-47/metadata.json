@@ -11,5 +11,6 @@
   "settings-schema": "org.gnome.shell.extensions.gdm-extension",
   "session-modes": [
     "gdm"
-  ]
+  ],
+  "version": 2
 }

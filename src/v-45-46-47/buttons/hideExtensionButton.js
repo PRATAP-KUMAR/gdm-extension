@@ -5,12 +5,12 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import ConfirmDialog from "../utils/confirmDialog.js";
 
 const hideExtensionButton = (gdmExtension) => {
-    gdmExtension._hideExtensionButton = new PopupMenu.PopupBaseMenuItem();
-    let hideButton = new St.Button({ label: 'Hide gdm-extension button', style_class: "button", x_align: Clutter.ActorAlign.CENTER, x_expand: true });
-    hideButton.connect('clicked', () => openModal(gdmExtension));
-    gdmExtension._hideExtensionButton.add_child(hideButton);
-
-    return gdmExtension._hideExtensionButton;
+    const item = new PopupMenu.PopupBaseMenuItem();
+    const label = new St.Label({ text: 'Hide gdm-extension button', style_class: 'button', x_expand: true, x_align: Clutter.ActorAlign.CENTER, y_align: Clutter.ActorAlign.CENTER });
+    item.add_child(label);
+    item.connect('notify::active', () => label.grab_key_focus());
+    item.connect('activate', () => openModal(gdmExtension));
+    return item;
 }
 
 const confirmDialog = {

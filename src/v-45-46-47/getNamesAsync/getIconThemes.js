@@ -11,24 +11,19 @@
 // Below code is edited by PRATAP PANABAKA <pratap@fastmail.fm>
 
 import Gio from 'gi://Gio';
-import GObject from 'gi://GObject';
 import enumerateDir from '../utils/enumerateDir.js';
 
 const ICON_DIRECTORIES = ['/usr/local/share/icons', '/usr/share/icons'];
 
-const GetIconThemes = GObject.registerClass(
-    class GetIconThemes extends GObject.Object {
-        async _collectIconThemes() {
-            const iconThemes = [];
-            for (const dirName of ICON_DIRECTORIES) {
-                const dir = Gio.File.new_for_path(dirName);
-                if (dir.query_exists(null))
-                    for (const name of await enumerateDir(dir))
-                        iconThemes.push(name); // push all Icon folder names
-            }
-            return iconThemes;
-        }
+const getIconThemes = async () => {
+    const iconThemes = [];
+    for (const dirName of ICON_DIRECTORIES) {
+        const dir = Gio.File.new_for_path(dirName);
+        if (dir.query_exists(null))
+            for (const name of await enumerateDir(dir))
+                iconThemes.push(name); // push all Icon folder names
     }
-);
+    return iconThemes;
+}
 
-export default GetIconThemes;
+export default getIconThemes;

@@ -11,29 +11,24 @@
 // Below code is tweaked by PRATAP PANABAKA <pratap@fastmail.fm>
 
 import Gio from 'gi://Gio';
-import GObject from 'gi://GObject';
 import { recursiveFileOperation, recursiveGetFileNamesCallback } from '../utils/recursiveFileOperation.js';
 
 const FONT_DIRECTORIES = ['/usr/local/share/fonts', '/usr/share/fonts'];
 
-const GetFonts = GObject.registerClass(
-    class GetFonts extends GObject.Object {
-        async _collectFonts() {
-            let fontNames = [];
-            for (const dirName of FONT_DIRECTORIES) {
-                const dir = Gio.File.new_for_path(dirName);
-                if (dir.query_exists(null))
-                    await recursiveFileOperation(dir, recursiveGetFileNamesCallback, fontNames, 'fonts');
-            }
-            const modified = fontNames
-                .filter(name => name.trim().endsWith('.ttf') || name.trim().endsWith('.otf')) // get only font files
-                .map(name => name.slice(0, -4)) // remove file extension
-                .map(s => s.split('-')[0]) // remove hypen and after
-                .map(s => s.split(/(?<=[a-z])(?=[A-Z])/).join(' ')); // based on Font naming convention split the strig with Capital letters
-
-            return [...new Set(modified)];
-        }
+const getFonts = async () => {
+    let fontNames = [];
+    for (const dirName of FONT_DIRECTORIES) {
+        const dir = Gio.File.new_for_path(dirName);
+        if (dir.query_exists(null))
+            await recursiveFileOperation(dir, recursiveGetFileNamesCallback, fontNames);
     }
-);
+    const modified = fontNames
+        .filter(name => name.trim().endsWith('.ttf') || name.trim().endsWith('.otf')) // get only font files
+        .map(name => name.slice(0, -4)) // remove file extension
+        .map(s => s.split('-')[0]) // remove hypen and after
+        .map(s => s.split(/(?<=[a-z])(?=[A-Z])/).join(' ')); // based on Font naming convention split the strig with Capital letters
 
-export default GetFonts;
+    return [...new Set(modified)];
+}
+
+export default getFonts;

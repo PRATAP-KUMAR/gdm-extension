@@ -10,14 +10,9 @@ import GNOME_SHELL_VERSION from '../utils/shellVersion.js';
 const DESKTOP_SCHEMA = 'org.gnome.desktop.interface';
 const dconfDesktopSettings = new Gio.Settings({ schema_id: DESKTOP_SCHEMA });
 
-const subMenuAccentColors = (gdmExtension) => {
-    gdmExtension._subMenuMenuItemAccentColors = new PopupMenu.PopupSubMenuMenuItem('Accent Colors', false);
-    setAccentColors(gdmExtension._subMenuMenuItemAccentColors);
+const accentColorsMenu = () => {
+    const menu = new PopupMenu.PopupSubMenuMenuItem('Accent Colors', false);
 
-    return gdmExtension._subMenuMenuItemAccentColors;
-}
-
-const setAccentColors = async (item) => {
     const scrollView = new St.ScrollView();
     const section = new PopupMenu.PopupMenuSection();
 
@@ -26,7 +21,7 @@ const setAccentColors = async (item) => {
     else
         scrollView.add_child(section.actor);
 
-    item.menu.box.add_child(scrollView);
+    menu.menu.box.add_child(scrollView);
 
     const ACCENT_COLORS =
         new Gio.Settings({ schema_id: "org.gnome.desktop.interface" })
@@ -36,10 +31,11 @@ const setAccentColors = async (item) => {
             .replace(/[\]\[\s']/g, '')
             .split(',') || []
 
-    let _colors = [];
+    const items = [];
+
     ACCENT_COLORS.forEach(color => {
         const accentColorItem = new PopupMenu.PopupMenuItem(color);
-        _colors.push(accentColorItem);
+        items.push(accentColorItem);
 
         section.addMenuItem(accentColorItem);
 
@@ -49,14 +45,14 @@ const setAccentColors = async (item) => {
 
         accentColorItem.connect('activate', () => {
             dconfDesktopSettings.set_string('accent-color', color);
-            updateOrnament(_colors, color);
+            updateOrnament(items, color);
         });
     });
 
     const accent_color = dconfDesktopSettings.get_string('accent-color');
-    updateOrnament(_colors, accent_color);
+    updateOrnament(items, accent_color);
 
-    return _colors;
+    return menu;
 };
 
-export default subMenuAccentColors;
+export default accentColorsMenu;

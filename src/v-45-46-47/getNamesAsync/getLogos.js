@@ -11,38 +11,33 @@
 // Below code is edited by PRATAP PANABAKA <pratap@fastmail.fm>
 
 import Gio from 'gi://Gio';
-import GObject from 'gi://GObject';
 import enumerateFiles from '../utils/enumerateFiles.js';
 
 const LOGO_DIRECTORIES = ['/usr/local/share/pixmaps', '/usr/share/pixmaps'];
 
-const GetLogos = GObject.registerClass(
-    class GetLogs extends GObject.Object {
-        async _collectLogos() {
-            const logos = [];
-            for (const dirName of LOGO_DIRECTORIES) {
-                const dir = Gio.File.new_for_path(dirName);
-                if (dir.query_exists(null))
-                    for (const name of await enumerateFiles(dir)) {
-                        if (
-                            name.endsWith('.jpg') ||
-                            name.endsWith('.jpeg') ||
-                            name.endsWith('.png') ||
-                            name.endsWith('.svg') ||
-                            name.endsWith('.gif') ||
-                            name.endsWith('.JPG') ||
-                            name.endsWith('.JPEG') ||
-                            name.endsWith('.PNG') ||
-                            name.endsWith('.SVG') ||
-                            name.endsWith('GIF')
-                        ) {
-                            logos.push(`${dirName}/${name}`); // push all file names
-                        }
-                    }
+const getLogos = async () => {
+    const logos = [];
+    for (const dirName of LOGO_DIRECTORIES) {
+        const dir = Gio.File.new_for_path(dirName);
+        if (dir.query_exists(null))
+            for (const name of await enumerateFiles(dir)) {
+                if (
+                    (name.endsWith('.jpg') ||
+                        name.endsWith('.jpeg') ||
+                        name.endsWith('.png') ||
+                        name.endsWith('.svg') ||
+                        name.endsWith('.gif') ||
+                        name.endsWith('.JPG') ||
+                        name.endsWith('.JPEG') ||
+                        name.endsWith('.PNG') ||
+                        name.endsWith('.SVG') ||
+                        name.endsWith('GIF')) && name.includes('logo')
+                ) {
+                    logos.push(`${dirName}/${name}`); // push all file names
+                }
             }
-            return logos;
-        }
     }
-)
+    return logos;
+}
 
-export default GetLogos;
+export default getLogos;

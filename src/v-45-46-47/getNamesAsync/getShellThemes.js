@@ -12,38 +12,33 @@
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import GObject from 'gi://GObject';
 import enumerateDir from '../utils/enumerateDir.js';
 
 const THEME_DIRECTORIES = ['/usr/local/share/themes', '/usr/share/themes'];
 
 Gio._promisify(Gio.File.prototype, 'query_info_async');
 
-const GetShellThemes = GObject.registerClass(
-    class GetShellThemes extends GObject.Object {
-        async _collectShellThemes() {
-            const shellThemes = [];
-            for (const dirName of THEME_DIRECTORIES) {
-                const dir = Gio.File.new_for_path(dirName);
-                if (dir.query_exists(null))
-                    for (const name of await enumerateDir(dir)) {
-                        const file = dir.resolve_relative_path(
-                            `${name}/gnome-shell/gnome-shell.css`);
-                        try {
-                            await file.query_info_async(
-                                Gio.FILE_ATTRIBUTE_STANDARD_NAME,
-                                Gio.FileQueryInfoFlags.NONE,
-                                GLib.PRIORITY_DEFAULT, null);
-                            shellThemes.push(name); // push valid names only
-                        } catch (e) {
-                            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
-                                logError(e);
-                        }
-                    }
+const getShellThemes = async () => {
+    const shellThemes = [];
+    for (const dirName of THEME_DIRECTORIES) {
+        const dir = Gio.File.new_for_path(dirName);
+        if (dir.query_exists(null))
+            for (const name of await enumerateDir(dir)) {
+                const file = dir.resolve_relative_path(
+                    `${name}/gnome-shell/gnome-shell.css`);
+                try {
+                    await file.query_info_async(
+                        Gio.FILE_ATTRIBUTE_STANDARD_NAME,
+                        Gio.FileQueryInfoFlags.NONE,
+                        GLib.PRIORITY_DEFAULT, null);
+                    shellThemes.push(name); // push valid names only
+                } catch (e) {
+                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                        logError(e);
+                }
             }
-            return shellThemes;
-        }
     }
-);
+    return shellThemes;
+}
 
-export default GetShellThemes;
+export default getShellThemes;

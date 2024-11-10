@@ -1,6 +1,10 @@
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 
+/* eslint-disable no-await-in-loop */
+/* eslint-disable require-await */
+/* eslint-disable consistent-return */
+
 /* Gio.File */
 Gio._promisify(Gio.File.prototype, 'enumerate_children_async');
 Gio._promisify(Gio.File.prototype, 'query_info_async');
@@ -8,31 +12,24 @@ Gio._promisify(Gio.File.prototype, 'query_info_async');
 /* Gio.FileEnumerator */
 Gio._promisify(Gio.FileEnumerator.prototype, 'next_files_async');
 
-const recursiveGetFileNamesCallback = async (file, fileType, array, type) => {
+/**
+ *
+ * @param {Gio.File} file - the file or directory
+ * @param {File.Type} fileType - single file or directory
+ * @param {object} array - array to hold file names
+ */
+async function recursiveGetFileNamesCallback(file, fileType, array) {
     switch (fileType) {
-
         case Gio.FileType.REGULAR: {
-            if (type === 'bg') {
-                array.push(file.get_uri());
-            } else {
-                const fileInfo = await file.query_info_async(
-                    'standard::*',
-                    Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
-                    GLib.PRIORITY_DEFAULT,
-                    null
-                );
-                array.push(fileInfo.get_name());
-            }
+            array.push(file.get_uri());
             return;
         }
 
         case Gio.FileType.DIRECTORY: {
-            // eslint-disable-next-line
-            return recursiveFileOperation(file, recursiveGetFileNamesCallback, array, type);
+            return recursiveFileOperation(file, recursiveGetFileNamesCallback, array);
         }
 
         default:
-            // eslint-disable-next-line
             return null;
     }
 };
@@ -40,13 +37,13 @@ const recursiveGetFileNamesCallback = async (file, fileType, array, type) => {
 /**
  * Recursively operate on @file and any children it may have.
  *
- * @param {Gio.File} file - the file or directory to delete
+ * @param {Gio.File} file - the file or directory
  * @param {Function} callback - a function that will be passed the file,
  *     file type (e.g. regular, directory), and @cancellable
- * @param {object} array - array to hold font file names
+ * @param {object} array - array to hold file names
  * @returns {Promise} a Promise for the operation
  */
-async function recursiveFileOperation(file, callback, array, type) {
+async function recursiveFileOperation(file, callback, array) {
     const fileInfo = await file.query_info_async('standard::type',
         Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, GLib.PRIORITY_DEFAULT,
         null);
@@ -61,7 +58,6 @@ async function recursiveFileOperation(file, callback, array, type) {
         const branches = [];
 
         while (true) {
-            // eslint-disable-next-line
             const fileInfos = await iter.next_files_async(100, GLib.PRIORITY_DEFAULT, null);
 
             if (fileInfos.length === 0)
@@ -73,7 +69,7 @@ async function recursiveFileOperation(file, callback, array, type) {
 
                 // The callback decides whether to process a file, including
                 // whether to recurse into a directory
-                const branch = callback(child, childType, array, type);
+                const branch = callback(child, childType, array);
 
                 if (branch)
                     branches.push(branch);
@@ -84,7 +80,7 @@ async function recursiveFileOperation(file, callback, array, type) {
     }
 
     // Return the Promise for the top-level file
-    return callback(file, array, type);
+    return callback(file, array);
 }
 
 export { recursiveFileOperation, recursiveGetFileNamesCallback };
