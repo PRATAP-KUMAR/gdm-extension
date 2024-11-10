@@ -58,6 +58,16 @@ xhost si:localuser:$GDM_USER > /dev/null
 sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/shell/enabled-extensions
 sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/shell/disabled-extensions
 sudo -u $GDM_USER dbus-launch dconf write /org/gnome/shell/enabled-extensions "@as ['$UUID']"
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/peripherals/touchpad/tap-to-click
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/interface/show-battery-percentage
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/interface/clock-show-date
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/interface/clock-show-seconds
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/interface/clock-show-weekday
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/desktop/interface/clock-format
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/login-screen/disable-restart-buttons
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/login-screen/disable-user-list
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/login-screen/banner-message-enable
+sudo -u $GDM_USER dbus-launch dconf reset /org/gnome/login-screen/logo
 xhost -si:localuser:$GDM_USER > /dev/null
 echo -e "\tgdm-extension is installed. You can set below for GDM Login Screen from the login screen itself\n
 \t1. icon-theme

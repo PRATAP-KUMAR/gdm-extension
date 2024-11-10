@@ -1,6 +1,6 @@
 ﻿# gdm-extension
 
-> [!WARNING]
+> [!CAUTION]
 >Please note that this extension is experimental and is continously monitored on Arch Linux with gnome-shell ~~v45~~ ~~v46~~ v47.
 > Rarely tested on Ubuntu and Debian.
 >
@@ -10,7 +10,7 @@
 >```
  
 ### A gnome-shell extension for customizing GDM Login Screen for GNOME v42 and above.
-Customize background colors, images, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.
+Customize background colors, images, blur for each monitor upto 4 monitors for GDM Login Screen from the login screen itself.  
 Customize Shell themes, Accent Colors, Icon themes, Fonts, Logo, Banner messages for GDM Login Screen from the login screen itself.
 
 ### prerequisite packages
@@ -29,35 +29,24 @@ sudo ./install.sh
 
 ### Preview of the gdm-extension (pics from Ubuntu 24.04 GDM Login Screen)
 
-![1](https://github.com/user-attachments/assets/b96664f1-582c-4b67-b7b0-1f4f80459e14)
-![2](https://github.com/user-attachments/assets/d797c2fc-5aec-4f49-9798-2b4cc586ee23)
-![3](https://github.com/user-attachments/assets/0591b2ea-08f5-4249-b5e4-51ba18aba3ac)
-![4](https://github.com/user-attachments/assets/29b205c6-c774-43f2-9772-27a86b729073)
-![5](https://github.com/user-attachments/assets/7463e143-b1d0-441b-a11f-e5c225f30e6b)
-![6](https://github.com/user-attachments/assets/24ba45f8-38c7-4e60-a422-30494ab9fa00)
-![7](https://github.com/user-attachments/assets/04412af0-b5af-4f53-8a2c-0821d6fd9621)
-![9](https://github.com/user-attachments/assets/a8d2f693-fe68-486e-b017-1588de538d7f)
-![8](https://github.com/user-attachments/assets/51aeaa67-f0f3-4b1b-8d48-d007c1385241)
-![10](https://github.com/user-attachments/assets/4fe29c40-b65f-43ec-a367-74cf3497030f)
-
 ### Tweaking from GDM Login Screen
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
 2. Based on number of monitors connected, it will popup a menu for all monitors like `Monitor - 1`, `Monitor - 2` upto 4 monitors.
 3. For Each monitor you can choose different colors, backgroud image, blur, gradient horizontal and gradient vertical.
-4. For Background, if you are satisfied with your shell theme, you dont need to change any thing. If you prefer to choose
-   colors, you have to enter a valid color for example,`#456789`, `blue` etc. You must be careful
-   while entering these.
-5. Important is that, you have to **hit Enter** when you write something in the entry box.
+4. For Background, you can set primary color and secondary colo with gradient horizontal or vertical. 
+you have to enter a valid color for example,`#456789`, `blue` etc. You must be careful while entering these as they must be valid colors.
+5. Important is that, you have to **hit Enter** when you finish writing something in the entry box.
 6. Icon themes are collected from `["/usr/local/share/icons/", "/usr/share/icons"]` directories.
 7. Shell themes are collected from `["/usr/local/share/themes/", "/usr/share/themes"]` directories.
 8. Accent Colors - For GNOME 47 accent-colors feature added. If you wish to set topbar color with respect to accent-colors
    uncomment the code for `#panel` in this extensions `stylesheet.css` file.
 9. Fonts are collected from `["/usr/local/share/fonts", "/usr/share/fonts]` directories.
 10. Fonts are filtered by `FontFamilyName` based on font file naming convention and `StyleName` is ignored by this extension.
-11. You can choose distribution logo from `["/usr/local/share/pixmaps", "/usr/share/pixmaps]`
-12. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday,
-   disable user list, disable restart buttons, show banner message.
-13. You can type banner message on the entry box provided. Make sure you **hit Enter** when you write something in the entry box.
+11. You can choose distribution logo from `["/usr/local/share/pixmaps", "/usr/share/pixmaps]` directories. 
+Valid files with names which include "logo" are only shown.
+12. You can tweak some system settings from the System Settings menu like tap-to-click, show date, seconds, weekday, 
+disable user list, disable restart buttons, show banner message.
+13. You can type banner message on the entry box provided. Make sure you **hit Enter** when you finish writing something in the entry box.
 14. Optionally you can overrride styling with extensions css file. for example
     ```
     #panel {

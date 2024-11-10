@@ -81,6 +81,11 @@ const systemSettingsMenu = () => {
 
     section.addMenuItem(new PopupMenu.PopupSeparatorMenuItem('Banner Message')); //
 
+    // show banner message
+    menuItem = addShowBannerMessage();
+    section.addMenuItem(menuItem);
+    catchItems.push(menuItem);
+
     // banner message
     const bMessage = bannerMessage();
     section.addMenuItem(bMessage);

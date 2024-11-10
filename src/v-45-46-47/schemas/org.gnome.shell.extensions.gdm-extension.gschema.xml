@@ -26,25 +26,25 @@
         </key>
 
         <key name="gradient-direction-1" type="s">
-            <default>"none"</default>
+            <default>"horizontal"</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="gradient-direction-2" type="s">
-            <default>"none"</default>
+            <default>"horizontal"</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="gradient-direction-3" type="s">
-            <default>"none"</default>
+            <default>"horizontal"</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
 
         <key name="gradient-direction-4" type="s">
-            <default>"none"</default>
+            <default>"horizontal"</default>
             <summary>Summary</summary>
             <description>Description</description>
         </key>
