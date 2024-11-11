@@ -45,7 +45,7 @@ sudo ./install.sh
 1. On the left side topbar, there is a preferences Icon shown. Click on it and it will popup the menu.
 2. Based on number of monitors connected, it will popup a menu for all monitors like `Monitor - 1`, `Monitor - 2` upto 4 monitors.
 3. For Each monitor you can choose different colors, backgroud image, blur, gradient horizontal and gradient vertical.
-4. For Background, you can set primary color and secondary colo with gradient horizontal or vertical. 
+4. For Background, you can set primary color and secondary color with gradient horizontal or vertical. 
 you have to enter a valid color for example,`#456789`, `blue` etc. You must be careful while entering these as they must be valid colors.
 5. Important is that, you have to **hit Enter** when you finish writing something in the entry box.
 6. Icon themes are collected from `["/usr/local/share/icons/", "/usr/share/icons"]` directories.
